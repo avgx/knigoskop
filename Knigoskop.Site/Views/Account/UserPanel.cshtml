@@ -1,0 +1,91 @@
+﻿@using Knigoskop.DataModel
+@model Knigoskop.Site.Models.UserPanelModel
+@if (!User.Identity.IsAuthenticated)
+{
+    <span class="login">
+        <a href="javascript:void(0);" class="add-book unauth">@Text.AddBook</a>
+        <a id="header-login" class="login-link" href="javascript:void(0);">@Text.Enter</a>
+    </span>
+    <script>
+        $(function () {
+            $('#login-form').appendTo('#wrapper');
+
+            showRegisterDialog = function (sel) {
+                $(sel).fadeIn(250);
+            };
+            hideRegisterDialog = function () {
+                $('.register-form').fadeOut(250);
+            };
+
+            $('.wrapper .register-form .close').on('click', function () {
+                hideRegisterDialog();
+            });
+
+            $('#header-login, #btnUnauthorizedComments, .unauth').on('click', function () {
+                showRegisterDialog('#login-form');
+            });
+        });
+    </script>
+    <div class="register-form" id="login-form">
+        <div class="centered">
+            <h1>@Text.Come<a class="close" href="javascript:void(0);"></a></h1>
+            <h2 class="notmobile"><span>@Text.GetPossibility</span></h2>
+            <table class="benefits notmobile">
+                <tr>
+                    <td class="comment">
+                        @Text.DoSend
+                        <br />
+                        @Text.UseComments
+                    </td>
+                    <td class="rate">
+                        @Text.DoRate
+                        <br />
+                        @Text.UseBooksAndAuthors
+                    </td>
+                    <td class="bookmark">
+                        @Text.DoUse
+                        <br />
+                        @Text.UseBookmarks
+                    </td>
+                </tr>
+            </table>
+            <div class="other notmobile">@Text.AndMuchMore</div>
+            <h2><span>@Text.AuthorizeVia</span></h2>
+            <div class="login-providers">
+                @foreach (string providerName in Model.Clients)
+                {
+                    var label = providerName;
+                    if (label == "Vkontakte")
+                    {
+                        label = @Text.Vkontakte;
+                    }
+                    else if (label == "Odnoklassniki")
+                    {
+                        label = @Text.Odnoklassniki;
+                    }
+                    @Html.ActionLink(label, "signin", "account", new { ProviderName = providerName.ToLower() }, new { @class = "button " + providerName.ToLowerInvariant() })
+                }
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <span class="login">
+        <a href="@Url.Action("AddBook", "Income", new {returnUrl = @Request.RawUrl})" class="add-book">@Text.AddBook</a>
+        <a href="@Url.Action("MyBooks", "Account", new { state = UserStatStateEnum.WantsToRead.ToString().ToLower(), genreId = string.Empty })" class="user-bookmarks">@Text.MyBookmarks</a>
+        <span class="user">
+            <a href="@Url.Action("Settings", "Account")"><img src="@string.Format("/images/avatar/{0}.jpg?width=30", User.UserId)" alt="@User.Identity.FullName" /></a>
+            <span>
+                <a href="@Url.Action("Settings", "Account")">@User.Identity.FullName</a>
+            </span>
+            @if (Model.IncomesCount > 0)
+            {
+                <span>
+                    <a class="incomesNotification animated fadeInDown" href="@Url.Action("Incomes","Admin")" title="@Text.NewIncomes">@Model.IncomesCount</a>
+                </span>
+            }
+        </span>
+        @Html.ActionLink(Text.Leave, "signout", "account", null, new { @id = "header-logout", @class = "logout-link" })
+    </span>
+}

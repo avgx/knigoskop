@@ -1,0 +1,26 @@
+﻿@if (Request.Params["returnurl"] != null) {
+    Response.Redirect("~/");
+}
+<!DOCTYPE html >
+<html lang="@Culture.Substring(0, 2)" >
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    @Styles.Render("~/content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    <title>@ViewBag.Title</title>
+</head>
+<body class="error-page">
+    <div class="centered-wrapper full-size">
+        <div class="centered">
+            <div style="padding-bottom: 56px; padding-top:10px;">
+                <img alt="@Text.ProjectName" src="~/Content/img/logo-black.png" />
+            </div>
+            @RenderBody()
+        </div>
+    </div>
+</body>
+</html>

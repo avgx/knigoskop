@@ -1,0 +1,40 @@
+﻿@model Knigoskop.Site.Models.ViewStatsModel
+<a class="view-stats" href="javascript:void(0);">
+    <span class="popup list">
+        <span class="line">@(Text.ViewsToday):<span class="count">@Model.Today</span></span>
+        <span class="line">@(Text.ViewsWeek):<span class="count">@Model.Week</span></span>
+        <span class="line">@(Text.ViewsMonth):<span class="count">@Model.Month</span></span>
+        <span class="line">@(Text.ViewsYear):<span class="count">@Model.Year</span></span>
+        <span class="line">@(Text.ViewsTotal):<span class="count">@Model.Total</span></span>
+    </span>
+    <span class="inner"></span>
+    <span class="callout"></span><span class="callout-white"></span>
+</a>
+
+<a class="view-stats qr" href="javascript:void(0);">
+    <span class="popup">
+        @Html.QRCode(Request.Url.AbsoluteUriExcludingQuery(), size: 150)
+    </span>
+    <span class="inner"></span>
+    <span class="callout"></span><span class="callout-white"></span>
+</a>
+
+<script>
+    $(function () {
+        $('.view-stats').mouseenter(
+            function () {
+                var $this = $(this);
+                $div = $('<div class="popout">');
+                if ($this.is('.qr')) {
+                    $div.addClass('qr');
+                }
+                $div.html($this.html());
+                $('body').append($div);
+                $div.offset({ top: $this.offset().top - $div.height(), left: $this.offset().left - $div.width() / 2 + 10 });
+            })
+            .mouseleave(
+            function () {
+                $('body > .popout').remove();
+            });
+    });
+</script>

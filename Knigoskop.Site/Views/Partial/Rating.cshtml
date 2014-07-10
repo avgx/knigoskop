@@ -1,0 +1,53 @@
+﻿@using Knigoskop.Site.Models.Shared
+@model Knigoskop.Site.Models.BaseItemModel
+<span id="rating_@Model.Id">
+    <span class="rating @(User.Identity.IsAuthenticated ? "live" : "unauth")" style="padding-right: 10px;">
+        @{
+            for (int i = 5; i >= 1; i--)
+            {
+                if (i <= Model.Rating.Value)
+                {
+                    <span class="star filled" title="@i"></span>
+                }
+                else
+                {
+                    <span class="star empty" title="@i"></span>
+                }
+            }
+        }
+    </span>
+    <span class="votes-count">
+        (@Model.Rating.Count
+        @StringHelper.Declension(Model.Rating.Count, Text.VoteNominative, Text.VoteSingular, Text.VotePlural).ToLower())
+    </span>
+    <input type="hidden" id="action_@Model.Id" />
+</span>
+@if (User.Identity.IsAuthenticated)
+{
+    <script>
+        $(function () {
+            $('.rating.live .star').on('click', function () {
+                $this = $(this);
+                $this.siblings('.star').removeClass('checked');
+                $this.addClass('checked');
+                var ratingValue = ($this.attr('title') || 0);
+
+                if ($this.parent().is('.client'))
+                    return;
+
+                var ratingUrl = '@Url.Action("SetRating", "Catalogue")';
+                $.post(ratingUrl, { itemId: '@Model.Id', itemType: '@Model.ItemType', ratingValue: ratingValue },
+                    function (data) {
+                        $('#rating_@Model.Id').html(data);
+                        if ($('#counters_@Model.Id').length > 0) {
+                            var stateUrl = '@Url.Action("GetBookUserStat", "Catalogue")';
+                            $.post(stateUrl, { bookId: '@Model.Id' },
+                                function (stat) {
+                                    $('#counters_@Model.Id').html(stat);
+                                });
+                        }
+                    });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,37 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section topNavigation
+{
+    <div class="top-navigation">
+        @{ Html.RenderAction("TopNavigation", "Partial"); }
+    </div>
+}
+
+@section FacebookOpenGraph
+{
+    @RenderSection("FacebookOpenGraph", required: false)
+}
+
+@section PageHeader
+{
+    @RenderSection("PageHeader", required: false)
+}
+
+<div class="left-nav">
+    @RenderSection("LeftPane", required: true)
+</div>
+<div class="right-content">
+    @RenderBody()
+</div>
+<script>
+    $(function () {
+        $('.left-nav > h3').click(function () {
+            var $this = $(this);
+            $this.toggleClass('active');
+            $this.siblings('ul').toggleClass('visible');
+        });
+    });
+</script>

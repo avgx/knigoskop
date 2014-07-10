@@ -1,0 +1,65 @@
+﻿@using Knigoskop.Site.Models.Shared
+@model Knigoskop.Site.Models.OpdsSectionModel
+
+<div class="white-dropdown books-dropdown">
+    <a class="white-button @(User.Identity.IsAuthenticated ? "" : "unauth")" href="javascript:void(0);">@Text.BookInLibs</a>
+    <ul>
+        @foreach (var item in Model.Items)
+        {
+            <li>
+                <a target="_blank" href="@(item.SearchUri.Replace("{searchTerms}", Model.BookName))">
+                    <img src="@string.Format("http://www.google.com/s2/favicons?domain={0}", new Uri(item.Uri).Host)" alt="@item.Name" />@item.Name
+                </a>
+            </li>
+        }
+        <li class="edit">
+            <a href="@(User.Identity.IsAuthenticated ? Url.Action("OpdsSettings", "Account"): "javascript:showRegisterDialog('#login-form');")">@Text.EditOpdsList</a>
+        </li>
+    </ul>
+</div>
+
+<script>
+    $(function () {
+        $('.white-dropdown.books-dropdown .white-button').click(function (e) {
+            var $this = $(this);
+
+            if ($this.is('.unauth')) {
+                return;
+            }
+
+            var $ul = $(this).next('ul');
+
+            var $container = $ul.parent();
+            var clickedOutside = false;
+            var clickedInside = false;
+
+            if ($('.white-dropdown.external').length > 0) {
+                $('.white-dropdown.external').remove();
+                return;
+            }
+            $('.white-dropdown.external').remove();
+
+            $copy = $('<div class="white-dropdown external" style="position: absolute;"></div>');
+            $copy.append('<ul>' + $ul.html() + '</ul>');
+            $('.content.main .right-content').append($copy);
+            $copy.width($this.outerWidth())
+                .offset({ top: $this.offset().top + $this.height() + 3 });
+            if ($('body').width() <= 980) {
+                $copy.offset({ left: $this.offset().left });
+            }
+
+            e.stopPropagation();
+            $('body').one('click', '*', function () {
+                if ($.contains($copy[0], this) || $.contains($container[0], this)) {
+                    clickedInside = true;
+                    $copy.remove();
+                    return;
+                }
+                if (!clickedOutside && !clickedInside) {
+                    $copy.remove();
+                }
+                clickedOutside = true;
+            });
+        });
+    });
+</script>

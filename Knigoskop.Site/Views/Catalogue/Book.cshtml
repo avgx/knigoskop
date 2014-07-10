@@ -1,0 +1,257 @@
+﻿@using System.Globalization
+@using Knigoskop.Site.Models
+@model Knigoskop.Site.Models.BookModel
+@{
+
+    ViewBag.Title = string.Format("{0} | {1}", Model.Name, Text.ProjectName);
+    Layout = "~/Views/Shared/_GenresLayout.cshtml";
+    bool firstIteration = true;
+    string logoUrl = Model.HasImage
+                         ? string.Format("{0}/images/cover/{1}.jpg?{2}", UriHelper.RootUrl, Model.Id, "mode=pad&scale=both&maxheight=200&maxwidth=200")
+                         : string.Format("{0}/content/img/logo-social.png?mode=pad&scale=both&maxheight=200&maxwidth=200", UriHelper.RootUrl);
+}
+
+@section PageHeader
+{
+    <link rel="image_src" href="@logoUrl" />
+    <meta name="Description" content="@Model.Description.TrimText(150)" />
+}
+
+@section FacebookOpenGraph
+{
+    @if (Request.IsFacebookAgent())
+    {
+        <meta property="og:type" content="books.book" />
+        <meta property="og:url" content="@string.Format("{0}{1}", UriHelper.RootUrl, Request.RawUrl)" />
+        <meta property="og:title" content="@Model.Name" />
+        <meta property="og:image" content="@logoUrl" />
+        <meta property="og:description" content="@Model.Description.TrimText(300)" />
+        <meta property="books:rating:value" content="@Model.Rating.Value" />
+        <meta property="books:rating:scale" content="5" />
+        <meta property="books:rating:normalized_value" content="@(Model.Rating.Value == 0d ? "0" : ((@Model.Rating.Value - 1) / (5 - 1)).ToString("F", CultureInfo.InvariantCulture))" />
+        foreach (BaseItemModel author in Model.Authors)
+        {
+            <meta property="books:author" content="@string.Format("{0}{1}", UriHelper.RootUrl, Url.Action("Author", "Catalogue", new { id = author.Id }))" />
+        }
+        <meta property="books:isbn" content="@(string.IsNullOrEmpty(Model.ISBN) ? "none" : Model.ISBN)" />
+    }
+}
+<div itemscope itemtype="http://schema.org/Book">
+    <div class="author-info book-info">
+        <div class="book-photo-container">
+            @if (!Model.HasImage)
+            {
+                <div class="book-photo-template">
+                    <div class="author">
+                        @{
+                foreach (BaseItemModel author in Model.Authors)
+                {
+                    if (firstIteration)
+                    {
+                        @author.Name
+                        firstIteration = false;
+                    }
+                    else
+                    {
+                        @:/ @author.Name
+                                }
+                }
+                        }
+                    </div>
+                    <div class="title">@Model.Name</div>
+                </div>
+            }
+            else
+            {
+                <img itemprop="image" style="height: 331px;" title="@Model.Name" src="@string.Format("/images/cover/{0}.jpg?{1}", Model.Id, "mode=stretch&scale=both&maxwidth=230&maxheight=331")" />
+                <div style="background-image: url('@string.Format("/images/cover/{0}.jpg?{1}", Model.Id, "mode=crop&scale=both&maxwidth=230&maxheight=1&anchor=bottomleft")'); height: 9px; margin: 0; padding: 0;"></div>
+            }
+            <div class="download-links">
+                @{ Html.RenderAction("OpdsLinks", "Partial", new { bookId = Model.Id }); }
+                @{ Html.RenderAction("DownloadLinks", "Partial", new { bookId = Model.Id }); }
+                <div style="text-align: center; padding-top: 10px;">
+                    <a href="@(User.Identity.IsAuthenticated ? Url.Action("EditBook","Income",new {Id = Model.Id}) : "javascript:void(0);")" class="edit-book @(!User.Identity.IsAuthenticated? "unauth" : "")">@Text.CorrectMistakes</a>
+                </div>
+                @*<div class="links-category">Купить</div>
+                    <div class="link-item buy">
+                        <a href="javascript:void(0);">amazon.com</a>
+                        <span>250 USD</span>
+                    </div>
+                    <div class="link-item buy">
+                        <a href="javascript:void(0);">rutracker.org</a>
+                        <span>80 грн./мес</span>
+                    </div>
+                    <div class="link-item buy">
+                        <a href="javascript:void(0);">longfreedomainname.org.ua</a>
+                        <span>long right element</span>
+                    </div>*@
+            </div>
+        </div>
+        <div class="book-description">
+            <h1 itemprop="name">@Model.Name</h1>
+            <div class="author-information">
+                @{
+                    firstIteration = true;
+                    foreach (BaseItemModel author in Model.Authors)
+                    {
+                        if (firstIteration)
+                        {
+                            firstIteration = false;
+                        }
+                        else
+                        {
+                            @:/
+                        }
+                        <a itemprop="author" href="@Url.Action("Author", "Catalogue", new { id = author.Id })">@author.Name</a>
+                    }
+                }
+                @if (Model.Translators.Any())
+                {
+                    <i>@{@:(@Text.TranslatedBy
+                    firstIteration = true;
+                    foreach (BaseItemModel translator in Model.Translators)
+                    {
+                        if (firstIteration)
+                        {
+                            firstIteration = false;
+                        }
+                        else
+                        {
+                            @:/
+                                }
+                <a href="@Url.Action("Author", "Catalogue", new {id = translator.Id})">@translator.Name</a>}@:)
+                        }</i>
+                            }
+                            <div>
+                                @if (!string.IsNullOrEmpty(Model.Publisher))
+                    {
+                                    <i itemprop="publisher">@Model.Publisher</i>@Html.Raw((Model.Published != null || (Model.PagesCount > 0) ? ",&nbsp" : ""))
+                    }
+                                @if (Model.Published != null)
+                    {
+                                    <span style="display: none" itemprop="datePublished">@Model.Published.Value.ToString("o")</span>
+                                    <i>@Model.Published.Value.Year</i> <i>@Text.Year.ToLower()</i>@Html.Raw(Model.PagesCount > 0 ? ",&nbsp" : "")
+                    }
+                                @if (Model.PagesCount > 0)
+                    {
+                                    <i itemprop="numberOfPages">@Model.PagesCount</i>
+                                    <i>@StringHelper.Declension((int)Model.PagesCount, Text.PagesNominative, Text.PagesSingular, Text.PagesPlural).ToLower()</i>
+                    }
+                            </div>
+                            @if (@Model.ISBN != null)
+                {
+                                <div>
+                                    @{ long result; }
+                                    @if (Model.ISBN.Length > 8 && Model.ISBN.Length < 14 && long.TryParse(Model.ISBN, out result))
+                        {
+                                        <span class="isbn">ISBN:</span>
+                                        <span class="view-stats qr" itemprop="isbn">
+                                            <span class="popouthidden">@Model.ISBN</span>
+                                            <span class="popup" style="height: 120px;">
+                                                <img src="@Url.Action("BarCodeImage", "Catalogue", new {code = @Model.ISBN})" style="padding-top: 20px;" />
+                                            </span>
+                                            <span class="inner"></span>
+                                            <span class="callout"></span><span class="callout-white"></span>
+                                        </span>
+
+                        }
+                        else
+                        {
+                                        @Model.ISBN
+                        }
+                                </div>
+                }
+</div>
+            <div class="category">
+                @{
+                    firstIteration = true;
+                    foreach (GenreModel genre in Model.Genres)
+                    {
+                        if (firstIteration)
+                        {
+                            firstIteration = false;
+                        }
+                        else
+                        {
+                            @:/
+                    }
+                    <a itemprop="genre" href="@Url.Action("Index", "Catalogue", new { genreId = genre.Id })">@genre.Name</a>
+                    }
+                }
+            </div>
+            <div class="top-item-summary">
+                @{ Html.RenderPartial("~/Views/Partial/Rating.cshtml", Model);}
+                @if (Model.Rating.Count > 0)
+                {
+                    <div style="display: none;" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+                        <meta itemprop="worstRating" content="1" />
+                        <meta itemprop="bestRating" content="5" />
+                        <meta itemprop="ratingValue" content="@Model.Rating.Value">
+                        <meta itemprop="ratingCount" content="@Model.Rating.Count">
+                    </div>
+                }
+                <span class="nowrap">
+                    <a class="total-comments" href="#comments"><span id="topComments" itemprop="interactionCount">@Model.Comments.Count() @StringHelper.Declension(Model.Comments.Count(), Text.CommentNominative, Text.CommentSingular, Text.CommnetPlural).ToLower()</span></a>
+                    @{Html.RenderPartial("~/Views/Partial/ViewStats.cshtml", Model.ViewStats);}
+                </span>
+            </div>
+            <div class="book-series">
+                @{Html.RenderPartial("~/Views/Partial/Series.cshtml", Model.Series);}
+            </div>
+            @{Html.RenderPartial("~/Views/Partial/UserStats.cshtml", Model);}
+            <div class="social-inline">
+                @{ Html.RenderPartial("~/Views/Partial/ItemSocial.cshtml", Model); }
+            </div>
+            @{ Html.RenderPartial("~/Views/Partial/SingleDescription.cshtml", Model.Description ?? ""); }
+        </div>
+    </div>
+    @if (Model.RelatedBooks.Any())
+    {
+        <h2><span>@Text.SimilarBooks</span></h2>
+        Html.RenderPartial("~/Views/Partial/BookList.cshtml", Model.RelatedBooks);
+        <script>
+            $(function () {
+                $('.description .name').dotdotdot();
+            });
+        </script>
+    }
+
+    <div class="comments-switch">
+        <div class="tabs">
+            <a href="javascript:void(0);" class="tab active">@Text.Comments<span id="commentsCount">@Model.Comments.Count()</span></a>
+            <a id="tabReviews" href="javascript:void(0);" class="tab">@Text.Reviews<span id="reviewsCount">@Model.Reviews.Count()</span></a>
+            @*<a href="javascript:void(0);" class="tab">@Text.Citations<span id="reviewsCount">@Model.Citations.Count()</span></a>*@
+        </div>
+        <div class="tabs-content">
+            <div class="tab-content active">
+                @{
+                    Html.RenderPartial("~/Views/Partial/Comments.cshtml", Model);
+                }
+            </div>
+            <div class="tab-content">
+                @{
+                    Html.RenderPartial("~/Views/Partial/ReviewList.cshtml", Model);
+                }
+            </div>
+            @*<div class="tab-content">
+                    @{
+                        Html.RenderPartial("~/Views/Partial/Citations.cshtml", Model);
+                    }
+                </div>*@
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $('.comments-switch .tabs a').click(function () {
+                $this = $(this);
+                var index = $this.index();
+                $this.siblings().removeClass('active');
+                $this.addClass('active');
+                $this.parent().siblings('.tabs-content').find('.tab-content').removeClass('active').eq(index).addClass('active');
+                if ($this.attr("id") == "tabReviews") {
+                    $('.reviewShort').dotdotdot({ wrap: 'word', height: 70, remove: [' ', ',', ';', '.', '!', '?', '—'], });
+                }
+            });
+        });
+    </script>
+</div>

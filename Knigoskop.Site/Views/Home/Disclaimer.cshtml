@@ -1,0 +1,19 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = string.Format("{0} | {1}", Text.ToCopyrightHolders, Text.ProjectName);
+}
+@model Knigoskop.Site.Code.Configuration.MailSettings
+
+@section FacebookOpenGraph
+{
+    @if (Request.IsFacebookAgent())
+    {
+        <meta property="og:url" content="@UriHelper.RootUrl" />
+    }
+}
+
+<div class="generic-content">
+    <h2 class="nobg">@Text.ToCopyrightHolders</h2>
+
+    @Html.Raw(string.Format(Text.DisclaimerText, Model.InfoEmail, Text.ProjectName))
+</div>

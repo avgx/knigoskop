@@ -1,0 +1,35 @@
+﻿<div class="content">
+    <div class="search-container">
+        <input type="text" id="searchText" class="search" value="" placeholder="@Text.SearchBookOrAuthor"/>
+        <div id="floatingCirclesG" style="display: none;">
+            <div class="f_circleG" id="frotateG_01">
+            </div>
+            <div class="f_circleG" id="frotateG_02">
+            </div>
+            <div class="f_circleG" id="frotateG_03">
+            </div>
+            <div class="f_circleG" id="frotateG_04">
+            </div>
+            <div class="f_circleG" id="frotateG_05">
+            </div>
+            <div class="f_circleG" id="frotateG_06">
+            </div>
+            <div class="f_circleG" id="frotateG_07">
+            </div>
+            <div class="f_circleG" id="frotateG_08">
+            </div>
+        </div>
+        @{ Html.RenderPartial("/Views/Partial/AutoSuggest.cshtml"); }
+        <a class="start-search" id="searchStart" href="javascript:void(0);" title="@Text.SearchButtonHint"></a>
+    </div>
+</div>
+<script>
+    $(function () {
+        BackToTop({
+            text: '@Text.GoTop',
+                autoShow: true,
+                timeEffect: 500,
+                appearMethod: 'fade'
+            });
+        });
+</script>

@@ -1,0 +1,23 @@
+﻿@{
+    Layout = "~/Views/Shared/_NavigationLayout.cshtml";
+}
+
+@section FacebookOpenGraph
+{
+    @RenderSection("FacebookOpenGraph", required: false)
+}
+
+@section PageHeader
+{
+    @RenderSection("PageHeader", required: false)
+}
+
+@section LeftPane
+{
+    @{
+        Html.RenderAction("Genres", "Partial");
+    }
+
+}
+
+@RenderBody()

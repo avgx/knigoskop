@@ -1,0 +1,190 @@
+﻿@using System.Globalization
+@using Knigoskop.Site.Models
+@using Knigoskop.Site.Models.Shared
+
+@model BaseItemModel
+
+@helper WriteComments(IEnumerable<CommentModel> comments)
+{
+    <div class="comment">
+        @foreach (CommentModel comment in comments)
+        {
+            <div itemprop="comment" itemscope itemtype="http://schema.org/UserComments">
+
+                @*                <div itemprop="creator" itemscope itemtype="http://schema.org/Person">
+                        <meta itemprop="name" content ="@comment.UserName"/>
+                        <meta itemprop="image" content ="@string.Format("/images/avatar/{0}.jpg?width=30", comment.UserId)"/>
+                    </div>*@
+                <span itemprop="commentTime" style="display: none;" >@comment.Created.ToString("s", DateTimeFormatInfo.InvariantInfo)</span>
+
+                <img class="photo" alt="@comment.UserName" src="@string.Format("/images/avatar/{0}.jpg?width=30", comment.UserId)" />
+                <div class="comment_box" id="@comment.Id">
+                    <div class="top">
+                        <a itemprop="creator" class="name" href="@Url.Action("UserProfile", "Account", new {id = comment.UserId})">@comment.UserName</a> <span class="date">@comment.Created.ToString("F")</span>
+                    </div>
+                    @if (comment.IsPublished)
+                    {
+                        <div itemprop="commentText">
+                            @comment.Text
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="deleted">
+                            *** @Text.Deleted.ToLower() ***
+                        </div>
+                    }
+                    @if (User.Identity.IsAuthenticated && comment.IsPublished)
+                    {
+                        <a href="javascript:void(0);" class="reply">@Text.Reply</a>
+                        if (comment.UserId == User.UserId)
+                        {
+                            <a class="comment-delete" data-comment-id="@comment.Id" title="@Text.RemoveComment" href="javascript:void(0);">@Text.RemoveComment</a>
+                        }
+                        else
+                        {
+                            <a class="comment-report" data-comment-id="@comment.Id" title="@Text.ReportComment" href="javascript:void(0);">@Text.ReportComment</a>
+                        }
+                    }
+                </div>
+            </div>
+            @WriteComments(Model.Comments.Where(c => c.ParentId == comment.Id).OrderByDescending(c => c.Created))
+        }
+    </div>
+}
+
+<div id="comments">
+    @if (Model.Comments.Any())
+    {
+        if (Model.ItemType != ItemTypeEnum.Book)
+        {
+            <h4><span>@Text.Comments</span></h4>
+        }
+        @WriteComments(Model.Comments.Where(m => m.ParentId == null).OrderByDescending(c => c.Created))
+    }
+
+    <h4><span>@Text.LeaveTheComment</span></h4>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="new_comment">
+            <img class="photo" alt="@User.Identity.FullName" src="@string.Format("/images/avatar/{0}.jpg?width=30", User.UserId)" />
+            <div class="comment_box">
+                <textarea id="txtComment" placeholder="@Text.WriteComment"></textarea>
+            </div>
+            <div class="buttons">
+                <input id="btnAddComment" type="button" value="@Text.Write" />
+            </div>
+        </div>
+        <div style="display: none; margin-left: 50px;" id="replyContainer" class="new_comment">
+            <img class="photo" alt="@User.Identity.FullName" src="@string.Format("/images/avatar/{0}.jpg?width=30", User.UserId)" />
+            <div class="comment_box">
+                <textarea id="txtInlineComment" placeholder="@Text.WriteComment"></textarea>
+            </div>
+            <div class="buttons">
+                <input id="btnReplyComment" type="button" value="@Text.Write" />
+            </div>
+        </div>
+        <script>
+            $(function () {
+                if ($("#commentsCount").length > 0) {
+                    $("#commentsCount").text('@Model.Comments.Count()');
+                }
+
+                if ($("#topComments").length > 0) {
+                    $("#topComments").text('@Model.Comments.Count() @StringHelper.Declension(Model.Comments.Count(), Text.CommentNominative, Text.CommentSingular, Text.CommnetPlural).ToLower()');
+                }
+
+                $('.reply').click(function () {
+                    var divItem = $(this).closest('.comment_box');
+                    var divReplay = $('#replyContainer');
+                    divReplay.hide();
+                    divItem.after(divReplay);
+                    divReplay.fadeIn(300);
+                    divReplay.attr('data', divItem.attr('id'));
+                });
+
+                function sendComment(parentId, commentText) {
+                    var commentUrl = '@Url.Action("AddComment", "Catalogue")';
+                    $.post(commentUrl, { itemId: '@Model.Id', itemType: '@Model.ItemType', parentCommentId: parentId, commentText: commentText },
+                        function (data) {
+                            $('#comments').html(data);
+                        });
+                }
+
+                $('#btnAddComment').click(function () {
+                    var commentText = $('#txtComment').val();
+                    if (commentText != '') {
+                        sendComment(null, commentText);
+                    }
+                });
+                $('#btnReplyComment').click(function () {
+                    var commentText = $('#txtInlineComment').val();
+                    if (commentText != '') {
+                        var parentId = $('#replyContainer').attr('data');
+                        sendComment(parentId, commentText);
+                    }
+                });
+
+                $('.comment-delete').click(function () {
+                    $this = $(this);
+                    var commentId = $this.data("commentId");
+                    var removeUrl = '@Url.Action("RemoveComment", "Catalogue")';
+                    $.post(removeUrl, { itemId: commentId, itemType: '@Model.ItemType' },
+                        function () {
+                            var $item = $($this.parents('[itemprop="comment"]')[0]);
+                            $item.find('[itemprop="commentText"]').addClass("deleted").text("*** @Text.Deleted.ToLower() ***");
+                            $item.find("a.reply").remove();
+                            $this.remove();
+                        });
+                });
+
+                $('#comments textarea').keypress(function (e) {
+                    if ((e.keyCode == 13 && e.ctrlKey) || e.keyCode == 10) {
+                        $(this).closest('.new_comment').find('input[type="button"]').click();
+                    }
+                });
+            });
+        </script>
+    }
+    else
+    {
+        <div class="center">
+            <div class="notification">@Text.UnauthorizedComments</div>
+            <input id="btnUnauthorizedComments" type="button" class="yellow-button" value="@Text.SocialAuth" />
+        </div>
+    }
+</div>
+<div class="register-form" id="report-comment-form">
+    <div class="centered">
+        <h1>@Text.ReportCommentTitle<a class="close" href="javascript:void(0);"></a></h1>
+        <h2><span>@Text.ReportCommentSubtitle</span></h2>
+        <div class="text">
+            <textarea id="report-comment-text" placeholder="@Text.ReportCommentEmptyText"></textarea>
+        </div>
+        <input type="hidden" id="report-comment-id" />
+        <br />
+        <input type="button" id="report-comment-submit" class="report-button" value="@Text.ReportCommentButton" />
+    </div>
+</div>
+<script>
+    $(function () {
+        $('.wrapper .register-form .close').on('click', function () {
+            $('.register-form').fadeOut(250);
+        });
+
+        $('#comments .comment-report').click(function () {
+            $('#report-comment-id').val($(this).data("commentId"));
+            $('#report-comment-form').fadeIn(250);
+        });
+
+        $('#report-comment-submit').click(function () {
+            var complainUrl = '@Url.Action("SendComplain", "Catalogue")';
+            $.post(complainUrl, { itemId: $('#report-comment-id').val(), reasonText: $("#report-comment-text").val() })
+                .always(function () {
+                    $("#report-comment-text").val('');
+                    $('.register-form').fadeOut(250);
+                });
+        });
+    });
+</script>

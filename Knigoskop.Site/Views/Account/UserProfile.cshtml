@@ -1,0 +1,42 @@
+﻿@using Knigoskop.Site.Models
+@model IdentityInfoModel
+@{
+    ViewBag.Title = string.Format("{0} {1} | {2}", Text.Profile, Model.Name, Text.ProjectName);
+    Layout = "~/Views/Shared/_GenresLayout.cshtml";
+    string logoUrl = Model.HasImage
+                         ? string.Format("{0}/images/avatar/{1}.jpg?{2}", UriHelper.RootUrl, Model.Id, "mode=crop&scale=both&maxwidth=200&maxheight=200&anchor=topcenter")
+                         : string.Format("{0}/content/img/no_author.png", UriHelper.RootUrl);
+}
+
+@section PageHeader
+{
+    <link rel="image_src" href="@logoUrl" />
+}
+
+
+@section FacebookOpenGraph
+{
+}
+
+<div itemscope itemtype="http://schema.org/Person">
+    <div class="author-info">
+        @if (Model.HasImage)
+        {
+            <img itemprop="image" alt="@Model.Name" class="author-photo" src="@string.Format("/images/avatar/{0}.jpg?{1}", Model.Id, "mode=crop&scale=both&maxwidth=230&maxheight=230&anchor=topcenter")" />
+        }
+        else
+        {
+            <img  alt="@Model.Name" class="author-photo" src="/content/img/no_author.png" />
+        }
+        <div class="author-description">
+            <div class="short">
+                <h1 itemprop="name">@Model.Name</h1>
+                <div class="lifetime">@Text.ProfileCreated @Model.Created.ToLongDateString()</div>
+                <div class="lifetime">@Text.BooksCount @Model.BooksCount</div>
+                <div class="lifetime">@Text.ReviewsCount @Model.ReviewsCount</div>
+                <div class="lifetime">@Text.RatingsCount @Model.RatingsCount</div>
+                <div class="lifetime">@Text.CommentsCount @Model.CommentsCount</div>
+            </div>
+        </div>
+    </div>
+</div>

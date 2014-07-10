@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Knigoskop.Site.Models.BaseItemModel>
+
+<div class="books-list">
+    @foreach (Knigoskop.Site.Models.BookItemModel book in Model)
+    {
+        <div class="book-item">
+            <a href="@Url.Action("Book", "Catalogue", new { id = book.Id })" class="cover-link" title="@book.Name"></a>
+            @if (book.HasImage)
+            {
+                <img class="cover" alt="book" src="@string.Format("/images/cover/{0}.jpg?{1}", book.Id, "mode=stretch&scale=both&maxwidth=130&maxheight=187")" />
+                <div class="cover-bottom" style="background-image: url('@string.Format("/images/cover/{0}.jpg?{1}", book.Id, "mode=crop&scale=both&maxwidth=130&maxheight=1&anchor=bottomleft")');"></div>
+            }
+            else
+            {
+                <div class="cover-template">
+                    <div class="title">@book.Name</div>
+                </div>
+            }
+            <div class="description">
+                <a href="@Url.Action("Book", "Catalogue", new { id = book.Id })" class="name" title="@book.Name">@book.Name</a>
+                @{
+                    int interations = 0;
+                    foreach (Knigoskop.Site.Models.BaseItemModel author in book.Authors)
+                    {
+                        if (interations < 2)
+                        {
+                            <a href="@Url.Action("Author", "Catalogue", new { id = author.Id })" class="author" title="@author.Name">@author.Name</a>
+                            interations++;
+                        }
+                    }
+                }
+                <span data-type="@book.ItemType" data-id="@book.Id" class="rating @(User.Identity.IsAuthenticated ? "live" : "unauth")" style="padding-right: 10px;">
+                    @for (int i = 5; i >= 1; i--)
+                    {
+                        if (i <= book.Rating.Value)
+                        {
+                            <span class="star filled" title="@i"></span>
+                        }
+                        else
+                        {
+                            <span class="star empty" title="@i"></span>
+                        }
+                    }
+                </span>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    $(function () {
+        $('.description .name').dotdotdot();
+    });
+</script>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <script>
+        $(function () {
+            $('.books-list .rating.live .star').on('click', function () {
+                $this = $(this);
+                $parent = $this.parent();
+                $this.siblings('.star').removeClass('checked');
+                $this.addClass('checked');
+
+                var ratingValue = ($this.attr('title') || 0);
+                itemId = $parent.data('id');
+                itemType = $parent.data('type');
+                ratingUrl = '@Url.Action("SetItemRating", "Catalogue")';
+                $.post(ratingUrl, { itemId: itemId, itemType: itemType, ratingValue: ratingValue },
+                    function (data) {
+                        var newValue = 0 + data;
+                        $this.siblings('.star').removeClass('checked').removeClass('filled').removeClass('empty');
+                        $this.removeClass('checked').removeClass('filled').removeClass('empty');
+
+                        for (var i = 5; i >= 1; i--) {
+                            if (i <= newValue) {
+                                $parent.find('.star:eq(' + (5 - i) + ')').addClass('filled');
+                            } else {
+                                $parent.find('.star:eq(' + (5 - i) + ')').addClass('empty');
+                            }
+                        }
+                    });
+            });
+        });
+    </script>
+}

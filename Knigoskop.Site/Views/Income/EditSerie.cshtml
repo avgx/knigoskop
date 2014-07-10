@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = Text.EditSerieTitle;
+}
+<script src="~/Scripts/knockout-2.3.0.debug.js"></script>
+<script src="~/Scripts/Ajaxupload.js"></script>
+<script src="~/Scripts/knockout.extensions.js"></script>
+<h2 style="margin-top:20px;"><span>@Text.EditSerieTitle</span></h2>
+<script type="text/javascript">
+    function IncomeSerieModel() {
+
+        var self = this;
+        this.Id = ko.observable('@ViewBag.SerieId');
+        this.Name = ko.observable().extend({ required: "@Text.RequiredFieldMessage" });
+        this.Description = ko.observable();
+        InitValidation(this);
+        this._isDataLoaded = ko.observable(false);
+        this._isDataSaved = ko.observable(false);
+        InitValidation(this);
+        this.Load = function () {
+            $.getJSON("/income/LoadSerie/?serieId=" + self.Id(), function (data) {
+                self.Description(data.Description);
+                self.Name(data.Name);
+                self.Id(data.Id);
+                self._isDataLoaded(true);
+            })
+        };
+        this.Save = function () {
+            var valid = self.IsValid()
+            if (valid) {
+                var data = ko.toJSON(self)
+                $.ajax({
+                    type: 'POST',
+                    url: '/income/saveserie/?isincome=@ViewBag.IsIncome',
+                    cache: false,
+                    contentType: 'application/json; charset=utf-8',
+                    data: data,
+                    success: function () {
+                        self._isDataSaved(true);
+                    }
+                });
+
+            }
+        }
+        this.goBack = function () {
+            var returnUrl = '@Url.Action("Serie", "Catalogue", new { id = ViewBag.SerieId })';
+            if ('@Request.Params["returnUrl"]' != '')
+                returnUrl = '@Request.Params["returnUrl"]';                
+            window.location = returnUrl;
+        }
+    }
+    var viewModel = new IncomeSerieModel();
+    $(function () {
+        viewModel.Load();
+        ko.applyBindings(viewModel);
+    });
+</script>
+<!-- ko if: _isDataSaved()==false -->
+<div class="view" data-bind="visible: _isDataLoaded()" style="display: none;">
+    <div class="section-author">
+        <div class="field-content">
+            <div class="field-title">@Text.SeriesName</div>
+            <input type="text" data-bind="value: Name" />
+            <span data-bind='visible: Name.hasError, text: Name.validationMessage'></span>
+        </div>
+        <div class="field-content">
+            <div class="field-title">@Text.Description</div>
+            <textarea rows="8" data-bind="value: Description"></textarea>
+        </div>
+
+    </div>
+    <input type="button" value="@Text.Save" class="yellow-button" data-bind='click: $root.Save' />
+</div>
+@{
+    Html.RenderPartial("~/Views/Income/IncomeShared.cshtml");
+}

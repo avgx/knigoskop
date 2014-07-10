@@ -1,0 +1,221 @@
+﻿@using Knigoskop.Site.Models.Shared
+@model Knigoskop.Site.Models.DownloadInfoModel
+
+<script src='@Url.Content("~/Scripts/jquery.cookie.js")' type="text/javascript"></script>
+
+@*@if (!Model.HasContent && User.IsInRole("ADMIN"))
+{
+    <div id="download-book" class="download-links">
+        <div>
+            Upload here
+        </div>
+    </div>
+}*@
+@if (Model.HasUserDownload || (Model.HasContent && User.IsSuperUser))
+{
+    <div id="download-book" class="download-links">
+        <div>
+            <table border="0" style="width:100%">
+                <tr>
+                    <td>
+                        <div class='white-dropdown send-dropdown no-dropdown'>
+                            <a class="white-button @(User.Identity.IsAuthenticated ? "" : "unauth")" href="javascript:void(0);">@Text.Download</a>
+                            <ul>
+                                <li class="download">
+                                    <a class="item" href="javascript:void(0);" data-value="download">@Text.DownloadFile</a>
+                                </li>
+                                @if (!string.IsNullOrEmpty(Model.PrimaryEmail))
+                                {
+                                    <li class="email">
+                                        <a class="item" href="javascript:void(0);" data-email="@Model.PrimaryEmail" data-value="email">@string.Format("{0} ({1})", Text.PrimaryEmail, Model.PrimaryEmail)</a>
+                                    </li>
+                                }
+                                @foreach (var item in Model.Devices)
+                                {
+                                    <li class="device">
+                                        <a class="item" href="javascript:void(0);" data-email="@item.Email" data-value="device">@string.Format("{0} ({1})", item.Name, item.Email)</a>
+                                    </li>
+                                }
+                                <li class="edit">
+                                    <a class="item" href="/account/devices">@Text.ConfigureDevices</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td style="width:90px; white-space:nowrap;">
+                        <div class="white-dropdown format-dropdown">
+                            <a class="white-button @(User.Identity.IsAuthenticated ? "" : "unauth")" href="javascript:void(0);" style="border-left-style:none;"></a>
+                            <ul>
+                                @foreach (var item in Enum.GetValues(typeof(BookFormatEnum)).OfType<BookFormatEnum>())
+                                {
+                                    <li>
+                                        <a class="item small" href="javascript:void(0);" data-value="@item">@item.ToString()</a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="download-wait" class="center download-links" style="display:none;">
+        <div id="floatingCirclesG" class="centered">
+            <div class="f_circleG" id="frotateG_01">
+            </div>
+            <div class="f_circleG" id="frotateG_02">
+            </div>
+            <div class="f_circleG" id="frotateG_03">
+            </div>
+            <div class="f_circleG" id="frotateG_04">
+            </div>
+            <div class="f_circleG" id="frotateG_05">
+            </div>
+            <div class="f_circleG" id="frotateG_06">
+            </div>
+            <div class="f_circleG" id="frotateG_07">
+            </div>
+            <div class="f_circleG" id="frotateG_08">
+            </div>
+        </div>
+
+    </div>
+}
+<script>
+    $(function () {
+        var COOKIE_FILE_FORMAT = 'file_format';
+
+        var format = $.cookie(COOKIE_FILE_FORMAT);
+        if (typeof format == 'undefined') {
+            var f = $('.white-dropdown.format-dropdown li:eq(0) a').data('value');
+            if (f != null) {
+                format = f;
+                $.cookie(COOKIE_FILE_FORMAT, format, { expires: 365, path: '/' });
+                $('.white-dropdown.format-dropdown .white-button').html($('.white-dropdown.format-dropdown li:eq(0) a').text());
+            }
+        }
+        if ((typeof format != 'undefined') && (format != null)) {
+            $('.white-dropdown.format-dropdown .white-button').html(format);
+        }
+
+        $('.white-dropdown.format-dropdown .white-button').click(function (e) {
+            var $this = $(this);
+
+            if ($this.is('.unauth')) {
+                return;
+            }
+
+            var $ul = $(this).next('ul');
+
+            var $container = $ul.parent();
+            var clickedOutside = false;
+            var clickedInside = false;
+
+            if ($('.white-dropdown.external').length > 0) {
+                $('.white-dropdown.external').remove();
+                return;
+            }
+            $('.white-dropdown.external').remove();
+
+            $copy = $('<div class="white-dropdown external" style="position: absolute;"></div>');
+            $copy.append('<ul>' + $ul.html() + '</ul>');
+            $copy.width(91);
+            $('.content.main .right-content').append($copy);
+            $copy.offset({ top: $this.offset().top + $this.height() + 3 });
+            $copy.offset({ left: $this.offset().left - 1 });
+
+            e.stopPropagation();
+            $('body').one('click', '*', function () {
+                if ($.contains($copy[0], this) || $.contains($container[0], this)) {
+                    $this = $(this);
+                    if ($this.is('.item.small')) {
+                        $('.white-dropdown.format-dropdown .white-button').html($this.text());
+                        $.cookie(COOKIE_FILE_FORMAT, $this.data('value'), { expires: 365, path: '/' });
+                        format = $this.data('value');
+                    }
+                    clickedInside = true;
+                    $copy.remove();
+                    return;
+                }
+                if (!clickedOutside && !clickedInside) {
+                    $copy.remove();
+                }
+                clickedOutside = true;
+            });
+        });
+
+        $('.white-dropdown.send-dropdown .white-button').click(function (e) {
+            var $this = $(this);
+
+            if ($this.is('.unauth')) {
+                return;
+            }
+
+            var $ul = $(this).next('ul');
+
+            var $container = $ul.parent();
+            var clickedOutside = false;
+            var clickedInside = false;
+
+            if ($('.white-dropdown.external').length > 0) {
+                $('.white-dropdown.external').remove();
+                return;
+            }
+            $('.white-dropdown.external').remove();
+
+            $copy = $('<div class="white-dropdown external" style="position: absolute;"></div>');
+            $copy.append('<ul>' + $ul.html() + '</ul>');
+            $('.content.main .right-content').append($copy);
+            $copy.css({ 'min-width': $('#download-book').outerWidth() + 'px' })
+                .offset({ top: $this.offset().top + $this.height() + 3 });
+            if ($('body').width() <= 980) {
+                $copy.offset({ left: $this.offset().left });
+            }
+
+            e.stopPropagation();
+            $('body').one('click', '*', function () {
+                if ($.contains($copy[0], this) || $.contains($container[0], this)) {
+                    $this = $(this);
+                    if ($this.is('a.item')) {
+                        var type = $this.data('value');
+                        var email = $this.data('email');
+                        if (typeof type != 'undefined') {
+                            var url = '/deliver/' + '@Model.BookId';
+                            url += '/' + format;
+                            if (type == 'email') {
+                                url += '?compress=true&email=' + email;
+                            }
+                            if (type == 'device') {
+                                url += '?compress=false&email=' + email;
+                            }
+                            if (type == 'download') {
+                                window.location.href = url;
+                            } else {
+                                $('#download-book').hide();
+                                $('#download-wait').show();
+                                $.post(url)
+                                    .done(function () {
+                                        //alert('Delivered book!');
+                                    })
+                                    .fail(function () {
+                                        alert('Error delivering book!');
+                                    })
+                                    .always(function () {
+                                        $('#download-book').show();
+                                        $('#download-wait').hide();
+                                    });
+                            }
+                        }
+                    }
+                    clickedInside = true;
+                    $copy.remove();
+                    return;
+                }
+                if (!clickedOutside && !clickedInside) {
+                    $copy.remove();
+                }
+                clickedOutside = true;
+            });
+        });
+    });
+</script>

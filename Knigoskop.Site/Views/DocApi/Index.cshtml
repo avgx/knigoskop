@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = Text.WebApiDocumentation;
+}
+<h2>WebApiDocumentation</h2>
+@foreach (dynamic api in Model.ApiDescriptions)
+{
+    <li>
+        <h5>@api.HttpMethod @api.RelativePath</h5>
+        <blockquote>
+            <p>@api.Documentation</p>
+            @if (api.ParameterDescriptions.Count > 0)
+            {
+                <h6>Parameters</h6>
+                <ul>
+                    @foreach (dynamic parameter in api.ParameterDescriptions)
+                    {
+                        <li>@parameter.Name: @parameter.Documentation (@parameter.Source)</li>
+                    }
+                </ul>
+            }
+        </blockquote>
+    </li>
+}
+<h2>Proto</h2>
+<textarea style="height: 10000px; margin-left: 100px; Width: 500px;">
+    @ViewBag.Message
+   </textarea>

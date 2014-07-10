@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{45B7E548-7F80-4338-B3D2-878129E10140}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Knigoskop.Services.UploadBooks</RootNamespace>
+    <AssemblyName>UploadBooks</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppConfig.cs" />
+    <Compile Include="LibraryData.cs" />
+    <Compile Include="LibraryUpdater.cs" />
+    <Compile Include="ProcessBook\AuthorLoader.cs" />
+    <Compile Include="ProcessBook\BookSources.cs" />
+    <Compile Include="ProcessBook\BookUploader.cs" />
+    <Compile Include="ProcessBook\FB2BookUploader.cs" />
+    <Compile Include="ProcessBook\GenresLoader.cs" />
+    <Compile Include="ProcessBook\InpBookLoader.cs" />
+    <Compile Include="ProcessBook\InpBookRecord.cs" />
+    <Compile Include="ProcessBook\SeriesLoader.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Knigoskop.Data\Knigoskop.DataModel.csproj">
+      <Project>{543e443a-df3a-4bdd-a86f-47cceccef791}</Project>
+      <Name>Knigoskop.DataModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ApplicationLogger\ApplicationLogger.csproj">
+      <Project>{2579CA9F-252B-432B-88EB-BD8F1C59E347}</Project>
+      <Name>ApplicationLogger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AuthorsDataFromWiki\AuthorsDataFromWiki.csproj">
+      <Project>{574c52ac-8ced-454a-b3cf-94549c83fefb}</Project>
+      <Name>AuthorsDataFromWiki</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FB2Engine\FB2Engine.csproj">
+      <Project>{12184838-fe03-4e6c-b9e9-77415de5259d}</Project>
+      <Name>FB2Engine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextNormaliztion\TextNormaliztion.csproj">
+      <Project>{29017e3c-6580-4d2d-95e8-d2f4194362d2}</Project>
+      <Name>TextNormaliztion</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ZipFunctions\ZipFunctions.csproj">
+      <Project>{E532F6B9-AACA-4EE7-B12F-292826976B59}</Project>
+      <Name>ZipFunctions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

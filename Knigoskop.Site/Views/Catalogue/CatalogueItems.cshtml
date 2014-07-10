@@ -1,0 +1,61 @@
+﻿@using Knigoskop.Site.Models
+@using Knigoskop.Site.Models.Shared
+@model Knigoskop.Site.Models.CatalogueModel
+
+@if (Model.ViewType == CatalogueViewTypeEnum.Books)
+{
+    Html.RenderPartial("~/Views/Partial/BookList.cshtml", Model.Items);
+}
+
+@if (Model.ViewType == CatalogueViewTypeEnum.Authors)
+{
+    Html.RenderPartial("~/Views/Partial/AuthorList.cshtml", Model.Items);
+}
+
+@if (Model.FrontViewTotalCount > Model.LastRowCount)
+{
+    <div id="loadZone">
+        <div class="center with-loading">
+            <a id="readMore" class="more-show down" href="javascript:void(0);"><span>@Text.ShowMore</span></a>
+            <div id="floatingCirclesG">
+                <div class="f_circleG" id="frotateG_01">
+                </div>
+                <div class="f_circleG" id="frotateG_02">
+                </div>
+                <div class="f_circleG" id="frotateG_03">
+                </div>
+                <div class="f_circleG" id="frotateG_04">
+                </div>
+                <div class="f_circleG" id="frotateG_05">
+                </div>
+                <div class="f_circleG" id="frotateG_06">
+                </div>
+                <div class="f_circleG" id="frotateG_07">
+                </div>
+                <div class="f_circleG" id="frotateG_08">
+                </div>
+            </div>
+        </div>
+        <script>
+            $(function () {
+                $('#readMore').click(function () {
+                    var commentUrl = '@Url.Action("CatalogueItems", "Catalogue")';
+                    $('#readMore').addClass('hidden');
+                    $.get(commentUrl, { searchQuery: '@Request.QueryString["SearchQuery"]', lastRowIndex: '@Model.LastRowCount' },
+                        function (data) {
+                            $('#loadZone').replaceWith(data);
+
+                            $('.books-list:eq(1) > div').appendTo($('.books-list:eq(0)'));
+                            $('.books-list:eq(1)').remove();
+
+                            $('.authors-list:eq(1) > div').appendTo($('.authors-list:eq(0)'));
+                            $('.authors-list:eq(1)').remove();
+                        })
+                        .always(function () {
+                            $('#readMore').removeClass('hidden');
+                        });
+                });
+            });
+        </script>
+    </div>
+}

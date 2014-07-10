@@ -1,0 +1,111 @@
+﻿@using Knigoskop.Site.Models.Shared
+@model Knigoskop.Site.Models.UserIncomesModel
+
+@{
+    Layout = "~/Views/Shared/_NavigationLayout.cshtml";
+    string title = null;
+    switch (Model.ItemType)
+    {
+        case (ItemTypeEnum.Book):
+            title = Text.Books;
+            break;
+        case (ItemTypeEnum.Author):
+            title = Text.Authors;
+            break;
+        case (ItemTypeEnum.Serie):
+            title = Text.Series;
+            break;
+        case (ItemTypeEnum.Review):
+            title = Text.Reviews;
+            break;
+    }
+    ViewBag.Title = string.Format("{0} - {1} | {2}", Text.MyThings, title, Text.ProjectName);
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('.list-delete').click(function () {
+            $.post('@Url.Action("RemoveIncome", "Admin")' + '/?id=' + $(this).attr('id'), function (data) {
+                window.location.reload();
+            });
+        });
+    });
+</script>
+
+
+@section LeftPane
+{
+    @{ Html.RenderPartial("~/Views/Account/LeftPane.cshtml");}
+}
+
+
+<h2><span>@Text.MyThings</span></h2>
+<div class="nav-tabs tabs-4">
+    <a class="tab @(Model.ItemType == ItemTypeEnum.Book?"active":"")" href="@Url.Action("MyThings", "Account", new {itemType = ItemTypeEnum.Book.ToString().ToLower() })">
+        @Text.Books
+        <span class="count">@Model.BooksCount</span>
+    </a>
+    <a class="tab @(Model.ItemType == ItemTypeEnum.Author?"active":"")" href="@Url.Action("MyThings", "Account", new { itemType = ItemTypeEnum.Author.ToString().ToLower() })">
+        @Text.Authors
+        <span class="count">@Model.AuthorsCount</span>
+    </a>
+    <a class="tab @(Model.ItemType == ItemTypeEnum.Serie?"active":"")" href="@Url.Action("MyThings", "Account", new { itemType = ItemTypeEnum.Serie.ToString().ToLower()})">
+        @Text.Series
+        <span class="count">@Model.SeriesCount</span>
+    </a>
+    <a class="tab @(Model.ItemType == ItemTypeEnum.Review?"active":"")" href="@Url.Action("MyThings", "Account", new { itemType = ItemTypeEnum.Review.ToString().ToLower()})">
+        @Text.Reviews
+        <span class="count">@Model.ReviewsCount</span>
+    </a>
+</div>
+
+@if (Model.Items.Any())
+{
+    <table style="width:100%; text-align:left;">
+        <thead style="font-weight:bold;">
+            <tr style="border-bottom:1px solid #ddd;">
+                <th></th>
+                <th style="padding-bottom: 10px;">@Text.Name</th>
+                <th>@Text.Date</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+
+            <tr class="field-content">
+                <td>
+                    @if (item.State == IncomeStateEnum.New)
+                    {
+                        <span class="new-item">@Text.New</span>
+                    }
+                </td>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    <span>@item.Created</span>
+                </td>
+                <td>
+                    <span>
+                        <a class="list-edit" href="@Url.Action("Edit"+item.ItemType.ToString(), "Income", new
+                                                 {
+                                                     Id = item.Id,
+                                                     returnUrl = Request.RawUrl
+                                                 })" title="@Text.View"></a>
+
+
+                        <a id="@item.Id" class="list-delete" data-bind="click: $root.Remove" href="javascript:void(0);" title="@Text.Delete"></a>
+                    </span>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <br />
+    <p class="notification">@Text.NothingThere</p>
+}

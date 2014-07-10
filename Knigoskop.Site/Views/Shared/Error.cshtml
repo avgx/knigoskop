@@ -1,0 +1,9 @@
+﻿@model HandleErrorInfo
+
+@{
+    Layout = "~/Views/Shared/_ErrorLayout.cshtml";
+    ViewBag.Title = string.Format("{0} | {1}", Text.Error, Text.ProjectName); ;
+}
+
+<div class="error-description">@Text.UnknownErrorOccured</div>
+<a class="error-link" href="/">@Text.BackToMain</a>

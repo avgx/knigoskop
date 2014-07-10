@@ -1,0 +1,52 @@
+﻿@using Knigoskop.DataModel
+@model Knigoskop.Site.Models.MyBooksModel
+@{
+    Layout = "~/Views/Shared/_NavigationLayout.cshtml";
+    string title = null;
+    switch (Model.Stats.State)
+    {
+        case (UserStatStateEnum.WantsToRead):
+            title = Text.WantsToRead;
+            break;
+        case (UserStatStateEnum.IsReading):
+            title = Text.IsReading;
+            break;
+        case (UserStatStateEnum.Read):
+            title = Text.Read;
+            break;
+    }
+    ViewBag.Title = string.Format("{0} | {1}", title, Text.ProjectName);
+}
+
+@section LeftPane
+{
+    @{ Html.RenderPartial("~/Views/Account/MyBooksNavigation.cshtml", Model); }
+}
+
+
+<h2><span>@Text.MyBookmarks</span></h2>
+
+<div class="nav-tabs tabs-3">
+    <a class="tab @(Model.Stats.State == UserStatStateEnum.WantsToRead ? "active":string.Empty)" href="@Url.Action("MyBooks", "Account", new { state = UserStatStateEnum.WantsToRead.ToString().ToLower(), genreId = string.Empty })">
+        @Text.WantsToRead
+        <span>@Model.Stats.WantsToRead</span>
+    </a>
+    <a class="tab @(Model.Stats.State == UserStatStateEnum.IsReading ? "active" : string.Empty)" href="@Url.Action("MyBooks", "Account", new { state = UserStatStateEnum.IsReading.ToString().ToLower(), genreId = string.Empty })">
+        @Text.IsReading
+        <span>@Model.Stats.IsReading</span>
+    </a>
+    <a class="tab @(Model.Stats.State == UserStatStateEnum.Read ? "active" : string.Empty)" href="@Url.Action("MyBooks", "Account", new { state = UserStatStateEnum.Read.ToString().ToLower(), genreId = string.Empty })">
+        @Text.Read
+        <span>@Model.Stats.Read</span>
+    </a>
+</div>
+
+@if (Model.Books.Any())
+{
+    Html.RenderPartial("~/Views/Account/MyBooksItems.cshtml", Model);
+}
+else
+{
+    <br />
+    <p class="notification">@Text.NothingThere</p>
+}

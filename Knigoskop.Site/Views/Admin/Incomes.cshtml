@@ -1,0 +1,118 @@
+﻿@using Knigoskop.Site.Models
+@using Knigoskop.Site.Models.Shared
+@model  UserIncomesModel
+@{
+    Layout = "~/Views/Shared/_NavigationLayout.cshtml";
+    var title = string.Empty;
+    switch (Model.ItemType)
+    {
+        case ItemTypeEnum.Book:
+            title = Text.Books;
+            break;
+        case ItemTypeEnum.Author:
+            title = Text.Authors;
+            break;
+        case ItemTypeEnum.Serie:
+            title = Text.Series;
+            break;
+        case ItemTypeEnum.Review:
+            title = Text.Reviews;
+            break;
+    }
+    ViewBag.Title = string.Format("{0} - {1} | {2}", Text.Incomes, title, Text.ProjectName);
+}
+
+<script type="text/javascript">
+    $(function () {
+
+        $('.list-approve').click(function () {
+
+            $.post('@Url.Action("ProcessIncome", "Admin")' + '/?id=' + $(this).attr('id'), function (data) {
+                window.location.reload();
+            });
+        });
+        $('.list-delete').click(function () {
+
+            $.post('@Url.Action("RemoveIncome", "Admin")' + '/?id=' + $(this).attr('id'), function (data) {
+                window.location.reload();
+            });
+        });
+    });
+</script>
+
+@section LeftPane
+{
+    @{ Html.RenderPartial("~/Views/Account/LeftPane.cshtml"); }
+}
+
+
+<h2><span>@Text.Incomes</span></h2>
+
+<div class="nav-tabs tabs-4">
+    <a class="tab @(Model.ItemType == ItemTypeEnum.Book?"active":"")" href="@Url.Action("Incomes", "Admin", new {viewType = ItemTypeEnum.Book.ToString().ToLower() })">
+        @Text.Books
+        <span>@Model.BooksCount</span>
+    </a>
+    <a class="tab @(Model.ItemType == ItemTypeEnum.Author ? "active" : "")" href="@Url.Action("Incomes", "Admin", new { viewType = ItemTypeEnum.Author.ToString().ToLower() })">
+        @Text.Authors
+        <span>@Model.AuthorsCount</span>
+    </a>
+    <a class="tab @(Model.ItemType == ItemTypeEnum.Serie ? "active" : "")" href="@Url.Action("Incomes", "Admin", new { viewType = ItemTypeEnum.Serie.ToString().ToLower()})">
+        @Text.Series
+        <span>@Model.SeriesCount</span>
+    </a>
+    <a class="tab @(Model.ItemType == ItemTypeEnum.Review ? "active" : "")" href="@Url.Action("Incomes", "Admin", new { viewType = ItemTypeEnum.Review.ToString().ToLower()})">
+        @Text.Reviews
+        <span>@Model.ReviewsCount</span>
+    </a>
+</div>
+<div>
+    <table style="width:100%; text-align:left;">
+        <thead style="font-weight:bold;">
+            <tr style="border-bottom:1px solid #ddd;">
+                <th></th>
+                <th style="padding-bottom: 10px;">@Text.Name</th>
+                <th>@Text.Date</th>
+                <th>@Text.Author</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr class="field-content">
+                    <td>
+                        @if (item.State == IncomeStateEnum.New)
+                        {
+                            <span class="new-item">@Text.New</span>
+                        }
+                    </td>
+                    <td style="padding-left:8px; width:40%;">
+                        @item.Name
+                    </td>
+                    <td style="white-space:nowrap; padding-left:8px;">
+                        <span>@item.Created.ToString()</span>
+                    </td>
+                    <td style="white-space:nowrap; padding-left:8px;">
+                        <img class="small-rounded-photo" alt="authorName" src="@string.Format("/images/avatar/{0}.jpg?width=40", item.UserId)" style="vertical-align: middle; margin-right: 5px;">
+                        <a target="_blank" href="@Url.Action("UserProfile", "Account", new {id = item.UserId})">@item.UserName</a>
+                    </td>
+                    <td style="white-space:nowrap; padding-left:8px;">
+                        <span>
+                            <a class="list-edit"  href="@Url.Action("Edit"+item.ItemType.ToString(), "Income", new
+                                                 {
+                                                     Id = item.Id,
+                                                     isincome= true,
+                                                     returnUrl = Request.RawUrl
+                                                 })" title="@Text.View"></a>
+
+                            <a id="@item.Id" class="list-approve" href="javascript:void(0);" title="@Text.Approve"></a>
+                            <a id="@item.Id" class="list-delete" href="javascript:void(0);" title="@Text.Delete"></a>
+                        </span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

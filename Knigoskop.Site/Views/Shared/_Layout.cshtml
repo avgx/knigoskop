@@ -1,0 +1,86 @@
+﻿@using Knigoskop.Site.Models.Shared
+@{
+    var mainSectionClass = IsSectionDefined("FullWidthContent") ? "full-width" : "";
+}
+<!DOCTYPE html>
+<html lang="@Culture.Substring(0, 2)"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:og="http://ogp.me/ns#"
+      xmlns:fb="http://ogp.me/ns/fb#"
+      xmlns:books="http://ogp.me/ns/books#"
+      xmlns:article="http://ogp.me/ns/article#"
+      xmlns:review="http://ogp.me/ns/review#">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="revisit-after" content="7 days" />
+        <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <title>@ViewBag.Title</title>
+        @RenderSection("PageHeader", required: false)
+        @if (Request.IsFacebookAgent())
+        {
+            <meta property="og:locale" content="@Culture.Replace("-", "_")" />
+            <meta property="og:site_name" content="@Text.ProjectName" />
+            <meta property="fb:app_id" content="@ViewData["FacebookAppid"]" />
+        }
+
+        @RenderSection("FacebookOpenGraph", required: false)
+        @Styles.Render("~/content/css")
+        @Scripts.Render("~/bundles/modernizr")
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/jqueryui")
+        @Scripts.Render("~/bundles/knockout")
+        @RenderSection("scripts", required: false)
+    </head>
+    <body>
+        <div class="wrapper" id="wrapper">
+            <div class="header" id="top">
+                <a href="javascript:void(0);" class="expand-header" id="expandHeader">≡</a>
+                <a class="logo" href="/" title="@Text.MainPageTitle"></a>
+                <div class="content">
+                    <a class="logo" href="/" title="@Text.MainPageTitle"></a>
+                    <a href="@Url.Action("Index", "Catalogue", new { viewType = CatalogueViewTypeEnum.Books.ToString().ToLower(), genreId = string.Empty })"
+                       class="menu-item @(CatalogueViewTypeEnum.Books.ToString().ToLower() == (string)ViewContext.RouteData.Values["viewType"] ? "active" : "")"
+                       title="@Text.Books">@Text.Books</a>
+                    <a href="@Url.Action("Index", "Catalogue", new { viewType = CatalogueViewTypeEnum.Authors.ToString().ToLower(), genreId = string.Empty })"
+                       class="menu-item @(CatalogueViewTypeEnum.Authors.ToString().ToLower() == (string)ViewContext.RouteData.Values["viewType"] ? "active" : "")"
+                       title="@Text.Authors">@Text.Authors</a>
+                    @{ Html.RenderAction("UserPanel", "Account"); }
+                </div>
+                <script>
+                    $(function () {
+                        $('#expandHeader').click(function () {
+                            $('#top .content').toggle();
+                        });
+                    });
+                </script>
+            </div>
+            @RenderSection("topNavigation", required: false)
+            <div class="content main @mainSectionClass">
+                @RenderBody()
+                <div class="clear spacer"></div>
+                <div class="push"></div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="black">
+                <div class="content">
+                    @string.Format(Text.Copyright, DateTime.Now.Year, Text.ProjectName)
+                    <span class="links">
+                        <a href="@Url.Action("Disclaimer", "Home")">@Text.ToCopyrightHolders</a>
+                        <a href="@Url.Action("About", "Home")">@Text.AboutProject</a>
+                    </span>
+                    <div class="footer-pluso">
+                        @{ Html.RenderPartial("~/Views/Shared/_Social.cshtml"); }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="display: none;">@RenderSection("FullWidthContent", required: false)</div>
+        @if (!HttpContext.Current.IsDebuggingEnabled && !User.IsSuperUser)
+        {
+            Html.RenderPartial("~/Views/Shared/_Analytics.cshtml");
+        }
+    </body>
+</html>

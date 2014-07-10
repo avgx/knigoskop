@@ -1,0 +1,88 @@
+﻿@using Knigoskop.Site.Models
+@model Knigoskop.Site.Models.AuthorModel
+@{
+    bool firstIteration = true;
+    ViewBag.Title = string.Format("{0} | {1}", Model.Name, Text.ProjectName);
+    Layout = "~/Views/Shared/_GenresLayout.cshtml";
+    string logoUrl = Model.HasImage
+                         ? string.Format("{0}/images/author/{1}.jpg?{2}", UriHelper.RootUrl, Model.Id, "mode=crop&scale=both&maxwidth=200&maxheight=200&anchor=topcenter")
+                         : string.Format("{0}/content/img/logo-social.png?mode=pad&scale=both&maxheight=200&maxwidth=200", UriHelper.RootUrl);
+}
+
+@section PageHeader
+{
+    <link rel="image_src" href="@logoUrl" />
+    <meta name="Description" content="@Model.Description.TrimText(150)" />
+}
+
+
+@section FacebookOpenGraph
+{
+    @if (Request.IsFacebookAgent())
+    {
+        <meta property="og:type" content="books.author" />
+        <meta property="og:title" content="@Model.Name" />
+        <meta property="og:url" content="@string.Format("{0}{1}", UriHelper.RootUrl, Request.RawUrl)" />
+        <meta property="og:image" content="@logoUrl" />
+        <meta property="og:description" content="@Model.Description.TrimText(300)" />
+    }
+}
+
+<div itemscope itemtype="http://schema.org/Person">
+    <div class="author-info">
+        <div class="author-photo-container">
+            @if (Model.HasImage)
+            {
+                <img itemprop="image" alt="@Model.Name" class="author-photo" src="@string.Format("/images/author/{0}.jpg?{1}", Model.Id, "mode=crop&scale=both&maxwidth=230&maxheight=230&anchor=topcenter")" />
+            }
+            else
+            {
+                <img alt="@Model.Name" class="author-photo" src="/content/img/no_author.png" />
+            }            
+            <a href="@(User.Identity.IsAuthenticated ? Url.Action("EditAuthor","Income",new {Id = Model.Id}) : "javascript:void(0);")" class="edit-book @(!User.Identity.IsAuthenticated? "unauth" : "")">@Text.CorrectMistakes</a>
+        </div>
+
+        <div class="author-description">
+            <div class="short">
+                <h1 itemprop="name">@Model.Name</h1>
+                @if (Model.BornDate != null)
+                {
+                    <meta itemprop="birthDate" content="@Model.BornDate.Value.ToString("s")" />
+                    <div class="lifetime">@Model.BornDate.Value.Year @(Model.DeathDate != null ? " - " + Model.DeathDate.Value.Year : string.Empty) </div>
+                    if (Model.DeathDate != null)
+                    {
+                        <meta itemprop="deathDate" content="@Model.DeathDate.Value.ToString("s")" />
+                    }
+                }
+                <div class="top-item-summary">
+                    @{ Html.RenderPartial("~/Views/Partial/Rating.cshtml", Model);}
+                    <span class="nowrap">
+                        <a class="total-comments" href="#comments"><span id="topComments">@Model.Comments.Count() @StringHelper.Declension(Model.Comments.Count(), Text.CommentNominative, Text.CommentSingular, Text.CommnetPlural).ToLower()</span></a>
+                        @{Html.RenderPartial("~/Views/Partial/ViewStats.cshtml", Model.ViewStats);}
+                    </span>
+                </div>
+                <div class="author-series">
+                    @{Html.RenderPartial("~/Views/Partial/Series.cshtml", Model.Series);}
+                </div>
+                <div class="social-inline">
+                    @{ Html.RenderPartial("~/Views/Partial/ItemSocial.cshtml", Model); }
+                </div>
+            </div>
+            @{ Html.RenderPartial("~/Views/Partial/SingleDescription.cshtml", Model.Description ?? ""); }
+        </div>
+    </div>
+    @if (Model.Books != null && Model.Books.Any())
+    {
+        <h2 id="books"><span>@Text.BookOfAuthor</span></h2>
+        Html.RenderPartial("~/Views/Partial/BookList.cshtml", Model.Books);
+    }
+    <script>
+        $(function () {
+            $('.description .name').dotdotdot();
+        });
+    </script>
+
+    @{
+        Html.RenderPartial("~/Views/Partial/Comments.cshtml", Model);
+    }
+</div>

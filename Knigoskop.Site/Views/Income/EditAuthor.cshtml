@@ -1,0 +1,104 @@
+﻿@{
+    ViewBag.Title = Text.EditAuthorTitle;
+}
+<script src="~/Scripts/knockout-2.3.0.debug.js"></script>
+<script src="~/Scripts/Ajaxupload.js"></script>
+<script src="~/Scripts/knockout.extensions.js"></script>
+<h2 style="margin-top:20px;"><span>@Text.EditAuthorTitle</span></h2>
+<script type="text/javascript">
+    function IncomeAuthorModel() {
+        var self = this;
+        this.Id = ko.observable('@ViewBag.AuthorId');
+        this.ImageTempId = ko.observable();
+        this.Name = ko.observable().extend({ required: "@Text.RequiredFieldMessage" });
+        this.DeathDate = ko.observable();
+        this.BirthDate = ko.observable();
+        this.Biography = ko.observable();
+        this.HasImage = ko.observable(false);
+        this.HasTempImage = ko.observable(false);
+        this.ImageUrl = ko.computed(function () {
+            if (this.ImageTempId() != null)
+                return '/income/image/?imageId=' + this.ImageTempId() + '&time=' + Date()
+            if (this.HasImage() && this.Id() != null)
+                return '/images/author/' + this.Id() + '.jpg?mode=crop&scale=both&maxwidth=230&maxheight=230&anchor=topcenter';
+            return '/Content/img/no_author_search_results.png';
+
+        }, this);
+        this._isDataLoaded = ko.observable(false);
+        this._isDataSaved = ko.observable(false);
+        InitValidation(this);
+        this.Load = function () {
+            $.getJSON("/income/LoadAuthor/?authorId=" + self.Id(), function (data) {
+
+                self.Biography(data.Biography);
+                self.BirthDate(data.BirthDate != null ? new Date(parseInt(data.BirthDate.replace("/Date(", "").replace(")/", ""), 10)) : null);
+                self.DeathDate(data.DeathDate != null ? new Date(parseInt(data.DeathDate.replace("/Date(", "").replace(")/", ""), 10)) : null);
+                self.HasImage(data.HasImage);
+                self.ImageTempId(data.ImageTempId);
+                self.Name(data.Name);
+                self.Id(data.Id);
+                self._isDataLoaded(true);
+            })
+        };
+        this.Save = function () {
+            var valid = self.IsValid()
+            if (valid) {
+                var data = ko.toJSON(self)
+                $.ajax({
+                    type: 'POST',
+                    url: '/income/saveauthor/?isincome=@ViewBag.IsIncome',
+                    cache: false,
+                    contentType: 'application/json; charset=utf-8',
+                    data: data,
+                    success: function () {
+                        self._isDataSaved(true);
+                    }
+                });
+
+            }
+        }
+        this.goBack = function () {
+            var returnUrl = '@Url.Action("Author", "Catalogue", new { id = ViewBag.AuthorId })';
+            if ('@Request.Params["returnUrl"]' != '')
+                returnUrl = '@Request.Params["returnUrl"]';
+            window.location = returnUrl;
+        }
+    }
+    var viewModel = new IncomeAuthorModel();
+    $(function () {
+        viewModel.Load();
+        ko.applyBindings(viewModel);
+    });
+</script>
+<!-- ko if: _isDataSaved()==false -->
+<div class="view" data-bind="visible: _isDataLoaded()" style="display: none;">
+    <div class="section-author">
+        <div class="field-content">
+            <div class="field-title">@Text.AuthorName</div>
+            <input type="text" data-bind="value: Name" />
+            <span data-bind='visible: Name.hasError, text: Name.validationMessage'></span>
+        </div>
+        <div class="field-content">
+            <div class="field-title">@Text.Photo</div>
+            <img width="100" height="100" data-bind="attr: { src: ImageUrl }, imageUpload: $root, uploadUrl: '/income/UploadImage'" src="" />
+            @*     <span data-bind='visible: IncomeBook().Name.hasError, text: IncomeBook().Name.validationMessage'></span>*@
+        </div>
+        <div class="field-content">
+            <div class="field-title">@Text.BirthDate</div>
+            <input type="text" readonly="readonly" data-bind="datepicker: BirthDate" />
+            <span data-bind='visible: BirthDate.hasError, text: BirthDate.validationMessage'></span>
+        </div>
+        <div class="field-content">
+            <div class="field-title">@Text.DeathDate</div>
+            <input type="text" readonly="readonly" data-bind="datepicker: DeathDate" />
+        </div>
+        <div class="field-content">
+            <div class="field-title">@Text.Biography</div>
+            <textarea rows="15" data-bind="value:Biography"></textarea>
+        </div>
+    </div>
+    <input type="button" class="yellow-button" value="@Text.Save" data-bind='click: $root.Save' />
+</div> 
+@{
+    Html.RenderPartial("~/Views/Income/IncomeShared.cshtml");
+}

@@ -1,0 +1,173 @@
+﻿@using Knigoskop.DataModel
+@model Knigoskop.Site.Models.UserProfileModel
+@{
+    Layout = "~/Views/Shared/_NavigationLayout.cshtml";
+    ViewBag.Title = string.Format("{0} | {1}", Text.Settings, Text.ProjectName);
+}
+
+@section LeftPane
+{
+    @{ Html.RenderPartial("~/Views/Account/LeftPane.cshtml");}
+}
+<script src="@Url.Content("~/Scripts/jquery.uniform.min.js")" type="text/javascript"></script>
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/Ajaxupload.js"></script>
+
+<script>
+    $(function () {
+        $('select, input[type="radio"], input[type="checkbox"]').uniform();
+        //var validator = $("form").data('validator');
+        //validator.settings.errorPlacement = function (error, element) {
+        //    console.log(error);
+        //};
+        var uploadUrl = '@Url.Action("UploadAvatar")';
+        new AjaxUpload($('#avatar'), {
+            action: uploadUrl,
+            name: 'image',
+            autoSubmit: true,
+            onSubmit: function (file, ext) {
+                if (!(ext && /^(jpg|png|jpeg|gif)$/.test(ext))) {
+                    alert("@Text.WrongImageFormat");
+                    return false;
+                }
+
+            },
+            onComplete: function (file, response) {
+                $('#avatar').attr('src', '@Url.Action("TempAvatar")'+'?temp='+Date());
+            }
+        });
+    });
+    function SaveSuccess() {
+        window.location.reload();
+    }
+</script>
+
+<h2><span>@Text.ProfileSettings</span></h2>
+<h4 class="nobg left-text"><span style="padding: 0;">@Text.AddSocialNetworks</span></h4>
+
+<div class="login-providers">
+    @foreach (var provider in Model.AvailableProviders)
+    {
+        var label = provider.Name;
+        if (label == "Vkontakte")
+        {
+            label = @Text.Vkontakte;
+        }
+        else if (label == "Odnoklassniki")
+        {
+            label = @Text.Odnoklassniki;
+        }                    
+        @Html.ActionLink(label, "signin", "account",
+            new { ProviderName = provider.Name.ToLower() },
+            new { @class = "button " + provider.Name.ToLowerInvariant() + (Model.Identity.LinkedProviders.Any(l => l == provider.Name) ? " disabled" : string.Empty) })
+    }
+
+</div>
+
+<h4 class="nobg left-text"><span style="padding: 0;">@Text.UserInformation</span></h4>
+
+<div id="settingsForm">
+    @using (Ajax.BeginForm(new AjaxOptions {  OnSuccess = "SaveSuccess" }))
+    {
+             
+        <div>
+            <div class="field-content">
+                <div class="field-title">@Text.Avatar</div>
+                @if (Model.Identity.HasImage)
+                {
+                       <img style="width: 100px;" id="avatar" src='@string.Format("/images/avatar/{0}.jpg?width=100",Model.Identity.Id)' />
+                }
+                else
+                {
+                <img style="width: 100px;" id="avatar" src="/Content/img/no_user_photo.jpg" />
+                }
+            </div>
+            <div class="field-content">
+                <div class="field-title">@Text.FirstName</div>
+                @Html.TextBoxFor(x => x.Identity.FirstName)
+                @Html.ValidationMessageFor(x => x.Identity.FirstName)
+
+                @*<input type="text" name="Identity.FirstName" placeholder="first name" value="@Model.Identity.FirstName" />*@
+            </div>
+            <div class="field-content">
+                <div class="field-title">@Text.LastName</div>
+                    @Html.TextBoxFor(x => x.Identity.LastName)
+           @*     <input type="text" name="Identity.LastName" placeholder="last name" value="@Model.Identity.LastName" />*@
+                   @Html.ValidationMessageFor(x => x.Identity.LastName)
+            </div>
+            <div class="field-content">
+                <div class="field-title">@Text.EmailShort</div>
+                @*       <input type="text"  name="Identity.Email" placeholder="email" value="@Model.Identity.Email" />*@
+                @Html.TextBoxFor(x => x.Identity.Email)
+                @Html.ValidationMessageFor(x => x.Identity.Email)
+            </div>
+            <div class="field-content">
+                <div class="field-title">@Text.Notification</div>
+                @Html.CheckBoxFor(x => x.Identity.IsSubscriber)
+                @*   <input type="checkbox" name="Identity.IsSubscriber" value="@Convert.ToInt16(Model.Identity.IsSubscriber)" id="chkNotifications"><label for="chkNotifications"> notify me!</label>*@
+            </div>
+        </div>
+        <input type="submit" class="yellow-button" value="@Text.Save" />
+    }
+</div>
+
+
+
+
+
+
+
+
+@*
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<h4 class="nobg left-text"><span style="padding: 0;">Test playground</span></h4>
+<form class="settings">
+    <div class="field-content">
+        <div class="field-title">test</div>
+        <input type="text" placeholder="enter email" />
+    </div>
+    <div class="field-content">
+        <div class="field-title">test valid</div>
+        <input type="text" placeholder="enter email" class="valid" /><span>OK</span>
+    </div>
+    <div class="field-content">
+        <div class="field-title">test error</div>
+        <input type="text" placeholder="enter email" class="error" /><span>Error</span>
+    </div>
+    <div class="field-content">
+        <div class="field-title">test</div>
+        <select>
+            <option>option 1</option>
+            <option>option 2</option>
+            <option>option 3</option>
+            <option>option 4</option>
+            <option>option 5</option>
+            <option>option 6</option>
+        </select>
+    </div>
+    <div class="field-content">
+        <div class="field-title">test</div>
+        <input type="radio" name="radio1" value="1" id="radio1"><label for="radio1">One</label>
+        <input type="radio" name="radio1" value="2" id="radio2"><label for="radio2">Two</label>
+        <input type="radio" name="radio1" value="3" id="radio3"><label for="radio3">Three</label>
+    </div>
+</form>
+
+*@
+@*<h2><span>@title</span></h2>
+@if (Model.Books.Any())
+{
+    Html.RenderPartial("~/Views/Partial/BookList.cshtml", Model.Books);
+}
+else
+{
+    <br/>
+    <p class="notification">@Text.NothingThere</p>
+}*@

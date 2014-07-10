@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Knigoskop.Site.Models.Opds.Author">
+    <Position X="9.25" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAACBAAAAAAAAA=</HashCode>
+      <FileName>Models\Opds\Author.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Knigoskop.Site.Models.Opds.BaseFeedItem">
+    <Position X="20" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAgAAAEAAAAAAAAAAAABAAAAASRAAAAAAAAA=</HashCode>
+      <FileName>Models\Opds\BaseFeedItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Knigoskop.Site.Models.Opds.BaseItem">
+    <Position X="12.5" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAgAAAACAAAAEQABAAAAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Models\Opds\BaseItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Knigoskop.Site.Models.Opds.BaseLink">
+    <Position X="14.75" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAABAARAAAAAAAAA=</HashCode>
+      <FileName>Models\Opds\BaseLink.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Knigoskop.Site.Models.Opds.CatalogProfileLink">
+    <Position X="13.75" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAABAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Models\Opds\CatalogProfileLink.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Knigoskop.Site.Models.Opds.Category">
+    <Position X="11.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAAEAAAAAAAAEBAAAAAAAAA=</HashCode>
+      <FileName>Models\Opds\Category.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Knigoskop.Site.Models.Opds.Entry">
+    <Position X="18.75" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAGAAAAACAAAAAAACAAAAAAAAQAAEAAAAQCAAAAAAAA=</HashCode>
+      <FileName>Models\Opds\Entry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Knigoskop.Site.Models.Opds.Feed">
+    <Position X="21.25" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAIAQAAAAAAAAA=</HashCode>
+      <FileName>Models\Opds\Feed.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Knigoskop.Site.Models.Opds.ImageLink">
+    <Position X="16" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Models\Opds\ImageLink.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Knigoskop.Site.Models.Opds.DocumentTypeEnum" Collapsed="true">
+    <Position X="21.75" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Opds\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Knigoskop.Site.Models.Opds.KindEnum" Collapsed="true">
+    <Position X="21.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAEAQAA=</HashCode>
+      <FileName>Models\Opds\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Knigoskop.Site.Models.Opds.ImageLinkTypeEnum" Collapsed="true">
+    <Position X="23.5" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Opds\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

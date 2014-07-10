@@ -1,0 +1,52 @@
+﻿@using Knigoskop.Site.Models.Shared
+@model Knigoskop.Site.Models.CatalogueModel
+
+@{
+    Layout = "~/Views/Shared/_GenresLayout.cshtml";
+    string logoUrl = string.Format("{0}/content/img/logo-social.png?mode=pad&scale=both&maxheight=200&maxwidth=200", UriHelper.RootUrl);
+}
+
+@section PageHeader
+{
+    <link rel="image_src" href="@logoUrl" />
+    <meta name="description" content="@Text.ProjectDescription" />
+}
+
+@section FacebookOpenGraph
+{
+    @if (Request.IsFacebookAgent())
+    {
+        <meta property="og:url" content="@UriHelper.RootUrl" />
+    }
+}
+
+<h2 class="twolines">
+        @if (Model.ResultType == ResultTypeEnum.Search)
+        {
+            @Text.Found
+        }
+        else if (Model.ResultType == ResultTypeEnum.All)
+        {
+            @Text.Catalogue
+        }
+        else if (Model.ResultType == ResultTypeEnum.Genre)
+        {
+            @Model.SelectedGenre
+        }
+</h2>
+<div class="nav-tabs tabs-2">
+    @{
+        <a class="tab @(Model.ViewType == CatalogueViewTypeEnum.Books ? "active" :"")" href="@Url.Action("Index", "Catalogue", new { viewType = CatalogueViewTypeEnum.Books.ToString().ToLower(), genreId = ViewContext.RouteData.Values["genreId"], searchQuery = Request.QueryString["searchQuery"] })">
+            @(Model.ViewType == CatalogueViewTypeEnum.Books ? Model.FrontViewTotalCount.ToString() : Model.BackViewTotalCount.ToString())
+            <span>@StringHelper.Declension((Model.ViewType == CatalogueViewTypeEnum.Books ? Model.FrontViewTotalCount : Model.BackViewTotalCount), Text.BookNominative, Text.BookSingular, Text.BookPlural).ToLower()</span>
+        </a>
+        <a class="tab @(Model.ViewType == CatalogueViewTypeEnum.Authors ? "active" :"")" href="@Url.Action("Index", "Catalogue", new { viewType = CatalogueViewTypeEnum.Authors.ToString().ToLower(), genreId = ViewContext.RouteData.Values["genreId"], searchQuery = Request.QueryString["searchQuery"] })">
+            @(Model.ViewType == CatalogueViewTypeEnum.Authors ? Model.FrontViewTotalCount.ToString() : Model.BackViewTotalCount.ToString())
+            <span>@StringHelper.Declension((Model.ViewType == CatalogueViewTypeEnum.Authors ? Model.FrontViewTotalCount : Model.BackViewTotalCount), Text.AuthorNominative, Text.AuthorSingular, Text.AuthorPlural).ToLower()</span>
+        </a>
+        var title = !string.IsNullOrEmpty(Model.SelectedGenre) ? string.Format("{0} - {1}", (Model.ViewType == CatalogueViewTypeEnum.Books ? Text.Books : Text.Authors), Model.SelectedGenre) : (Model.ViewType == CatalogueViewTypeEnum.Books ? Text.Books : Text.Authors);
+        ViewBag.Title = string.Format("{0} | {1}", title, Text.ProjectName);
+    }
+</div>
+
+@{ Html.RenderPartial("~/Views/Catalogue/CatalogueItems.cshtml", Model); }

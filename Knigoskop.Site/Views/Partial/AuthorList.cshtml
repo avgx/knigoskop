@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Knigoskop.Site.Models.BaseItemModel>
+
+<div class="authors-list">
+    @foreach (Knigoskop.Site.Models.AuthorItemModel author in Model)
+    {
+        <div class="author-item">
+            <a href="@Url.Action("Author", "Catalogue", new { id = author.Id })" class="cover-link" title="@author.Name"></a>
+            @if (author.HasImage)
+            {
+                <img class="author-photo small" alt="@author.Name" src="@string.Format("/images/author/{0}.jpg?{1}", author.Id, "mode=crop&scale=both&maxwidth=130&maxheight=130&anchor=topcenter")" />
+            }
+            else
+            {
+                <img class="author-photo small" alt="@author.Name" src="~/Content/img/no_author_search_results.png" />
+            }
+            <div class="description">
+                <a href="@Url.Action("Author", "Catalogue", new { id = author.Id })" class="name" title="@author.Name">@author.Name</a>
+                <a href="@Url.Action("Author", "Catalogue", new { id = author.Id })#books" class="count">@author.BooksCount @StringHelper.Declension(author.BooksCount, Text.BookNominative, Text.BookSingular, Text.BookPlural).ToLower()</a>
+                <span data-type="@author.ItemType" data-id="@author.Id" class="rating @(User.Identity.IsAuthenticated ? "live" : "unauth")" style="padding-right: 10px;">
+                    @for (int i = 5; i >= 1; i--)
+                    {
+                        if (i <= author.Rating.Value)
+                        {
+                        <span class="star filled" title="@i"></span>
+                        }
+                        else
+                        {
+                        <span class="star empty" title="@i"></span>
+                        }
+                    }
+                </span>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    $(function () {
+        $('.description .name').dotdotdot();
+    });
+</script>
+
+@if (User.Identity.IsAuthenticated)
+{    
+    <script>
+        $(function () {
+            $('.authors-list .rating.live .star').on('click', function () {
+                $this = $(this);
+                $parent = $this.parent();
+                $this.siblings('.star').removeClass('checked');
+                $this.addClass('checked');
+
+                var ratingValue = ($this.attr('title') || 0);
+                ratingUrl = '@Url.Action("SetItemRating", "Catalogue")';
+                itemId = $parent.data('id');
+                itemType = $parent.data('type');
+                $.post(ratingUrl, { itemId: itemId, userId: '@User.UserId', itemType: itemType, ratingValue: ratingValue },
+                                function (data) {
+                                    var newValue = 0 + data;
+                                    $this.siblings('.star').removeClass('checked').removeClass('filled').removeClass('empty');
+                                    $this.removeClass('checked').removeClass('filled').removeClass('empty');
+
+                                    for (var i = 5; i >= 1; i--) {
+                                        if (i <= newValue) {
+                                            $parent.find('.star:eq(' + (5 - i) + ')').addClass('filled');
+                                        }
+                                        else {
+                                            $parent.find('.star:eq(' + (5 - i) + ')').addClass('empty');
+                                        }
+                                    }
+                                });
+            });
+        });
+    </script>
+}

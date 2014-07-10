@@ -1,0 +1,31 @@
+﻿@using Knigoskop.Site.Models.Shared
+<h3>@Text.Profile</h3>
+<ul>
+    <li class="@((string)ViewContext.RouteData.Values["action"] == "Settings" ? "active" : string.Empty)">
+        <a href="@Url.Action("Settings", "Account")">@Text.Settings</a>
+    </li>
+    <li class="@((string)ViewContext.RouteData.Values["action"] == "OpdsSettings" ? "active" : string.Empty)">
+        <a href="@Url.Action("OpdsSettings", "Account")">@Text.OpdsSettings</a>
+    </li>
+    <li class="@((string)ViewContext.RouteData.Values["action"] == "Devices" ? " active" : string.Empty)">
+        <a href="@Url.Action("Devices", "Account")">@Text.MyDevices</a>
+    </li>
+</ul>
+<h3>@Text.MyThings</h3>
+<ul>
+    <li class="@((string)ViewContext.RouteData.Values["action"] == "MyThings" ? " active" : string.Empty)">
+        <a href="@Url.Action("MyThings", "Account", new {itemType = ItemTypeEnum.Book.ToString().ToLower()})">@Text.Incomes</a>
+    </li>
+    @*<li class="@((string)ViewContext.RouteData.Values["action"] == "Citations" ? " active" : string.Empty)">
+            <a href="@Url.Action("Citations", "Account")">@Text.Citations</a>
+        </li>*@
+</ul>
+@if (User.IsInRole("Admin"))
+{
+    <h3>@Text.Administration</h3>
+    <ul>
+        <li class="@((string)ViewContext.RouteData.Values["action"] == "Incomes" ? "active" : string.Empty)">
+            <a href="@Url.Action("Incomes", "Admin", new { viewType = ItemTypeEnum.Book.ToString().ToLower() })">@Text.Incomes</a>
+        </li>
+    </ul>
+}

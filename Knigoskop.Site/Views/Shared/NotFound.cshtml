@@ -1,0 +1,333 @@
+﻿@{
+    Layout = "~/Views/Shared/_ErrorLayout.cshtml";
+    ViewBag.Title = string.Format("{0} | {1}", Text.PageNotFound, Text.ProjectName);
+}
+
+<style>
+    #image404 > div
+    {
+        visibility: hidden;
+    }
+
+    #image404:hover > div
+    {
+        visibility: visible;
+    }
+
+    .element-animation
+    {
+        animation: animationFrames ease-in-out 15s;
+        animation-iteration-count: 100;
+        transform-origin: 50% 50%;
+        -webkit-animation: animationFrames ease-in-out 15s;
+        -webkit-animation-iteration-count: 100;
+        -webkit-transform-origin: 50% 50%;
+        -moz-animation: animationFrames ease-in-out 15s;
+        -moz-animation-iteration-count: 100;
+        -moz-transform-origin: 50% 50%;
+        -o-animation: animationFrames ease-in-out 15s;
+        -o-animation-iteration-count: 100;
+        -o-transform-origin: 50% 50%;
+        -ms-animation: animationFrames ease-in-out 15s;
+        -ms-animation-iteration-count: 100;
+        -ms-transform-origin: 50% 50%;
+    }
+
+    @@keyframes animationFrames
+    {
+        0%
+        {
+            left: 0px;
+            top: 17px;
+            opacity: 1;
+            transform: rotate(0deg) scaleX(1) scaleY(1) skewX(0deg) skewY(0deg);
+        }
+
+        20%
+        {
+            left: -29px;
+            top: -33px;
+        }
+
+        32%
+        {
+            left: 1px;
+            top: 11px;
+        }
+
+        43%
+        {
+            left: -30px;
+            top: -32px;
+        }
+
+        59%
+        {
+            left: -45px;
+            top: 24px;
+        }
+
+        70%
+        {
+            left: 9px;
+            top: -44px;
+        }
+
+        87%
+        {
+            left: -21px;
+            top: 11px;
+        }
+
+        100%
+        {
+            left: -21px;
+            top: 11px;
+            opacity: 1;
+            transform: rotate(0deg) scaleX(1) scaleY(1) skewX(0deg) skewY(0deg);
+        }
+    }
+
+    @@-moz-keyframes animationFrames
+    {
+        0%
+        {
+            left: 0px;
+            top: 17px;
+            opacity: 1;
+            -moz-transform: rotate(0deg) scaleX(1) scaleY(1) skewX(0deg) skewY(0deg);
+        }
+
+        20%
+        {
+            left: -29px;
+            top: -33px;
+        }
+
+        32%
+        {
+            left: 1px;
+            top: 11px;
+        }
+
+        43%
+        {
+            left: -30px;
+            top: -32px;
+        }
+
+        59%
+        {
+            left: -45px;
+            top: 24px;
+        }
+
+        70%
+        {
+            left: 9px;
+            top: -44px;
+        }
+
+        87%
+        {
+            left: -21px;
+            top: 11px;
+        }
+
+        100%
+        {
+            left: -21px;
+            top: 11px;
+            opacity: 1;
+            -moz-transform: rotate(0deg) scaleX(1) scaleY(1) skewX(0deg) skewY(0deg);
+        }
+    }
+
+    @@-webkit-keyframes animationFrames
+    {
+        0%
+        {
+            left: 0px;
+            top: 17px;
+            opacity: 1;
+            -webkit-transform: rotate(0deg) scaleX(1) scaleY(1) skewX(0deg) skewY(0deg);
+        }
+
+        20%
+        {
+            left: -29px;
+            top: -33px;
+        }
+
+        32%
+        {
+            left: 1px;
+            top: 11px;
+        }
+
+        43%
+        {
+            left: -30px;
+            top: -32px;
+        }
+
+        59%
+        {
+            left: -45px;
+            top: 24px;
+        }
+
+        70%
+        {
+            left: 9px;
+            top: -44px;
+        }
+
+        87%
+        {
+            left: -21px;
+            top: 11px;
+        }
+
+        100%
+        {
+            left: -21px;
+            top: 11px;
+            opacity: 1;
+            -webkit-transform: rotate(0deg) scaleX(1) scaleY(1) skewX(0deg) skewY(0deg);
+        }
+    }
+
+    @@-o-keyframes animationFrames
+    {
+        0%;
+
+    {
+        left: 0px;
+        top: 17px;
+        opacity: 1;
+        -o-transform: rotate(0deg) scaleX(1) scaleY(1) skewX(0deg) skewY(0deg);
+    }
+
+    20%
+    {
+        left: -29px;
+        top: -33px;
+    }
+
+    32%
+    {
+        left: 1px;
+        top: 11px;
+    }
+
+    43%
+    {
+        left: -30px;
+        top: -32px;
+    }
+
+    59%
+    {
+        left: -45px;
+        top: 24px;
+    }
+
+    70%
+    {
+        left: 9px;
+        top: -44px;
+    }
+
+    87%
+    {
+        left: -21px;
+        top: 11px;
+    }
+
+    100%
+    {
+        left: -21px;
+        top: 11px;
+        opacity: 1;
+        -o-transform: rotate(0deg) scaleX(1) scaleY(1) skewX(0deg) skewY(0deg);
+    }
+
+    }
+
+    @@-ms-keyframes animationFrames
+    {
+        0%
+        {
+            left: 0px;
+            top: 17px;
+            opacity: 1;
+            -ms-transform: rotate(0deg) scaleX(1) scaleY(1) skewX(0deg) skewY(0deg);
+        }
+
+        20%
+        {
+            left: -29px;
+            top: -33px;
+        }
+
+        32%
+        {
+            left: 1px;
+            top: 11px;
+        }
+
+        43%
+        {
+            left: -30px;
+            top: -32px;
+        }
+
+        59%
+        {
+            left: -45px;
+            top: 24px;
+        }
+
+        70%
+        {
+            left: 9px;
+            top: -44px;
+        }
+
+        87%
+        {
+            left: -21px;
+            top: 11px;
+        }
+
+        100%
+        {
+            left: -21px;
+            top: 11px;
+            opacity: 1;
+            -ms-transform: rotate(0deg) scaleX(1) scaleY(1) skewX(0deg) skewY(0deg);
+        }
+    }
+</style>
+
+<div id="image404" style="text-align: center; position: relative;">
+    <img alt="404" src="~/Content/img/404.png" />
+</div>
+<div class="error-description">@Text.PageNotFound</div>
+<a class="error-link" href="/">@Text.BackToMain</a>
+<div class="error-or">@Text.Or</div>
+<div class="inline-navigation top-navigation">
+    @{ Html.RenderAction("TopNavigation", "Partial"); }
+</div>
+<script>
+    $(function () {
+        $div = $('<div >').css({ 'position': 'absolute', 'height': '272px', 'width': '300px', 'top': '0', 'left': '50%', 'margin-left': '-150px', 'font-size': '11px', 'z-index': '1', 'overflow': 'hidden' });
+        $inner = $('<div "id=limpsum">').css({ 'position': 'relative', 'height': '272px', 'width': '300px' });
+        $div.append($inner);
+        $inner.text('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus at libero feugiat, rhoncus augue vitae, fermentum turpis. Sed accumsan non felis a rutrum. Morbi at vestibulum ipsum, non elementum urna. Nulla facilisi. Sed ullamcorper sapien vel fermentum cursus. Fusce ornare massa pharetra sapien gravida venenatis nec eleifend mi. Cras sit amet tempor massa, nec tempus tellus. In ac pretium tellus. Aliquam ultrices pulvinar quam vitae cursus. Sed at lacus sed nulla fringilla feugiat. Sed placerat mattis convallis. Nunc at massa sodales, accumsan neque ac, facilisis lectus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Suspendisse potenti. Aliquam quis dui quis magna posuere scelerisque.Vestibulum laoreet justo in diam sollicitudin placerat. Mauris tristique ullamcorper bibendum. Ut faucibus neque elit, eget accumsan nunc blandit vel. Etiam vehicula, lacus in iaculis porta, enim enim convallis augue, eget vehicula metus dolor non tortor. Etiam porta justo eget magna tincidunt, non laoreet lorem vestibulum. Aenean imperdiet odio eget ultricies hendrerit. Phasellus pretium eros justo, at fringilla nulla luctus sed.Ut id pellentesque ante, ut sollicitudin dui. Cras nec ipsum vitae urna dapibus cursus bibendum non urna. Vestibulum porta mauris elit, ut dignissim magna pulvinar in. Phasellus dictum, eros vitae tristique semper, magna purus blandit est, et interdum augue odio id urna. Cras odio leo, egestas non mauris eget, suscipit laoreet ligula. Suspendisse pharetra, diam eu condimentum semper, urna sapien pellentesque dolor, id condimentum turpis ligula et augue. Duis leo dolor, interdum non accumsan sed, convallis nec libero. Proin non augue odio. Sed commodo condimentum sem, aliquam rutrum tortor feugiat et. Etiam et tempor felis, sit amet malesuada orci. Ut leo turpis, tempus sed cursus vel, auctor quis quam.');
+        $('#image404').append($div);
+        $('#image404 img').css({ 'position': 'relative', 'z-index': '10' });
+        $inner.addClass('element-animation');
+    });
+</script>

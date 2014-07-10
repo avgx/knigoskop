@@ -1,0 +1,27 @@
+﻿@model string
+
+@if (!string.IsNullOrWhiteSpace(Model))
+{
+    <script src="~/Scripts/jquery.condense.js"></script>
+    <div class="information">
+        <hr />
+        <div id="descriptionText" itemprop="description">
+            @Html.Raw(Model.ToHtml())
+        </div>
+    </div>
+
+    <script language="javascript">
+    $(document).ready(function() {
+        $("#descriptionText").condense(
+            {
+                condensedLength: 600,
+                moreSpeed: 'fast',
+                lessSpeed: 'fast',
+                delim: '.',
+                moreText: '<span>@Text.ReadMore</span>',
+                lessText: '<span>@Text.ReadLess</span>',
+                ellipsis: '<div style="text-align:center;">...</div>'
+        });
+    });
+    </script>
+}

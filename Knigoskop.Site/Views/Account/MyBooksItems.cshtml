@@ -1,0 +1,53 @@
+﻿@using Knigoskop.Site.Models
+@model MyBooksModel
+
+@{ Html.RenderPartial("~/Views/Partial/BookList.cshtml", Model.Books); }
+
+@if (Model.TotalCount > Model.LastRowCount)
+{
+    <div id="loadZone">
+        <div class="center with-loading">
+            <a id="readMore" class="more-show down" href="javascript:void(0);"><span>@Text.ShowMore</span></a>
+            <div id="floatingCirclesG">
+                <div class="f_circleG" id="frotateG_01">
+                </div>
+                <div class="f_circleG" id="frotateG_02">
+                </div>
+                <div class="f_circleG" id="frotateG_03">
+                </div>
+                <div class="f_circleG" id="frotateG_04">
+                </div>
+                <div class="f_circleG" id="frotateG_05">
+                </div>
+                <div class="f_circleG" id="frotateG_06">
+                </div>
+                <div class="f_circleG" id="frotateG_07">
+                </div>
+                <div class="f_circleG" id="frotateG_08">
+                </div>
+            </div>
+        </div>
+        <script>
+            $(function () {
+                $('#readMore').click(function () {
+                    var commentUrl = '@Url.Action("MyBooksItems", "Account")';
+                    $('#readMore').addClass('hidden');
+                    $.get(commentUrl, {
+                        state: '@(Model.Stats.State)',
+                        lastRowIndex: '@(Model.LastRowCount)',
+                        genreId: '@(Model.Genres.Any(g => g.IsSelected && g.ParentId != null) ?  Model.Genres.Where(g => g.IsSelected && g.ParentId != null).Select(g => g.Id).First().ToString(): "null")'
+                    },
+                        function (data) {
+                            $('#loadZone').replaceWith(data);
+
+                            $('.books-list:eq(1) > div').appendTo($('.books-list:eq(0)'));
+                            $('.books-list:eq(1)').remove();
+                        })
+                        .always(function () {
+                            $('#readMore').removeClass('hidden');
+                        });
+                });
+            });
+        </script>
+    </div>
+}

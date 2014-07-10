@@ -1,0 +1,174 @@
+﻿@using System.Globalization
+@using Knigoskop.Site.Models
+@model Knigoskop.Site.Models.ReviewModel
+@{
+    ViewBag.Title = string.Format("{0} © {1} | {2}", Model.Name, Model.CreatedBy.Name, Text.ProjectName);
+    Layout = "~/Views/Shared/_GenresLayout.cshtml";
+    bool firstIteration = true;
+    string logoUrl = string.Format("{0}/images/avatar/{1}.jpg?mode=stretch&scale=both&maxwidth=200&maxheight=200", UriHelper.RootUrl, Model.CreatedBy.Id);
+}
+
+@section PageHeader
+{
+    <link rel="image_src" href="@logoUrl" />
+    <meta name="Description" content='@string.Format("{1} «{2}»\r\n © {0}", Model.CreatedBy.Name, Text.ReviewOnBook, Model.Book.Name)' />
+}
+
+@section FacebookOpenGraph
+{
+    @if (Request.IsFacebookAgent())
+    {
+        <meta property="og:type" content="review" /> 
+        <meta property="og:url" content='@string.Format("{0}{1}", UriHelper.RootUrl, Request.RawUrl)' />
+        <meta property="review:target" content='@(UriHelper.RootUrl + Url.Action("Book", "Catalogue", new { id = Model.Book.Id }))' />
+        <meta property="og:title" content="@Model.Name" />
+        <meta property="og:image" content="@logoUrl" />
+        <meta property="og:description" content='@Model.Description.TrimText(300)' />
+    }
+
+}
+<div itemscope itemtype="http://schema.org/Review">
+    <div class="author-info book-info review-information">
+        <div class="book-photo-container">
+            @if (!Model.Book.HasImage)
+            {
+                <div class="book-photo-template">
+                    <div class="author">
+                        @foreach (BaseItemModel author in Model.Book.Authors)
+                        {
+                            if (firstIteration)
+                            {
+                                @author.Name
+                                firstIteration = false;
+                            }
+                            else
+                            {
+                                @:/ author.Name
+                            }
+                        }
+                    </div>
+                    <div class="title">@Model.Book.Name</div>
+                </div>
+            }
+            else
+            {
+                <img style="height: 331px;" title="@Model.Name" src='@string.Format("/images/cover/{0}.jpg?{1}", Model.Book.Id, "mode=stretch&scale=both&maxwidth=230&maxheight=331")' />
+                <div style="background-image: url('@string.Format("/images/cover/{0}.jpg?{1}", Model.Book.Id, "mode=crop&scale=both&maxwidth=230&maxheight=1&anchor=bottomleft")'); height: 9px; margin: 0; padding: 0;"></div>
+            }
+        </div>
+        <div class="book-description">
+            <h1><a itemprop="http://schema.org/itemReviewed" href="@Url.Action("Book", "Catalogue", new { id = Model.Book.Id })" class="book-title">@Model.Book.Name</a></h1>
+            <div class="author-information">
+                @{
+                    firstIteration = true;
+                    foreach (BaseItemModel author in Model.Book.Authors)
+                    {
+
+                        if (firstIteration)
+                        {
+                            <a href="@Url.Action("Author", "Catalogue", new {id = author.Id})">@author.Name</a>
+                            firstIteration = false;
+                        }
+                        else
+                        {
+                            @:/ <a href="@Url.Action("Author", "Catalogue", new {id = author.Id})">@author.Name</a>
+                        }
+                    }
+                    if (Model.Book.Published != null)
+                    {
+                        <i>@Model.Book.Published.Value.Year @Text.Year.ToLower()</i>
+                        <br />
+                    }
+                }
+            </div>
+            <hr />
+            <div class="review-info">
+                <img itemprop="image" class="photo" alt="authorName" src="/images/avatar/@(Model.CreatedBy.Id).jpg?width=80" />
+                @{var score = "positive";
+                if (Model.ReviewRating < 3)
+                {
+                    score = "negative";
+                }
+                else if (Model.ReviewRating < 5)
+                {
+                    score = "neutral";
+                }
+                }
+                <div class="review-rating-round @score">@Model.ReviewRating</div>
+                <div class="comment review">
+                    <div class="top">
+                        <meta itemprop="datePublished" content="@Model.Created.ToString("o")">
+                        <a rel="author" itemprop="author" class="name" href="@Url.Action("UserProfile", "Account", new { id = Model.CreatedBy.Id })">@Model.CreatedBy.Name</a> <span class="date">@Model.Created.ToString("F")</span>
+                    </div>
+                    @{score = "positive";
+                    if (Model.ReviewRating < 3)
+                    {
+                        score = "negative";
+                    }
+                    else if (Model.ReviewRating < 5)
+                    {
+                        score = "neutral";
+                    }
+                    }
+                    <div itemprop="name" class="rating-summary @score">
+                        @Model.Name
+                    </div>
+                </div>
+            </div>
+
+            <div class="top-item-summary">
+                @{ Html.RenderPartial("~/Views/Partial/Rating.cshtml", Model);}
+                @if (Model.Rating.Count > 0)
+                {
+                    <div style="display: none;" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+                        <meta itemprop="worstRating" content="1" />
+                        <meta itemprop="bestRating" content="5" />
+                        <meta itemprop="ratingValue" content="@Model.Rating.Value">
+                        <meta itemprop="ratingCount" content="@Model.Rating.Count">
+                    </div>
+                }
+                @if (Model.ReviewRating > 0)
+                {
+                    <div style="display: none;" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+                        <meta itemprop="worstRating" content="1" />
+                        <meta itemprop="bestRating" content="5" />
+                        <meta itemprop="ratingValue" content="@Model.ReviewRating">
+                    </div>
+                }
+                <span class="nowrap">
+                    <a class="total-comments" href="#comments"><span id="topComments" itemprop="interactionCount">@Model.Comments.Count() @StringHelper.Declension(Model.Comments.Count(), Text.CommentNominative, Text.CommentSingular, Text.CommnetPlural).ToLower()</span></a>
+                    @{Html.RenderPartial("~/Views/Partial/ViewStats.cshtml", Model.ViewStats);}
+                </span>
+                <div class="social-inline">
+                    @{ Html.RenderPartial("~/Views/Partial/ItemSocial.cshtml", Model); }
+                </div>
+            </div>
+
+            <div itemprop="reviewBody" class="information">                
+                @Html.Raw(Model.Description.ToHtml())
+            </div>
+        </div>
+    </div>
+    @{
+        Html.RenderPartial("~/Views/Partial/Comments.cshtml", Model);
+    }
+</div>
+<script>
+    $(function () {
+        $('.view-stats').mouseenter(
+            function () {
+                var $this = $(this);
+                $div = $('<div class="popout">');
+                if ($this.is('.qr')) {
+                    $div.addClass('qr');
+                }
+                $div.html($this.html());
+                $('body').append($div);
+                $div.offset({ top: $this.offset().top - $div.height(), left: $this.offset().left - $div.width() / 2 + 10 });
+            })
+            .mouseleave(
+            function () {
+                $('body > .popout').remove();
+            });
+    });
+</script>

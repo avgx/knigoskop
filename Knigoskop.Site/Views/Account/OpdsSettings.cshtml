@@ -1,0 +1,207 @@
+﻿@{
+    Layout = "~/Views/Shared/_NavigationLayout.cshtml";
+    ViewBag.Title = string.Format("{0} | {1}", Text.OpdsSettings, Text.ProjectName);
+}
+
+@section LeftPane
+{
+    @{ Html.RenderPartial("~/Views/Account/LeftPane.cshtml");}
+}
+
+
+<script src="~/Scripts/knockout-2.3.0.debug.js"></script>
+<script src="~/Scripts/Ajaxupload.js"></script>
+<script src="~/Scripts/knockout.extensions.js"></script>
+<h2><span>@Text.OpdsSettings</span></h2>
+<p>@Text.OpdsInfo</p>
+<p>
+    <a href="http://ru.wikipedia.org/wiki/OPDS" target="_balnk">@Text.OpdsInfoRef</a>
+</p>
+<script type="text/javascript">
+
+    function OdbcItemModel() {
+        var self = this;
+        this.Id = ko.observable('');
+        this.Name = ko.observable().extend({ required: '@Text.RequiredFieldMessage' });
+        this.Url = ko.observable().extend({ required: '@Text.RequiredFieldMessage' }).extend({ url: '@Text.InvalidUrlMessage' });
+        this.IsEdititing = ko.observable(false);
+        this.CanEdit = ko.observable(false);
+        InitValidation(this);
+
+    }
+    function OdbcSettingModel() {
+
+        var self = this;
+        this._isDataLoaded = ko.observable(false);
+        this.OdbcItems = ko.observableArray();
+        this._tempOdbcItem = null;
+        this.HasEditableItem = ko.observable(false);
+        this.AddItem = function () {
+
+            if (!self.HasEditableItem()) {
+                self.HasEditableItem(true)
+                var item = new OdbcItemModel();
+                item.Id(this.Id);
+                item.Name(this.Name);
+                item.Url(this.Uri);
+                item.CanEdit(true);
+                item.IsEdititing(true);
+                self.OdbcItems.push(item);
+            }
+            //self._tempOdbcItem(new OdbcItemModel());
+            //self._tempOdbcItemVisible(true);
+        };
+        this.Load = function () {
+            $.getJSON("/account/LoadOpds", function (data) {
+                $(data).each(function () {
+                    var item = new OdbcItemModel();
+                    item.Id(this.Id);
+                    item.Name(this.Name);
+                    item.Url(this.Uri);
+                    item.CanEdit(this.IsPersonalized);
+                    self.OdbcItems.push(item);
+                });
+                self._isDataLoaded(true)
+            })
+        };
+
+        this.Edit = function (item) {
+            if (!self.HasEditableItem()) {
+                self._tempOdbcItem = { Name: item.Name(), Url: item.Url() };
+                self.HasEditableItem(true)
+                item.IsEdititing(true);
+            }
+        };
+        this.Remove = function (item) {
+            var data = ko.toJSON(item);
+            $.ajax({
+                type: 'POST',
+                url: '/account/RemoveOpdsSource',
+                cache: false,
+                contentType: 'application/json; charset=utf-8',
+                data: data,
+                success: function (resp) {
+
+                    self.OdbcItems.remove(item);
+
+                }
+            });
+        };
+        this.Save = function (item) {
+            var valid = item.IsValid()
+            if (valid) {
+                var data = ko.toJSON(item)
+                $.ajax({
+                    type: 'POST',
+                    url: '/account/SaveOpdsSource',
+                    cache: false,
+                    contentType: 'application/json; charset=utf-8',
+                    data: data,
+                    success: function (resp) {
+                        if (resp.success) {
+                            item.Id(resp.data);
+                            item.IsEdititing(false);
+                            self.HasEditableItem(false)
+                        }
+                        else {
+                            item.Url.hasError(true);
+                            item.Url.validationMessage(resp.data);
+                        }
+                    }
+                });
+            }
+        }
+        this.Cancel = function (item) {
+            if (self._tempOdbcItem == null) {
+                self.OdbcItems.remove(item);
+            }
+            else {
+                item.Name(self._tempOdbcItem.Name);
+                item.Url(self._tempOdbcItem.Url);
+                self._tempOdbcItem = null;
+                item.IsEdititing(false);
+            }
+            self.HasEditableItem(false)
+        }
+    }
+    var viewModel = new OdbcSettingModel();
+    $(function () {
+        viewModel.Load();
+        ko.applyBindings(viewModel);
+    });
+</script>
+<div class="view fields-50x50" data-bind="visible: _isDataLoaded()" style="display: none;">
+    <h2>&nbsp;</h2>
+    <div class="field-content fields-header">
+        <span class="field-title">@Text.OpdsSourceName</span>
+        <span>@Text.OpdsSourceUrl</span>
+    </div>
+
+    <div class="odbcitems" data-bind="foreach: OdbcItems">
+        <div class="field-content" data-bind="ifnot:IsEdititing">
+            <span class="field-title" data-bind="text: Name"></span>
+            <span data-bind="text: Url"></span>
+            <span data-bind="visible:CanEdit">
+                <a href="javascript:void(0);" data-bind='click: $root.Edit' class="list-edit" title="@Text.Edit"></a>
+                <a href="javascript:void(0);" data-bind='click: $root.Remove' class="list-delete" title="@Text.Remove"></a>
+            </span>
+        </div>
+        <div data-bind="if:IsEdititing">
+            <div class="field-content equal">
+                <span class="field-title">
+                    <input type="text" placeholder="@Text.OpdsSourceName" data-bind="value: Name, css: { error: Name.hasError, valid: Name.hasError() === false }" />
+                    <!-- ko if: Name.hasError() === false -->
+                    <span></span>
+                    <!-- /ko -->
+                    <!-- ko if: Name.hasError -->
+                    <span data-bind='text: Name.validationMessage'></span>
+                    <!-- /ko -->
+                </span>
+                <span class="field-title">
+                    <input type="text" placeholder="@Text.OpdsSourceUrl" data-bind="value:Url, css: { error: Url.hasError, valid: Url.hasError() === false }" />
+                    <!-- ko if: Url.hasError() === false -->
+                    <span></span>
+                    <!-- /ko -->
+                    <!-- ko if: Url.hasError -->
+                    <span data-bind='visible: Url.hasError, text: Url.validationMessage'></span>
+                    <!-- /ko -->
+                </span>
+            </div>
+            <div class="field-content full-width">
+                <input type="button" data-bind='click: $root.Save' class="yellow-button" value="@Text.Save" />
+                <input type="button" data-bind='click: $root.Cancel' class="grey-button" value="@Text.Cancel" />
+            </div>
+
+
+            @*<div class="field-content">
+                    <span class="field-title">@Text.OpdsSourceName:</span><input type="text" placeholder="@Text.OpdsSourceName" data-bind="value: Name, css: { error: Name.hasError, valid: Name.hasError() === false }" />
+                    <!-- ko if: Name.hasError() === false -->
+                    <span></span>
+                    <!-- /ko -->
+                    <!-- ko if: Name.hasError -->
+                    <span data-bind='text: Name.validationMessage'></span>
+                    <!-- /ko -->
+                </div>
+                <div class="field-content">
+                    <div>
+                        <span class="field-title">@Text.OpdsSourceUrl:</span><input type="text" placeholder="@Text.OpdsSourceUrl" data-bind="value:Url, css: { error: Url.hasError, valid: Url.hasError() === false }" />
+                        <!-- ko if: Url.hasError() === false -->
+                        <span></span>
+                        <!-- /ko -->
+                        <!-- ko if: Url.hasError -->
+                        <span data-bind='visible: Url.hasError, text: Url.validationMessage'></span>
+                        <!-- /ko -->
+                    </div>
+                    <div style="margin-top:10px;">
+                        <input type="button" data-bind='click: $root.Save' class="yellow-button" value="@Text.Save" />
+                        <input type="button" data-bind='click: $root.Cancel' class="yellow-button" value="@Text.Cancel" />
+                    </div>
+                </div>*@
+        </div>
+    </div>
+    <div data-bind="ifnot:HasEditableItem">
+        <input type="button" data-bind='click: $root.AddItem' class="yellow-button" value="@Text.Add" />
+    </div>
+
+
+</div> 

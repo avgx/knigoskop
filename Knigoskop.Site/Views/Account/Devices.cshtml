@@ -1,0 +1,178 @@
+﻿@using Knigoskop.Site.Controllers
+@{
+    Layout = "~/Views/Shared/_NavigationLayout.cshtml";
+    ViewBag.Title = string.Format("{0} | {1}", Text.MyDevices, Text.ProjectName);
+}
+
+@section LeftPane
+{
+    @{ Html.RenderPartial("~/Views/Account/LeftPane.cshtml");}    
+}
+<h2><span>@Text.MyDevices</span></h2>
+@Html.Raw(string.Format(Text.DevicesInfo, MailController.MailSettings.NoReplyEmail))
+<script type="text/javascript">
+
+    function DeviceItemModel() {
+        var self = this;
+        this.Id = ko.observable('');
+        this.Name = ko.observable().extend({ required: '@Text.RequiredFieldMessage' });
+        this.Email = ko.observable().extend({ required: '@Text.RequiredFieldMessage' }).extend({ email: '@Text.InvalidEmailMessage' });
+        this.IsEdititing = ko.observable(false);
+        InitValidation(this);
+
+    }
+    function DevicesViewModel() {
+
+        var self = this;
+        this._isDataLoaded = ko.observable(false);
+        this.Items = ko.observableArray();
+        this._tempItem = null;
+        this.HasEditableItem = ko.observable(false);
+        this.AddItem = function () {
+
+            if (!self.HasEditableItem()) {
+                self.HasEditableItem(true)
+                var item = new DeviceItemModel();
+                item.Id(this.Id);
+                item.Name(this.Name);
+                item.Email(this.Uri);
+                item.IsEdititing(true);
+                self.Items.push(item);
+            }
+            //self._tempOdbcItem(new OdbcItemModel());
+            //self._tempOdbcItemVisible(true);
+        };
+        this.Load = function () {
+            $.getJSON("/account/LoaDevices", function (data) {
+                $(data).each(function () {
+                    var item = new DeviceItemModel();
+                    item.Id(this.Id);
+                    item.Name(this.Name);
+                    item.Email(this.Email);
+                    self.Items.push(item);
+                });
+                self._isDataLoaded(true)
+            })
+        };
+
+        this.Edit = function (item) {
+            if (!self.HasEditableItem()) {
+                self._tempItem = { Name: item.Name(), Email: item.Email() };
+                self.HasEditableItem(true)
+                item.IsEdititing(true);
+            }
+        };
+        this.Remove = function (item) {
+            $.ajax({
+                type: 'POST',
+                url: '/account/DeleteDevice/?id=' + item.Id(),
+                cache: false,
+                contentType: 'application/json; charset=utf-8',
+                success: function (resp) {
+
+                    self.Items.remove(item);
+
+                }
+            });
+        };
+        this.Save = function (item) {
+            var valid = item.IsValid()
+            if (valid) {
+                if (item.Id() == null) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/account/AddDevice/?name='+item.Name()+'&email='+item.Email(),
+                        cache: false,
+                        contentType: 'application/json; charset=utf-8',                     
+                        success: function (resp) {
+                            item.Id(resp);
+                            item.IsEdititing(false);
+                            self.HasEditableItem(false)
+                        }
+                    });
+                }
+                else {
+                    var data = ko.toJSON(item)
+                    $.ajax({
+                        type: 'POST',
+                        url: '/account/UpdateDevice',
+                        cache: false,
+                        contentType: 'application/json; charset=utf-8',
+                        data: data,
+                        success: function (resp) {
+                            item.IsEdititing(false);
+                            self.HasEditableItem(false)
+
+                        }
+                    });
+                }
+            }
+        }
+        this.Cancel = function (item) {
+            if (self._tempItem == null) {
+                self.Items.remove(item);
+            }
+            else {
+                item.Name(self._tempOdbcItem.Name);
+                item.Email(self._tempOdbcItem.Email);
+                self._tempItem = null;
+                item.IsEdititing(false);
+            }
+            self.HasEditableItem(false)
+        }
+    }
+    var viewModel = new DevicesViewModel();
+    $(function () {
+        viewModel.Load();
+        ko.applyBindings(viewModel);
+    });
+</script>
+<div class="view fields-50x50" data-bind="visible: _isDataLoaded()" style="display: none;">
+    <h2>&nbsp;</h2>
+    <div class="field-content fields-header">
+        <span class="field-title">@Text.Name</span>
+        <span>@Text.EmailShort</span>
+    </div>
+
+    <div class="odbcitems" data-bind="foreach: Items">
+        <div class="field-content" data-bind="ifnot:IsEdititing">
+            <span class="field-title" data-bind="text: Name"></span>
+            <span data-bind="text: Email"></span>
+            <span >
+                <a href="javascript:void(0);" data-bind='click: $root.Edit' class="list-edit" title="@Text.Edit"></a>
+                <a href="javascript:void(0);" data-bind='click: $root.Remove' class="list-delete" title="@Text.Remove"></a>
+            </span>
+        </div>
+        <div data-bind="if:IsEdititing">
+            <div class="field-content equal">
+                <span class="field-title">
+                    <input type="text" placeholder="@Text.Name" data-bind="value: Name, css: { error: Name.hasError, valid: Name.hasError() === false }" />
+                    <!-- ko if: Name.hasError() === false -->
+                    <span></span>
+                    <!-- /ko -->
+                    <!-- ko if: Name.hasError -->
+                    <span data-bind='text: Name.validationMessage'></span>
+                    <!-- /ko -->
+                </span>
+                <span class="field-title">
+                    <input type="text" placeholder="@Text.EmailShort" data-bind="value:Email, css: { error: Email.hasError, valid: Email.hasError() === false }" />
+                    <!-- ko if: Email.hasError() === false -->
+                    <span></span>
+                    <!-- /ko -->
+                    <!-- ko if: Email.hasError -->
+                    <span data-bind='visible: Email.hasError, text: Email.validationMessage'></span>
+                    <!-- /ko -->
+                </span>
+            </div>
+            <div class="field-content full-width">
+                <input type="button" data-bind='click: $root.Save' class="yellow-button" value="@Text.Save" />
+                <input type="button" data-bind='click: $root.Cancel' class="grey-button" value="@Text.Cancel" />
+            </div>
+        </div>
+    </div>
+    <div data-bind="ifnot:HasEditableItem">
+        <input type="button" data-bind='click: $root.AddItem' class="yellow-button" value="@Text.Add" />
+    </div>
+
+
+</div>

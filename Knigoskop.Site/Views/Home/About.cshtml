@@ -1,0 +1,35 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = string.Format("{0} | {1}", Text.AboutProject, Text.ProjectName);
+}
+@model Knigoskop.Site.Code.Configuration.MailSettings
+
+@section FacebookOpenGraph
+{
+    @if (Request.IsFacebookAgent())
+    {
+        <meta property="og:url" content="@UriHelper.RootUrl" />
+    }
+}
+
+<div class="generic-content">
+    <h2 class="nobg">@Text.AboutProject</h2>
+    @Html.Raw(string.Format(Text.AboutProjectText, Text.ProjectName, Model.InfoEmail))
+    <div style="padding-top: 20px; float: right;">
+        <a href="http://www.microsoft.com/bizspark/" target="_blank" title="Microsoft BizSpark">
+            <img alt="BizSpark Startup" src="~/Content/img/bizspark-startup.jpg">
+        </a>
+    </div>
+    <div class="clear">
+        <p>
+            <strong>Legal</strong>
+        </p>
+        <p>
+            Certain icons are licensed from <a href="http://thenounproject.com/">thenounproject.com</a>
+            under Creative Commons Attribution license:<br />
+            - Cloud Download by Ugur Akdemir from The Noun Project<br />
+            - Letter by Samuel Q. Green from The Noun Project<br />
+            - Handheld Device by P.J. Onori from The Noun Project<br />
+        </p>
+    </div>
+</div>

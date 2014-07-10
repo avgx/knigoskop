@@ -1,0 +1,21 @@
+﻿@using Knigoskop.Site.Models;
+@model IEnumerable<BaseItemModel>
+@if (@Model != null && @Model.Any())
+{
+    <span>
+        @(Model.Count() == 1 ? Text.Serie : Text.Series):
+    </span>
+    var firstIteration = true;
+    foreach (BaseItemModel serie in Model)
+    {
+        if (firstIteration)
+        {
+            firstIteration = false;
+        }
+        else
+        {
+    @:/ 
+                    }
+    <a href="@Url.Action("Serie", "Catalogue", new { id = serie.Id })">«@serie.Name»</a>
+    }
+}

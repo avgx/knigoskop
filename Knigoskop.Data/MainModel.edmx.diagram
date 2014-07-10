@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d9367d7129404b49b4825d297a36d5d3" Name="MainDiagram" ZoomLevel="83">
+        <EntityTypeShape EntityType="Knigoskop.DataModel.Author" Width="1.5" PointX="7.25" PointY="23" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.BookContent" Width="1.5" PointX="8.8901290953579029" PointY="26.27808409662828" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.BookInSerie" Width="1.5" PointX="6.9049116386589189" PointY="2.5011531126225148" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.BookMedia" Width="1.5" PointX="9.0018231687144485" PointY="18.713351705443742" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.BookRelation" Width="1.5" PointX="10.859128457894142" PointY="23.075052406208147" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.Book" Width="1.5" PointX="2.4960440464765039" PointY="5.3570237035662975" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.Comment" Width="1.5" PointX="5.875" PointY="31.375" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.ExternalResource" Width="1.5" PointX="2.8663448835100724" PointY="22.181915129619611" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.ExternalUri" Width="1.5" PointX="3.0975065078109068" PointY="30.171447067601349" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.Genre" Width="1.5" PointX="5.8409404483814447" PointY="16.583107643100949" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.Rating" Width="1.5" PointX="6.7659171087508625" PointY="14.918548918756912" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.Review" Width="1.5" PointX="1.3321783902739075" PointY="27.459485007198289" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.Serie" Width="1.5" PointX="1.25" PointY="20.375" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.TranslatorsInBook" Width="1.5" PointX="1.801036997605598" PointY="26.97588319842512" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.UserAuthProfile" Width="1.5" PointX="7.2616731483776462" PointY="27.9471397679053" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.UserRole" Width="1.5" PointX="2.6743961883123948" PointY="23.715272631363604" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.User" Width="1.5" PointX="0.97006716438106588" PointY="13.827174237848807" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.UserStat" Width="1.5" PointX="2.5063154597330444" PointY="12.863128787308526" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Authors_Users" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Comments_Authors" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Ratings_Authors" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_TranslatorsInBooks_Authors" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_BookContent_Books" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_BookInSeries_Books" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_BookInSeries_Series" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_BookMedia_Books" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_BookRelations_Books" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_BookRelations_BooksRef" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_BookRelations_Users" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Comments_Books" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_ExternalUris_Books" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Ratings_Books" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Reviews_Books" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_TranslatorsInBooks_Books" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_UserStats_Books" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Comments_Reviews" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Comments_Series" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Comments_Users" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_ExternalUris_ExternalResources" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Genres_Genres" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Ratings_Reviews" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Ratings_Series" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Ratings_Users" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Reviews_Users" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_UserAuthProfiles_User" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_UserStats_Users" />
+        <AssociationConnector Association="Knigoskop.DataModel.AuthorInBooks" />
+        <AssociationConnector Association="Knigoskop.DataModel.BookInGenres" />
+        <AssociationConnector Association="Knigoskop.DataModel.UserInRoles" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Comments_Comments" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.ViewStat" Width="1.5" PointX="8.04671251589745" PointY="12.44646546824205" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_ViewStats_Authors" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_ViewStats_Books" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_ViewStats_Reviews" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_ViewStats_Series" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_ViewStats_Users" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.Subscription" Width="1.5" PointX="11.303775429401442" PointY="12.132229363607349" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Subscriptions_Authors" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Subscriptions_Books" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Subscriptions_Reviews" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Subscriptions_Series" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Subscriptions_Users" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.Income" Width="1.5" PointX="4.5" PointY="23.375" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Incomes_Authors" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Incomes_Books" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Incomes_Series" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Incomes_Users" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Books_Users" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.Complain" Width="1.5" PointX="0.11569431988321911" PointY="19.105623403147618" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Complains_Comments" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Complains_Users" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.OpdsLink" Width="1.5" PointX="5.7127813611704772" PointY="27.91159775662776" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_OpsLinks_Users" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Incomes_Users1" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.Device" Width="1.5" PointX="3.25" PointY="16" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.Flag" Width="1.5" PointX="11.5" PointY="16.375" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Flags_Authors" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Flags_Books" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Devices_Users" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Flags_Series" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.Citation" Width="1.5" PointX="4.75" PointY="10.875" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Citations_Books" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Citations_Users" />
+        <EntityTypeShape EntityType="Knigoskop.DataModel.Download" Width="1.5" PointX="8.125" PointY="8.875" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Downloads_Books" />
+        <AssociationConnector Association="Knigoskop.DataModel.FK_Downloads_Users" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

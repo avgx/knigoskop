@@ -1,0 +1,47 @@
+﻿@using Knigoskop.Site.Models
+@model IEnumerable<GenreModel>
+<h3>@Text.Genres</h3>
+
+<ul id="genres">
+    @{
+        foreach (GenreModel item in Model)
+        {
+            <li class="@(item.IsSelected ? "with-children" : "")">
+                <a href="javascript:void(0);">@item.Name</a>
+                @if (item.Children != null)
+                {
+                    <ul>
+                        @foreach (GenreModel child in item.Children)
+                        {
+                            <li class="@(child.IsSelected ? "active" : "")">
+                                <a href="@Url.Action("Index", "Catalogue", new { genreId = child.Id })">@child.Name</a>
+                            </li>
+                        }
+                    </ul>
+                }
+            </li>
+        }
+    }
+</ul>
+<script>
+    $(function () {
+        $('#genres > li:not(.with-children) > ul').hide();
+        $('#genres > li > a').click(function () {
+            $this = $(this).parent();
+            $this.removeClass('with-children').removeClass('active');
+            $this.siblings('li').removeClass('with-children').find('ul').hide();
+            $this.siblings('li:has(.active)').addClass('active');
+            $this.find('ul').slideToggle(400, function () {
+                $this = $(this);
+                if ($this.is(':visible')) {
+                    $this.parent().addClass('with-children');
+                }
+                else {
+                    if ($this.find('.active').length > 0) {
+                        $this.parent().addClass('active');
+                    }
+                }
+            });
+        });
+    });
+</script>

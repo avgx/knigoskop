@@ -1,0 +1,938 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About" xml:space="preserve">
+    <value>О сервисе</value>
+  </data>
+  <data name="Accent" xml:space="preserve">
+    <value>Поиск среди</value>
+  </data>
+  <data name="Authors" xml:space="preserve">
+    <value>Авторы</value>
+  </data>
+  <data name="Blog" xml:space="preserve">
+    <value>Блог</value>
+  </data>
+  <data name="Book" xml:space="preserve">
+    <value>Книга</value>
+  </data>
+  <data name="Books" xml:space="preserve">
+    <value>Книги</value>
+  </data>
+  <data name="CommentNominative" xml:space="preserve">
+    <value>Комментарий</value>
+  </data>
+  <data name="Comments" xml:space="preserve">
+    <value>Комментарии</value>
+  </data>
+  <data name="CommentSingular" xml:space="preserve">
+    <value>Комментария</value>
+  </data>
+  <data name="CommnetPlural" xml:space="preserve">
+    <value>Комментариев</value>
+  </data>
+  <data name="Copyright" xml:space="preserve">
+    <value>© 2013 - {0} "{1}". Все права защищены</value>
+  </data>
+  <data name="EmailShort" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="Enter" xml:space="preserve">
+    <value>Войти</value>
+  </data>
+  <data name="FieldRequiredMessage" xml:space="preserve">
+    <value>Поле "{0}" обязательно к заполнению</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>Помощь</value>
+  </data>
+  <data name="HowTo" xml:space="preserve">
+    <value>&lt;p&gt;Вы часто задаете себе вопрос, что прочитать еще? Вы под впечатлением от нового автора и хотите продолжить знакомство с его творчеством? Вас тронула тема вновь прочитанной книги и Вы хотите погрузиться в тему еще глубже?&lt;/p&gt;
+
+&lt;p&gt;Мы не только предоставляем доступ к широчайшему каталогу литературы с аннотациями, но и даем удобный инструмент поиска произведений схожей тематики.&lt;/p&gt;
+
+&lt;p&gt;Интеллектуальный поиск покажет Вам перечень похожих произведений.&lt;/p&gt;
+
+&lt;p&gt;Вы никогда не останетесь без интересной и увлекательной книги.&lt;/p&gt;</value>
+  </data>
+  <data name="InfoTitle" xml:space="preserve">
+    <value>Как это работает?</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Фамилия</value>
+  </data>
+  <data name="Leave" xml:space="preserve">
+    <value>Выйти</value>
+  </data>
+  <data name="LeaveTheComment" xml:space="preserve">
+    <value>Оставьте свой коментарий</value>
+  </data>
+  <data name="MainPageTitle" xml:space="preserve">
+    <value>Главная</value>
+  </data>
+  <data name="MainSearchPlaceHolder" xml:space="preserve">
+    <value>Введите название книги или имя автора</value>
+  </data>
+  <data name="ProjectDescription" xml:space="preserve">
+    <value>Книжный рекомендательный сервис</value>
+  </data>
+  <data name="ProjectName" xml:space="preserve">
+    <value>Книгоскоп</value>
+  </data>
+  <data name="PromoText" xml:space="preserve">
+    <value>Читай больше хороших книг</value>
+  </data>
+  <data name="RateBook" xml:space="preserve">
+    <value>Оцените книгу</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Зарегистрироваться</value>
+  </data>
+  <data name="Reply" xml:space="preserve">
+    <value>Ответить</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Поиск</value>
+  </data>
+  <data name="SearchBookOrAuthor" xml:space="preserve">
+    <value>Поиск книги или автора</value>
+  </data>
+  <data name="SearchButtonHint" xml:space="preserve">
+    <value>Искать!</value>
+  </data>
+  <data name="Serie" xml:space="preserve">
+    <value>Серия</value>
+  </data>
+  <data name="Slogan" xml:space="preserve">
+    <value>Найди много хороших книг</value>
+  </data>
+  <data name="WebApiDocumentation" xml:space="preserve">
+    <value>Описание метаданных вебсервиса</value>
+  </data>
+  <data name="Write" xml:space="preserve">
+    <value>Написать</value>
+  </data>
+  <data name="WriteComment" xml:space="preserve">
+    <value>Напишите комментарий</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Год</value>
+  </data>
+  <data name="BooksInSerie" xml:space="preserve">
+    <value>Книги в серии</value>
+  </data>
+  <data name="SimilarBooks" xml:space="preserve">
+    <value>Похожие книги</value>
+  </data>
+  <data name="Series" xml:space="preserve">
+    <value>Серии</value>
+  </data>
+  <data name="BookOfAuthor" xml:space="preserve">
+    <value>Книги автора</value>
+  </data>
+  <data name="Catalogue" xml:space="preserve">
+    <value>Каталог</value>
+  </data>
+  <data name="Onlinico" xml:space="preserve">
+    <value>www.onlini.co</value>
+  </data>
+  <data name="ReadLess" xml:space="preserve">
+    <value>Свернуть</value>
+  </data>
+  <data name="ReadMore" xml:space="preserve">
+    <value>Читать полностью</value>
+  </data>
+  <data name="AuthorNominative" xml:space="preserve">
+    <value>Автор</value>
+  </data>
+  <data name="AuthorPlural" xml:space="preserve">
+    <value>Авторов</value>
+  </data>
+  <data name="AuthorSingular" xml:space="preserve">
+    <value>Автора</value>
+  </data>
+  <data name="BookNominative" xml:space="preserve">
+    <value>Книга</value>
+  </data>
+  <data name="BookPlural" xml:space="preserve">
+    <value>Книг</value>
+  </data>
+  <data name="BookSingular" xml:space="preserve">
+    <value>Книги</value>
+  </data>
+  <data name="Found" xml:space="preserve">
+    <value>Найдено</value>
+  </data>
+  <data name="ShowMore" xml:space="preserve">
+    <value>Еще!..</value>
+  </data>
+  <data name="Genres" xml:space="preserve">
+    <value>Жанры</value>
+  </data>
+  <data name="And" xml:space="preserve">
+    <value>и</value>
+  </data>
+  <data name="AboutProjectText" xml:space="preserve">
+    <value>&lt;p&gt;«{0}» - это некоммерческий проект, посвященный литературе. В нем собраны данные о громадном множестве книг и авторов.&lt;/p&gt;
+
+&lt;p&gt;Цель проекта - объединить любителей литературы, предоставив комфортную среду для поиска и обсуждения книг. Дать возможность делиться мыслями и получать информацию о новинках. &lt;/p&gt;
+
+&lt;p&gt;Для наших пользователей мы реализовали удобный поиск в нашем каталоге, систему рекомендаций, персональный каталог.&lt;/p&gt;
+
+&lt;p&gt;Мы не собираемся останавливаться на достигнутом – надеемся, что сайт, включит в себя все, что необходимо читателю.&lt;/p&gt;
+
+&lt;p&gt;Мы хотим, что бы Вы стали полноценными участниками проекта. С готовностью выслушаем Ваши замечания требования и рекомендации. &lt;/p&gt;
+&lt;p&gt;Будем благодарны Вам за идеи. &lt;a href="mailto:{1}"&gt;Пишите&lt;/a&gt; нам.&lt;/p&gt;
+&lt;p&gt;С уважением,&lt;br/&gt;
+коллектив проекта «{0}».&lt;/p&gt;</value>
+  </data>
+  <data name="GoTop" xml:space="preserve">
+    <value>Вверх</value>
+  </data>
+  <data name="SocialAuth" xml:space="preserve">
+    <value>Войти через социальные сети</value>
+  </data>
+  <data name="UnauthorizedComments" xml:space="preserve">
+    <value>Оставлять комментарии могут только авторизированные пользователи.</value>
+  </data>
+  <data name="BooksInSeries" xml:space="preserve">
+    <value>Книги в сериях</value>
+  </data>
+  <data name="BackToMain" xml:space="preserve">
+    <value>Вернуться на главную</value>
+  </data>
+  <data name="Or" xml:space="preserve">
+    <value>или</value>
+  </data>
+  <data name="PageNotFound" xml:space="preserve">
+    <value>Страница не найдена</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="UnknownErrorOccured" xml:space="preserve">
+    <value>Опс! Возникла ошибка при обработке Вашего запроса. Повторите попытку позже.</value>
+  </data>
+  <data name="Contacts" xml:space="preserve">
+    <value>Контакты</value>
+  </data>
+  <data name="ContactsText" xml:space="preserve">
+    <value>&lt;p&gt;По мере развития нашего ресурса, мы будем постоянно увеличивать количество информации, а также расширять возможности сайта для эффективного удовлетворения Ваших потребностей. Ваше мнение по поводу работы и улучшения сайта очень для нас важно. Пожалуйста, присылайте свои комментарии и пожелания на адрес: &lt;a href="mailto:{1}"&gt;{1}&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;С уважением, &lt;br/&gt;команда ресурса «{0}»&lt;/p&gt;</value>
+  </data>
+  <data name="AboutProject" xml:space="preserve">
+    <value>О проекте</value>
+  </data>
+  <data name="OurContacts" xml:space="preserve">
+    <value>Наши контакты</value>
+  </data>
+  <data name="MyBookmarks" xml:space="preserve">
+    <value>Мои книги</value>
+  </data>
+  <data name="ViewsMonth" xml:space="preserve">
+    <value>Просмотров за месяц</value>
+  </data>
+  <data name="ViewsToday" xml:space="preserve">
+    <value>Просмотров сегодня</value>
+  </data>
+  <data name="ViewsTotal" xml:space="preserve">
+    <value>Просмотров за все время</value>
+  </data>
+  <data name="ViewsWeek" xml:space="preserve">
+    <value>Просмотров за неделю</value>
+  </data>
+  <data name="ViewsYear" xml:space="preserve">
+    <value>Просмотров за год</value>
+  </data>
+  <data name="IsReading" xml:space="preserve">
+    <value>Читаю</value>
+  </data>
+  <data name="Read" xml:space="preserve">
+    <value>Прочел</value>
+  </data>
+  <data name="WantsToRead" xml:space="preserve">
+    <value>Хочу прочесть</value>
+  </data>
+  <data name="VoteNominative" xml:space="preserve">
+    <value>голос</value>
+  </data>
+  <data name="VotePlural" xml:space="preserve">
+    <value>голосов</value>
+  </data>
+  <data name="VoteSingular" xml:space="preserve">
+    <value>голоса</value>
+  </data>
+  <data name="NothingThere" xml:space="preserve">
+    <value>Здесь пока ничего нет...</value>
+  </data>
+  <data name="LoginHint" xml:space="preserve">
+    <value>Комментарии, дискуссии, книжная полка, отзывы и рекомендации и многое другое после регистрации</value>
+  </data>
+  <data name="Odnoklassniki" xml:space="preserve">
+    <value>Одноклассники</value>
+  </data>
+  <data name="Vkontakte" xml:space="preserve">
+    <value>ВКонтакте</value>
+  </data>
+  <data name="AndMuchMore" xml:space="preserve">
+    <value>а также многое другое...</value>
+  </data>
+  <data name="AuthorizeVia" xml:space="preserve">
+    <value>Авторизоваться через</value>
+  </data>
+  <data name="Come" xml:space="preserve">
+    <value>Войдите</value>
+  </data>
+  <data name="DoRate" xml:space="preserve">
+    <value>Оценивать</value>
+  </data>
+  <data name="DoSend" xml:space="preserve">
+    <value>Отправлять</value>
+  </data>
+  <data name="DoUse" xml:space="preserve">
+    <value>Пользоваться</value>
+  </data>
+  <data name="GetPossibility" xml:space="preserve">
+    <value>и получите возможность</value>
+  </data>
+  <data name="UseBookmarks" xml:space="preserve">
+    <value>закладками</value>
+  </data>
+  <data name="UseBooksAndAuthors" xml:space="preserve">
+    <value>книги и авторов</value>
+  </data>
+  <data name="UseComments" xml:space="preserve">
+    <value>комментарии и рекоммендации</value>
+  </data>
+  <data name="RemoveComment" xml:space="preserve">
+    <value>Удалить комментарий</value>
+  </data>
+  <data name="Deleted" xml:space="preserve">
+    <value>Удалено</value>
+  </data>
+  <data name="ReportComment" xml:space="preserve">
+    <value>Пожаловаться на комментарий</value>
+  </data>
+  <data name="ReportCommentButton" xml:space="preserve">
+    <value>Пожаловаться</value>
+  </data>
+  <data name="ReportCommentEmptyText" xml:space="preserve">
+    <value>Коротко опишите причину жалобы</value>
+  </data>
+  <data name="ReportCommentSubtitle" xml:space="preserve">
+    <value>опишите причину</value>
+  </data>
+  <data name="ReportCommentTitle" xml:space="preserve">
+    <value>Жалоба на комментарий</value>
+  </data>
+  <data name="Reviews" xml:space="preserve">
+    <value>Рецензии</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Профиль</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="MyThings" xml:space="preserve">
+    <value>Мои вещи</value>
+  </data>
+  <data name="CreateReview" xml:space="preserve">
+    <value>Составьте свою рецензию</value>
+  </data>
+  <data name="CreateReviewFullEmpty" xml:space="preserve">
+    <value>Полный текст отзыва</value>
+  </data>
+  <data name="CreateReviewSubmit" xml:space="preserve">
+    <value>Отправить</value>
+  </data>
+  <data name="CreateReviewSubtitleFull" xml:space="preserve">
+    <value>текст отзыва</value>
+  </data>
+  <data name="CreateReviewSubtitleRate" xml:space="preserve">
+    <value>оцените книгу</value>
+  </data>
+  <data name="CreateReviewSubtitleSummary" xml:space="preserve">
+    <value>коротко опишите впечатление о книге</value>
+  </data>
+  <data name="CreateReviewSummaryEmpty" xml:space="preserve">
+    <value>Краткое впечатление</value>
+  </data>
+  <data name="CreateReviewTitle" xml:space="preserve">
+    <value>Отзыв о книге</value>
+  </data>
+  <data name="MoreBooks" xml:space="preserve">
+    <value>Больше книг</value>
+  </data>
+  <data name="NewBooks" xml:space="preserve">
+    <value>Новинки</value>
+  </data>
+  <data name="NewReview" xml:space="preserve">
+    <value>Написать рецензию</value>
+  </data>
+  <data name="NewReviews" xml:space="preserve">
+    <value>Свежие рецензии</value>
+  </data>
+  <data name="UnauthorizedReviews" xml:space="preserve">
+    <value>Составлять рецензии могут только авторизированные пользователи.</value>
+  </data>
+  <data name="Complain" xml:space="preserve">
+    <value>Пожаловаться</value>
+  </data>
+  <data name="Annotation" xml:space="preserve">
+    <value>Аннотация</value>
+  </data>
+  <data name="Author" xml:space="preserve">
+    <value>Автор</value>
+  </data>
+  <data name="AuthorName" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="Biography" xml:space="preserve">
+    <value>Биография</value>
+  </data>
+  <data name="BirthDate" xml:space="preserve">
+    <value>Дата рождения</value>
+  </data>
+  <data name="BookName" xml:space="preserve">
+    <value>Название книги</value>
+  </data>
+  <data name="Cover" xml:space="preserve">
+    <value>Обложка</value>
+  </data>
+  <data name="DeathDate" xml:space="preserve">
+    <value>Дата смерти</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="PagesCount" xml:space="preserve">
+    <value>Количество страниц</value>
+  </data>
+  <data name="Photo" xml:space="preserve">
+    <value>Фотография</value>
+  </data>
+  <data name="Publisher" xml:space="preserve">
+    <value>Издатель</value>
+  </data>
+  <data name="ReleaseDate" xml:space="preserve">
+    <value>Дата выхода</value>
+  </data>
+  <data name="SeriesName" xml:space="preserve">
+    <value>Название серии</value>
+  </data>
+  <data name="ReviewOnBook" xml:space="preserve">
+    <value>Рецензия на книгу</value>
+  </data>
+  <data name="ProfileCreated" xml:space="preserve">
+    <value>Зарегистрирован</value>
+  </data>
+  <data name="BooksCount" xml:space="preserve">
+    <value>Добавил(а) книг</value>
+  </data>
+  <data name="CommentsCount" xml:space="preserve">
+    <value>Оставил(а) комментариев</value>
+  </data>
+  <data name="RatingsCount" xml:space="preserve">
+    <value>Оставил(а) оценок</value>
+  </data>
+  <data name="ReviewsCount" xml:space="preserve">
+    <value>Написал(а) рецензий</value>
+  </data>
+  <data name="EditReview" xml:space="preserve">
+    <value>Редактировать рецензию</value>
+  </data>
+  <data name="ReviewAlreadyExists" xml:space="preserve">
+    <value>Вы уже составили рецензию на эту книгу</value>
+  </data>
+  <data name="ReviewValidation" xml:space="preserve">
+    <value>Пожалуйста заполните все поля - рейтинг, краткий и полный отзыв</value>
+  </data>
+  <data name="FindBook" xml:space="preserve">
+    <value>Найти книгу</value>
+  </data>
+  <data name="Google" xml:space="preserve">
+    <value>Google</value>
+  </data>
+  <data name="Wikipedia" xml:space="preserve">
+    <value>Wikipedia</value>
+  </data>
+  <data name="Yandex" xml:space="preserve">
+    <value>Яндекс</value>
+  </data>
+  <data name="Avatar" xml:space="preserve">
+    <value>Аватар</value>
+  </data>
+  <data name="Notification" xml:space="preserve">
+    <value>Получать нотификации</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="AddSocialNetworks" xml:space="preserve">
+    <value>Подключите социальные сети</value>
+  </data>
+  <data name="UserInformation" xml:space="preserve">
+    <value>Информация о пользователе</value>
+  </data>
+  <data name="WrongImageFormat" xml:space="preserve">
+    <value>Некорhектный формат изображения</value>
+  </data>
+  <data name="FieldWrongEmailMessage" xml:space="preserve">
+    <value>Неверный формат адреса электронной почты</value>
+  </data>
+  <data name="FindBookInGoogle" xml:space="preserve">
+    <value>Найти книгу в Google</value>
+  </data>
+  <data name="ProfileSettings" xml:space="preserve">
+    <value>Настройки профиля</value>
+  </data>
+  <data name="AddBook" xml:space="preserve">
+    <value>Добавить книгу</value>
+  </data>
+  <data name="EditBook" xml:space="preserve">
+    <value>Редактировать книгу</value>
+  </data>
+  <data name="AddAuthorTitle" xml:space="preserve">
+    <value>AddAuthorTitle</value>
+  </data>
+  <data name="AddBookTitle" xml:space="preserve">
+    <value>Новая книга</value>
+  </data>
+  <data name="AddNewAuthor" xml:space="preserve">
+    <value>Новый автор</value>
+  </data>
+  <data name="AddNewGenre" xml:space="preserve">
+    <value>Указать жанр</value>
+  </data>
+  <data name="AddNewSerie" xml:space="preserve">
+    <value>Новая серия</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Применить</value>
+  </data>
+  <data name="EditAuthor" xml:space="preserve">
+    <value>Редактировать автора</value>
+  </data>
+  <data name="EditAuthorTitle" xml:space="preserve">
+    <value>Редактирование автора</value>
+  </data>
+  <data name="EditBookTitle" xml:space="preserve">
+    <value>Редактирование книги</value>
+  </data>
+  <data name="EditSerie" xml:space="preserve">
+    <value>Редактировать серию</value>
+  </data>
+  <data name="EditSerieTitle" xml:space="preserve">
+    <value>Редактирование серии</value>
+  </data>
+  <data name="OpdsSettings" xml:space="preserve">
+    <value>Библиотеки</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Добавить</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Редактировать</value>
+  </data>
+  <data name="OpdsSource" xml:space="preserve">
+    <value>Opds источник</value>
+  </data>
+  <data name="OpdsSourceName" xml:space="preserve">
+    <value>Имя источника</value>
+  </data>
+  <data name="OpdsSourceUrl" xml:space="preserve">
+    <value>Адрес источника</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="OpdsInfo" xml:space="preserve">
+    <value>Здесь Вы можете добавить ссылки на собственные OPDS каталоги, что позволит находить книги непосредственно в любимых Вами библиотеках.</value>
+  </data>
+  <data name="OpdsInfoRef" xml:space="preserve">
+    <value>Что такое OPDS?</value>
+  </data>
+  <data name="InvalidOPDSUrlMessage" xml:space="preserve">
+    <value>Неправильный адреса OPDS</value>
+  </data>
+  <data name="InvalidUrlMessage" xml:space="preserve">
+    <value>Неправильный формат адреса</value>
+  </data>
+  <data name="RequiredFieldMessage" xml:space="preserve">
+    <value>Это поле не может быть пустым</value>
+  </data>
+  <data name="EditOpdsList" xml:space="preserve">
+    <value>Изменить список библиотек</value>
+  </data>
+  <data name="BookInLibs" xml:space="preserve">
+    <value>Искать в библиотеках</value>
+  </data>
+  <data name="Administration" xml:space="preserve">
+    <value>Управление</value>
+  </data>
+  <data name="Incomes" xml:space="preserve">
+    <value>Поступления</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="ProcessIncomeConfirm" xml:space="preserve">
+    <value>Обработать запись?</value>
+  </data>
+  <data name="RemoveIncomeConfirm" xml:space="preserve">
+    <value>Удалить запись?</value>
+  </data>
+  <data name="Approve" xml:space="preserve">
+    <value>Подтвердить</value>
+  </data>
+  <data name="CorrectMistakes" xml:space="preserve">
+    <value>Нашли неточность? Исправить!</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="New" xml:space="preserve">
+    <value>Новое</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Просмотреть</value>
+  </data>
+  <data name="AddReviewTitle" xml:space="preserve">
+    <value>Новая рецензия</value>
+  </data>
+  <data name="EditReviewTitle" xml:space="preserve">
+    <value>Редактирование рецензии</value>
+  </data>
+  <data name="IncomeUpdated" xml:space="preserve">
+    <value>Ваши исправления сохранены и будут размещены на сайте после рассмотрения модератором</value>
+  </data>
+  <data name="RequiredAuthorMessage" xml:space="preserve">
+    <value>Книга должна иметь автора (-ов)</value>
+  </data>
+  <data name="RequiredGenreMessage" xml:space="preserve">
+    <value>Книга должна относится к жанру (-ам)</value>
+  </data>
+  <data name="ReviewDescription" xml:space="preserve">
+    <value>Текст рецензии</value>
+  </data>
+  <data name="ReviewName" xml:space="preserve">
+    <value>Краткое впечатление</value>
+  </data>
+  <data name="ReviewRating" xml:space="preserve">
+    <value>Ваша оценка книги</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="LoadingPleaseWait" xml:space="preserve">
+    <value>Идет загрузка. Пожалуйста подождите...</value>
+  </data>
+  <data name="Pages" xml:space="preserve">
+    <value>Страниц</value>
+  </data>
+  <data name="PagesNominative" xml:space="preserve">
+    <value>страница</value>
+  </data>
+  <data name="PagesPlural" xml:space="preserve">
+    <value>страниц</value>
+  </data>
+  <data name="PagesSingular" xml:space="preserve">
+    <value>страницы</value>
+  </data>
+  <data name="NewIncomes" xml:space="preserve">
+    <value>Есть новые поступления</value>
+  </data>
+  <data name="ISBN" xml:space="preserve">
+    <value>ISBN</value>
+  </data>
+  <data name="ComplainEmailSubject" xml:space="preserve">
+    <value>Жалоба на комментарий</value>
+  </data>
+  <data name="NewIncomeEmailSubject" xml:space="preserve">
+    <value>Новое поступление</value>
+  </data>
+  <data name="DownloadBook" xml:space="preserve">
+    <value>Скачать книгу</value>
+  </data>
+  <data name="DownloadInFormat" xml:space="preserve">
+    <value>в формате</value>
+  </data>
+  <data name="MyDevices" xml:space="preserve">
+    <value>Мои устройства</value>
+  </data>
+  <data name="InvalidEmailMessage" xml:space="preserve">
+    <value>Неправильный формат Email</value>
+  </data>
+  <data name="Citations" xml:space="preserve">
+    <value>Цитаты</value>
+  </data>
+  <data name="TranslatedBy" xml:space="preserve">
+    <value>перевод</value>
+  </data>
+  <data name="ConfigureDevices" xml:space="preserve">
+    <value>Настроить список устройств</value>
+  </data>
+  <data name="DisclaimerText" xml:space="preserve">
+    <value>&lt;p class="justify"&gt;
+        &lt;strong&gt;
+            На данном ресурсе не содержится никаких материалов, противоречащих законам какой-либо страны. Все материалы, опубликованные на сайте, перешли в общественное
+            достояние. Если Вы заметили нарушение авторских прав, то просим сообщить по адресу
+            &lt;a href="mailto:{0}"&gt;&lt;strong&gt;{0}&lt;/strong&gt;&lt;/a&gt;
+        &lt;/strong&gt;
+    &lt;/p&gt;
+    &lt;p class="justify"&gt;
+        Информационный ресурс &lt;i&gt;knigoskop.com&lt;/i&gt; является общедоступным для пользователей и осуществляет свою деятельность с соблюдением действующего законодательства
+        Украины и РФ. А так же руководствуется положениями Бернской конвенции об охране литературных и художественных произведений.
+    &lt;/p&gt;
+    &lt;p class="justify"&gt;
+        Администрация сайта не осуществляет деятельность, связанную с публикацией нелицензионного контента, незаконно украденного и находящегося под защитой
+        правообладателей.
+    &lt;/p&gt;
+    &lt;p class="justify"&gt;
+        Мы не осуществляем контроль за действиями пользователей, которые могут повторно размещать тексты и фотоизображения являющиеся объектом вашего
+        исключительного права, а также ссылки на объекты ваших исключительных прав. Любая информация на сайте размещается зарегистрированным пользователем самостоятельно, без какого-либо контроля с чьей-либо стороны, что соответствует общепринятой мировой практике размещения информации в
+        сети интернет. Администрация ресурса &lt;i&gt;knigoskop.com&lt;/i&gt; не имеет технической и иных возможностей для контроля действий пользователей.
+    &lt;/p&gt;
+    &lt;p class="justify"&gt;
+        Администрация ресурса отрицательно относится к нарушению авторских прав на информационном ресурсе &lt;i&gt;knigoskop.com&lt;/i&gt;.
+    &lt;/p&gt;
+    &lt;p class="justify"&gt;
+        При возникновении спорных ситуаций мы просим Вас прислать нам письмо в электронном виде, где необходимо указать следующее:
+    &lt;/p&gt;
+    &lt;p class="justify"&gt;
+        В случае обнаружения Вами тех или иных нарушений, просим Вас сообщить нам следующие данные:
+    &lt;/p&gt;
+    &lt;ol&gt;
+        &lt;li&gt;
+            Данные об объекте авторского права в отношение которого произошло нарушение:
+            &lt;ul&gt;
+                &lt;li&gt;
+                    Название продукта или произведения.
+                &lt;/li&gt;
+                &lt;li&gt;
+                    Официальная страница продукта или произведения или источник текста в Интернете (в случае наличия).
+                &lt;/li&gt;
+                &lt;li&gt;
+                    Для Юридического Лица / Правообладателя - Копия документа о государственной регистрации.
+                &lt;/li&gt;
+                &lt;li&gt;
+                    Для Юридического Лица / Правообладателя фото и графических материалов – документ подтверждающий право собственности либо авторское право на
+                    изображение.
+                &lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+            Данные о правообладателе:
+            &lt;ul&gt;
+                &lt;li&gt;
+                    Полное наименование юридического лица. Либо паспортные данные физического лица.
+                &lt;/li&gt;
+                &lt;li&gt;
+                    Почтовый адрес (в случае несовпадения юридического и почтового адреса – обязательное указание юридического адреса).
+                &lt;/li&gt;
+                &lt;li&gt;
+                    Сайт правообладателя в сети Интернет (при его наличии).
+                &lt;/li&gt;
+                &lt;li&gt;
+                    Лицензия на право деятельности (если таковая деятельность лицензируется в установленном законом порядке).
+                &lt;/li&gt;
+                &lt;li&gt;
+                    Контактное лицо правообладателя (ФИО, должность, телефон, email).
+                &lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+            Данные лица, подающего жалобу.
+            &lt;ul&gt;
+                &lt;li&gt;
+                    ФИО.
+                &lt;/li&gt;
+                &lt;li&gt;
+                    Должность.
+                &lt;/li&gt;
+                &lt;li&gt;
+                    Телефон.
+                &lt;/li&gt;
+                &lt;li&gt;
+                    Email.
+                &lt;/li&gt;
+                &lt;li&gt;
+                    Копия доверенности на действия от лица Правообладателя (не требуется в случае если лицо подающее жалобу – руководитель компании
+                    Правообладателя).
+                &lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+            Претензионные данные.
+            &lt;ul&gt;
+                &lt;li&gt;
+                    Адрес страницы сайта, которые содержат данные, нарушающие права.
+                &lt;/li&gt;
+                &lt;li&gt;
+                    Полное описание сути нарушения прав (почему распространение данной информации запрещено Правообладателем).
+                &lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+            Подписка о правомерности действий (заполняется от руки и высылается в отсканированном варианте). Обязательна для каждой жалобы.
+        &lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;p class="justify"&gt;
+        По вопросам просим Вас обращаться на email: &lt;a href="mailto:{0}"&gt;{0}&lt;/a&gt;
+    &lt;/p&gt;</value>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>Скачать</value>
+  </data>
+  <data name="ReceiveBook" xml:space="preserve">
+    <value>Получить книгу</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Отправить</value>
+  </data>
+  <data name="ToCopyrightHolders" xml:space="preserve">
+    <value>Правообладателям</value>
+  </data>
+  <data name="DownloadFile" xml:space="preserve">
+    <value>Скачать файл</value>
+  </data>
+  <data name="BookSent" xml:space="preserve">
+    <value>Книга "{0}"</value>
+  </data>
+  <data name="PrimaryEmail" xml:space="preserve">
+    <value>Основной адрес</value>
+  </data>
+  <data name="DevicesInfo" xml:space="preserve">
+    <value>&lt;p&gt;Если Ваше устройство для чтения поддерживает закачку по e-mail, то в этом разделе Вы можете настроить свой список устройств, указав его имя и электронный адрес.&lt;/p&gt;
+&lt;p&gt;Для получения книг на устройства Kindle, необходимо на сайте amazon.com добавить транзитный адрес нашего сайта – &lt;a href="mailto:{0}"&gt;{0}&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Для этого перейдите на страницу "&lt;a target="_blank" href="https://www.amazon.com/gp/digital/fiona/manage?ie=UTF8&amp;*Version*=1&amp;*entries*=0&amp;signInRedirect=1&amp;#pdocSettings"&gt;Manage your Kindle&lt;/a&gt;" в раздел "Personal Document Settings". В данном разделе есть список разрешенных адресов, с которых возможна отправка книг на Ваш Kindle.&lt;/p&gt;
+&lt;p&gt;Добавьте наш адрес &lt;a href="mailto:{0}"&gt;{0}&lt;/a&gt; в список "Approved Personal Document E-mail List", после чего Вы сможете получать книги непосредственно на свою читалку по WiFi.&lt;/p&gt;</value>
+  </data>
+</root>

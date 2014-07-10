@@ -1,0 +1,140 @@
+﻿@using Knigoskop.Site.Models.Shared
+<script type="text/javascript">
+    MAX_RATING = 5;
+    EXPECTED_ROWS = 70;
+    MIN_QUERY_LENGHT = 3;
+
+    @{
+        string url = Url.RouteUrl("DefaultApi", new { httproute = "", controller = "WebApi", action = "GetSearchSuggestions" });
+    };
+    $(document).ready(function () {
+
+        var navigateToSearch = function ($el) {
+            var uri = '@Url.Action("Index", "Catalogue", new
+                       {
+                           viewType = ViewContext.RouteData.Values["viewType"] ?? CatalogueViewTypeEnum.Books.ToString().ToLower(),
+                           genreId = ""
+                       })';
+            if ($el.val() != "") {
+                uri += '?searchQuery=' + encodeURIComponent($el.val());
+            }
+            document.location = uri;
+        };
+
+        $('#searchText').keydown(function (event) {
+            if ($(this).data('isOpen') != true && event.which == 13) {
+                navigateToSearch($(this));
+            }
+        });
+        $('#searchStart').click(function () {
+            navigateToSearch($('#searchText'));
+        });
+
+
+        $('#searchText').bind('autocompleteopen', function () {
+            $(this).data('isOpen', true);
+        });
+
+        $('#searchText').bind('autocompleteclose', function () {
+            $(this).data('isOpen', false);
+        });
+
+        $('#searchText').val('@Request.QueryString["searchQuery"]');
+
+        function highLight(terms, label) {
+            var termsRegEx = terms.split(" ").join('|');
+            var re = new RegExp("(" + termsRegEx + ")", "gi");
+            return label.replace(re, "<span class='highlight'>$1</span>");
+        };
+
+        $('#searchText').autocomplete({
+            position: { my: "right top", at: "right bottom", collision: "none" },
+            minLength: MIN_QUERY_LENGHT,
+            appendTo: '.splash .search',
+            source: function (request, response) {
+                $.ajax({
+                    url: '@url',
+                    type: 'GET',
+                    cache: false,
+                    data: { searchText: $('#searchText').val(), expectedRowCount: EXPECTED_ROWS },
+                    dataType: 'json',
+                    success: function (json) {
+                        response($.map(json.items, function (item) {
+                            return item;
+                        }));
+                    }
+                });
+            },
+            focus: function (event, ui) {
+                if ( event.keyCode === undefined ) 
+                     return false;
+                $("#searchText").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $('#searchText').val(ui.item.label);
+                if (ui.item.type == 'Book')
+                    document.location = '@Url.Action("Book", "Catalogue", new { id = "fake" })'.replace('fake', ui.item.value);
+                if (ui.item.type == 'Author')
+                    document.location = '@Url.Action("Author", "Catalogue", new { id = "fake" })'.replace('fake',ui.item.value);
+                return false;
+            },
+            search: function (event, ui) {
+                $('#floatingCirclesG').show();
+                $('.start-search').hide();
+                $('#searchText').addClass('nobg');
+            },
+            response: function (event, ui) {
+                $('#floatingCirclesG').hide();
+                $('.start-search').show();
+                $('#searchText').removeClass('nobg');
+            }
+        }).data("ui-autocomplete")._renderItem = function (ul, item) {            
+            if (!$('body').is('.error-page'))
+                ul.addClass('main-autocomplete');
+            else
+                ul.addClass('main-autocomplete-error');
+
+            var imgPath = '';
+            var cssClass = '';
+            switch (item.type) {
+                case 'Author':
+                    if (item.hasImage == true)
+                        imgPath = '/images/author/' + item.value + '.jpg?mode=crop&maxwidth=30&maxheight=30&anchor=topcenter';
+                    else
+                        imgPath = '/content/img/no_author_search_autocomplete.png';
+                    cssClass = 'author';
+                    break;
+                case 'Book':
+                    if (item.hasImage == true)
+                        imgPath = '/images/cover/' + item.value + '.jpg?width=40';
+                    else
+                        imgPath = '/content/img/book-tiny.png';
+                    cssClass = 'book';
+                    break;
+                default:
+                    ;
+            }
+
+            var $rating = $('<div class="rating">');
+            for (var i = MAX_RATING; i >= 1; i--) {
+                $rating.append($('<span class="star">').addClass(i <= item.rating ? 'filled' : 'empty'));
+            }
+
+
+            var label = highLight(this.term, item.label);
+            var $el = $('<a>');
+            $el.append($('<div class="label">').html(label))
+                .append($('<div class="desc">').html(item.desc))
+                .append($rating)
+                .append($('<img>')
+                    .attr('alt', item.label)
+                    .attr('src', imgPath)
+                    .addClass(cssClass));
+
+            return $("<li>")
+                .append($el)
+                .appendTo(ul);
+        };
+    });
+</script>

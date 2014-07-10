@@ -1,0 +1,53 @@
+﻿@model Knigoskop.Site.Models.SerieModel
+@{
+
+    ViewBag.Title = string.Format("{0} «{1}» | {2}", Text.Serie, Model.Name, Text.ProjectName);
+    Layout = "~/Views/Shared/_GenresLayout.cshtml";
+    string logoUrl = string.Format("{0}/content/img/logo-social.png?mode=pad&scale=both&maxheight=200&maxwidth=200", UriHelper.RootUrl);
+}
+
+@section FacebookOpenGraph
+{
+    @if (Request.IsFacebookAgent())
+    {
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="@string.Format("{0}{1}", UriHelper.RootUrl, Request.RawUrl)" />
+        <meta property="og:title" content="@string.Format("{0} «{1}»", Text.Serie, Model.Name)" />
+        <meta property="og:image" content="@logoUrl" />
+        <meta property="og:description" content="@Model.Description.TrimText(300)" />
+    }
+}
+
+    <div class="author-info book-info">
+        <div class="serie-description">
+            <h1>@string.Format("{0} «{1}»", Text.Serie, Model.Name)</h1>
+            <div class="top-item-summary">
+                @{ Html.RenderPartial("~/Views/Partial/Rating.cshtml", Model);}
+                <span class="nowrap">
+                    <a class="total-comments" href="#comments"><span id="topComments">@Model.Comments.Count() @StringHelper.Declension(Model.Comments.Count(), Text.CommentNominative, Text.CommentSingular, Text.CommnetPlural).ToLower()</span></a>
+                    @{Html.RenderPartial("~/Views/Partial/ViewStats.cshtml", Model.ViewStats);}
+                </span>
+                <div>
+                    <a href="@(User.Identity.IsAuthenticated ? Url.Action("EditSerie", "Income", new { Id = Model.Id }) : "javascript:void(0);")" class="edit-book @(!User.Identity.IsAuthenticated? "unauth" : "")">@Text.CorrectMistakes</a>
+                </div>
+                <div class="social-inline">
+                    @{ Html.RenderPartial("~/Views/Partial/ItemSocial.cshtml", Model); }
+                </div>
+                @{ Html.RenderPartial("~/Views/Partial/SingleDescription.cshtml", Model.Description ?? ""); }
+            </div>
+        </div>
+
+        @if (Model.Books != null && Model.Books.Any())
+        {
+            <h2><span>@Text.BooksInSerie</span></h2>
+            Html.RenderPartial("~/Views/Partial/BookList.cshtml", Model.Books);
+        }
+        <script>
+            $(function () {
+                $('.description .name').dotdotdot();
+            });
+        </script>
+        @{
+            Html.RenderPartial("~/Views/Partial/Comments.cshtml", Model);
+        }
+    </div>

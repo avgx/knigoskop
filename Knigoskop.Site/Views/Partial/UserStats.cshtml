@@ -1,0 +1,37 @@
+﻿@using Knigoskop.DataModel
+@model Knigoskop.Site.Models.BookModel
+<div class="counters" id="counters_@Model.Id">
+    <div class="counter @(Model.UserStats.State == UserStatStateEnum.WantsToRead ? "filled" : "") @(!User.Identity.IsAuthenticated ? "unauth" : "")" data-state="wantstoread">
+        @Text.WantsToRead
+        <div class="count @(Model.UserStats.WantsToRead == 0 ? "empty" : String.Empty)">@(Model.UserStats.WantsToRead == 0 ? "+1" : Model.UserStats.WantsToRead.ToString())</div>
+    </div>
+
+    <div class="counter @(Model.UserStats.State == UserStatStateEnum.IsReading ? "filled" : "") @(!User.Identity.IsAuthenticated ? "unauth" : "")" data-state="isreading">
+        @Text.IsReading
+        <div class="count @(Model.UserStats.IsReading == 0 ? "empty" : String.Empty)">@(Model.UserStats.IsReading == 0 ? "+1" : Model.UserStats.IsReading.ToString())</div>
+    </div>
+
+    <div class="counter @(Model.UserStats.State == UserStatStateEnum.Read ? "filled" : "") @(!User.Identity.IsAuthenticated ? "unauth" : "")" data-state="read">
+        @Text.Read
+        <div class="count @(Model.UserStats.Read == 0 ? "empty" : String.Empty)">@(Model.UserStats.Read == 0 ? "+1" : Model.UserStats.Read.ToString())</div>
+    </div>
+    <input type="hidden" id="userstat_@Model.Id" />
+</div>
+@if (User.Identity.IsAuthenticated)
+{
+    <script>
+        $(function () {
+            $('div.counter').on('click', function () {
+                $this = $(this);
+                var stateUrl = '@Url.Action("SetUserStatToBook", "Catalogue")';
+                var stateValue = $this.data('state');
+                if ($this.is('.filled'))
+                    stateValue = 'none';
+                $.post(stateUrl, { bookId: '@Model.Id', state: stateValue },
+                    function (data) {
+                        $('#counters_@Model.Id').html(data);
+                    });
+            });
+        });
+    </script>
+}

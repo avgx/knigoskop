@@ -1,0 +1,13 @@
+﻿@using Knigoskop.Site.Models
+@model IEnumerable<CitationModel>
+@{
+    Layout = "~/Views/Shared/_NavigationLayout.cshtml";
+    ViewBag.Title = string.Format("{0} | {1}", Text.Citations, Text.ProjectName);
+}
+
+@section LeftPane
+{
+    @{ Html.RenderPartial("~/Views/Account/LeftPane.cshtml");}
+}
+
+<h2><span>@Text.Citations</span></h2>

@@ -1,0 +1,441 @@
+﻿@{
+    ViewBag.Title = !string.IsNullOrEmpty(ViewBag.BookId) ? Text.EditBook : Text.AddBook;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/knockout-2.3.0.debug.js"></script>
+<script src="~/Scripts/Ajaxupload.js"></script>
+<script src="~/Scripts/knockout.extensions.js"></script>
+<script src="@Url.Content("~/Scripts/jquery.dd.min.js")" type="text/javascript"></script>
+@*<script src="~/Scripts/knockout.validation.js"></script>*@
+<h2 style="margin-top: 20px;"><span> @(!string.IsNullOrEmpty(ViewBag.BookId) ? Text.EditBook : Text.AddBook)</span></h2>
+
+<script type="text/javascript">
+
+    function IncomeBookModel() {
+        var self = this;
+        this.Id = ko.observable();
+        this.ImageTempId = ko.observable();
+        this.Name = ko.observable().extend({ required: "@Text.RequiredFieldMessage" });
+        this.Published = ko.observable();
+        this.PagesCount = ko.observable();
+        this.Publisher = ko.observable();
+        this.Annotation = ko.observable();
+        this.HasImage = ko.observable(false);
+        this.ISBN = ko.observable();
+        this.ImageUrl = ko.computed(function () {
+            if (this.ImageTempId() != null) {
+                return '/income/image/?imageId=' + this.ImageTempId() + '&time=' + Date()
+            }
+            if (this.HasImage() && this.Id() != null)
+
+                return '/images/cover/' + this.Id() + '.jpg?mode=stretch&scale=both&maxwidth=230&maxheight=331';
+
+            return '/Content/img/book-upload.png';
+
+        }, this);
+        InitValidation(this);
+
+
+    }
+    function IncomeAuthorModel() {
+        this.Id = ko.observable();
+        this.ImageTempId = ko.observable();
+        this.Name = ko.observable().extend({ required: "@Text.RequiredFieldMessage" });
+        this.DeathDate = ko.observable();
+        this.BirthDate = ko.observable().extend({ required: "@Text.RequiredFieldMessage" });
+        this.Biography = ko.observable();
+        this.HasImage = ko.observable(false);
+        this.ImageUrl = ko.computed(function () {
+            if (this.ImageTempId() != null)
+                return '/income/image/?imageId=' + this.ImageTempId() + '&time=' + Date()
+            if (this.HasImage() && this.Id() != null)
+                return '/images/author/' + this.Id() + '.jpg?mode=crop&scale=both&maxwidth=230&maxheight=230&anchor=topcenter';
+            return '/Content/img/no_author_search_results.png';
+
+        }, this);
+        InitValidation(this);
+    }
+    function IncomeSerieModel() {
+        this.Name = ko.observable().extend({ required: "" });
+        this.Description = ko.observable();
+        this.Id = ko.observable();
+        InitValidation(this);
+    }
+    function IncomeGenreModel() {
+        this.Name = ko.observable();
+        this.Id = ko.observable();
+    }
+    function IncomeSimilarBookModel() {
+        this.Name = ko.observable();
+        this.Id = ko.observable();
+    }
+    function IncomeViewModel() {
+        var self = this;
+        this.Id = ko.observable('@ViewBag.BookId');
+        this.IncomeBook = ko.observable(new IncomeBookModel())
+        this.IncomeAuthors = ko.observableArray().extend({ arrayRequired: "@Text.RequiredAuthorMessage" });
+        this.IncomeSeries = ko.observableArray();
+        this.IncomeGenres = ko.observableArray().extend({ arrayRequired: "@Text.RequiredGenreMessage" });
+        this.IncomeSimilarBooks = ko.observableArray();
+        //authors
+        this._tempAuthor = ko.observable(new IncomeAuthorModel());
+        this._tempAuthorVisible = ko.observable(false);
+
+        //series
+        this._tempSerie = ko.observable(new IncomeSerieModel());
+        this._tempSerieVisible = ko.observable(false);
+
+        //genres
+        this._genres = ko.observableArray();
+        this._tempRootGenre = ko.observable();
+        this._tempGenre = ko.observable();
+        this._tempGenreVisible = ko.observable(false);
+        this._selectedGenre = ko.observable();
+
+        this.AddGenre = function () {
+            self._tempGenre(new IncomeGenreModel());
+            self._tempGenreVisible(true);
+            if ($('#rootGenres').msDropdown().data('dd') == null) {
+                $('#rootGenres').msDropdown();
+            }
+
+
+        };
+        this.ApplyGenre = function () {
+
+            var result = $.grep(self.IncomeGenres(), function (e) { return e.Id == self._selectedGenre().Id; });
+            if (result.length == 0) {
+                self.IncomeGenres.push(self._selectedGenre());
+
+            }
+            self._tempGenre(new IncomeGenreModel());
+            self._tempGenreVisible(false);
+
+        };
+        this.CancelGenre = function () {
+            self._tempGenre(new IncomeGenreModel());
+            self._tempGenreVisible(false);
+
+        };
+        this.RemoveGenre = function (genre) {
+            self.IncomeGenres.remove(genre);
+        };
+
+
+
+
+        //this.AddSimilarBook = function () {
+        //    self._tempGenre(new IncomeGenreModel());
+        //    self._tempGenreVisible(true);
+        //};
+
+        this.RemoveSimilarBook = function (book) {
+            self.IncomeSimilarBooks.remove(book);
+        };
+
+
+
+        this._isDataLoaded = ko.observable(false);
+        this._isDataSaved = ko.observable(false);
+
+        this.RemoveAuthor = function (author) {
+            self.IncomeAuthors.remove(author);
+        };
+        this.RemoveSerie = function (serie) {
+            self.IncomeSeries.remove(serie);
+        };
+        this.AddAuthor = function () {
+            self._tempAuthor(new IncomeAuthorModel());
+            self._tempAuthor().Name($('#authorinput').val())
+            $('#authorinput').val('');
+            self._tempAuthorVisible(true);
+        };
+        this.AddSerie = function () {
+            self._tempSerie(new IncomeSerieModel());
+            self._tempSerie().Name($('#serieinput').val())
+            $('#serieinput').val('');
+            self._tempSerieVisible(true);
+        };
+        this.ApplySerie = function () {
+            if (self._tempSerie().IsValid() == 1) {
+                //var result = $.grep(self.IncomeSeries(), function (e) { return e.Id == self._tempSerie().Id; });
+                //if (result.length == 0) {
+                //    self.IncomeSeries.push(self._tempSerie());
+                //}
+                self.IncomeSeries.push(self._tempSerie());
+                self._tempSerie(new IncomeSerieModel());
+                self._tempSerieVisible(false);
+            }
+        };
+        this.CancelSerie = function () {
+            self._tempSerie(new IncomeSerieModel());
+            self._tempSerieVisible(false);
+
+        };
+        this.ApplyAuthor = function () {
+            if (self._tempAuthor().IsValid() == 1) {
+                self.IncomeAuthors.push(self._tempAuthor());
+                self._tempAuthor(new IncomeAuthorModel());
+                self._tempAuthorVisible(false);
+            }
+
+        };
+        this.CancelAuthor = function () {
+            self._tempAuthor(new IncomeAuthorModel());
+            self._tempAuthorVisible(false);
+
+        };
+        this.Save = function () {
+            var valid = self.IncomeBook().IsValid() == 1 & self.IncomeAuthors.IsValid() == 1 & self.IncomeGenres.IsValid() == 1
+            if (valid) {
+                var data = ko.toJSON({ Id: self.Id(), IncomeBook: self.IncomeBook(), IncomeAuthors: self.IncomeAuthors(), IncomeSeries: self.IncomeSeries(), IncomeGenres: self.IncomeGenres(), IncomeSimilarBooks: self.IncomeSimilarBooks() })
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/income/savebook/?isincome=@ViewBag.IsIncome',
+                    cache: false,
+                    contentType: 'application/json; charset=utf-8',
+                    data: data,
+                    success: function () {
+                        self._isDataSaved(true)
+                    }
+                });
+                //$.post("/managebooks/save", data, function (returnedData) {
+
+                //})
+            }
+
+        }
+        this.Load = function () {
+            $.getJSON("/income/LoadBook/?bookId=" + self.Id(), function (data) {
+
+                self.IncomeBook().Annotation(data.IncomeBook.Annotation);
+                self.IncomeBook().HasImage(data.IncomeBook.HasImage);
+                self.IncomeBook().ImageTempId(data.IncomeBook.ImageTempId);
+                self.IncomeBook().Id(data.IncomeBook.Id);
+                self.IncomeBook().Name(data.IncomeBook.Name);
+                self.IncomeBook().Publisher(data.IncomeBook.Publisher);
+                self.IncomeBook().PagesCount(data.IncomeBook.PagesCount);
+                self.IncomeBook().Published(data.IncomeBook.Published ? new Date(parseInt(data.IncomeBook.Published.replace("/Date(", "").replace(")/", ""), 10)) : null);
+                self.IncomeBook().ISBN(data.IncomeBook.ISBN);
+                $(data.IncomeAuthors).each(function () {
+                    var author = new IncomeAuthorModel();
+                    author.Biography(this.Biography);
+                    author.BirthDate(this.BirthDate != null ? new Date(parseInt(this.BirthDate.replace("/Date(", "").replace(")/", ""), 10)) : null);
+                    author.DeathDate(this.DeathDate != null ? new Date(parseInt(this.DeathDate.replace("/Date(", "").replace(")/", ""), 10)) : null);
+                    author.HasImage(this.HasImage);
+                    author.ImageTempId(this.ImageTempId);
+                    author.Name(this.Name);
+                    author.Id(this.Id);
+                    self.IncomeAuthors.push(author);
+                });
+                $(data.IncomeSeries).each(function () {
+                    var serie = new IncomeSerieModel();
+                    serie.Description(this.Description);
+                    serie.Name(this.Name);
+                    serie.Id(this.Id);
+                    self.IncomeSeries.push(serie);
+                });
+                $(data.IncomeGenres).each(function () {
+                    var genre = new IncomeGenreModel();
+                    genre.Id(this.Id);
+                    genre.Name(this.Name);
+                    self.IncomeGenres.push(genre);
+                });
+                $(data.IncomeSimilarBooks).each(function () {
+                    var book = new IncomeSimilarBookModel();
+                    book.Id(this.Id);
+                    book.Name(this.Name);
+                    self.IncomeSimilarBooks.push(book);
+                });
+                self._isDataLoaded(true);
+            })
+        }
+        this.goBack = function () {
+            var returnUrl = '@Url.Action("Book", "Catalogue", new { id = ViewBag.BookId })';
+            if ('@Request.Params["returnUrl"]' != '')
+                returnUrl = '@Request.Params["returnUrl"]';
+            window.location = returnUrl;
+        }
+        this.LoadGenres = function () {
+            $.getJSON("/income/LoadGenres", function (data) {
+                self._genres(data);
+                //fix
+
+                self._tempRootGenre.subscribe(function (newValue) {
+                    setTimeout(function () {
+                        if ($('#childGenres').msDropdown().data('dd') != null) {
+                            $('#childGenres').msDropdown().data('dd').destroy();
+                        }
+                        $('#childGenres').msDropdown();
+                    }, 100);
+                });
+            })
+
+        }
+        this.LoadGenres();
+
+    }
+    var viewModel = new IncomeViewModel();
+    $(function () {
+        if (viewModel.Id().length > 0) {
+            viewModel.Load();
+        }
+        else {
+            viewModel._isDataLoaded(true);
+        }
+        ko.applyBindings(viewModel);
+
+    });
+</script>
+<script id="customMessageTemplate" type="text/html">
+    <span class="customMessage" style="color: green" data-bind='validationMessage: field'></span>
+</script>
+<!-- ko if: _isDataSaved()==false -->
+<div class="view" data-bind="visible: _isDataLoaded()" style="display: none;">
+    <div class="section-book" data-bind='validationOptions: { messageTemplate: "customMessageTemplate" }'>
+        <div class="section-book">
+            <div class="field-content">
+                <div class="field-title">@Text.BookName</div>
+                <input type="text" data-bind="value: IncomeBook().Name, css: { error: IncomeBook().Name.hasError }" />
+                <span data-bind='visible: IncomeBook().Name.hasError, text: IncomeBook().Name.validationMessage'></span>
+            </div>
+            <div class="field-content">
+                <div class="field-title">@Text.Cover</div>
+                <img style="width: 100px;" data-bind="attr: { src: IncomeBook().ImageUrl }, imageUpload: IncomeBook(), uploadUrl: '/income/UploadImage'" src="" />
+
+                @*     <span data-bind='visible: IncomeBook().Name.hasError, text: IncomeBook().Name.validationMessage'></span>*@
+            </div>
+            <div class="field-content">
+                <div class="field-title">@Text.ReleaseDate</div>
+                <input type="text" readonly="readonly" data-bind="datepicker: IncomeBook().Published, css: { error: IncomeBook().Published.hasError }" />
+                <span data-bind='visible: IncomeBook().Published.hasError, text: IncomeBook().Published.validationMessage'></span>
+            </div>
+            <div class="field-content">
+                <div class="field-title">@Text.PagesCount</div>
+                <input type="text" data-bind="spinner: IncomeBook().PagesCount, css: { error: IncomeBook().PagesCount.hasError }" />
+                <span data-bind='visible: IncomeBook().PagesCount.hasError, text: IncomeBook().PagesCount.validationMessage'></span>
+            </div>
+            <div class="field-content">
+                <div class="field-title">@Text.Publisher</div>
+                <input type="text" data-bind="value: IncomeBook().Publisher, css: { error: IncomeBook().Publisher.hasError }" />
+                <span data-bind='visible: IncomeBook().Publisher.hasError, text: IncomeBook().Publisher.validationMessage'></span>
+            </div>
+            <div class="field-content">
+                <div class="field-title">@Text.Annotation</div>
+                <textarea rows="5" data-bind="value: IncomeBook().Annotation"></textarea>
+            </div>
+            <div class="field-content">
+                <div class="field-title">@Text.ISBN</div>
+                <input type="text" data-bind="value: IncomeBook().ISBN"></input>
+            </div>
+        </div>
+        <div class="section-author">
+            <div class="field-content authors-content tags-list" data-bind="foreach: IncomeAuthors">
+                <span class="tag">
+                    <img width="30" height="30" data-bind="attr: { src: ImageUrl }" /><span class="author" data-bind="    text: Name"></span><a class="delete" href="javascript:void(0)" data-bind='    click: $root.RemoveAuthor'></a>
+                </span>
+            </div>
+            <div class="field-content">
+                <div class="field-title">@Text.Author</div>
+                <input id="authorinput" class="hasAutocomplete" type="text" data-bind="autoComplete: IncomeAuthors, source: '/api/webapi/SearchAuthors/?json=true'" />
+                <a href="javascript:void(0)" data-bind='click: $root.AddAuthor' class="white-button">@Text.AddNewAuthor</a>
+                <span class="error" data-bind='visible: IncomeAuthors.hasError, text: IncomeAuthors.validationMessage'></span>
+            </div>
+            <div class="field-content bordered" data-bind='visible: _tempAuthorVisible'>
+                <div class="field-content">
+                    <div class="field-title">@Text.AuthorName</div>
+                    <input type="text" data-bind="value: _tempAuthor().Name, css: { error: _tempAuthor().Name.hasError }" />
+                    <span data-bind='visible: _tempAuthor().Name.hasError, text: _tempAuthor().Name.validationMessage'></span>
+                </div>
+                <div class="field-content">
+                    <div class="field-title">@Text.Photo</div>
+                    <img width="100" height="100" data-bind="attr: { src: _tempAuthor().ImageUrl }, imageUpload: _tempAuthor(), uploadUrl: '/income/UploadImage'" />
+                    @*     <span data-bind='visible: IncomeBook().Name.hasError, text: IncomeBook().Name.validationMessage'></span>*@
+                </div>
+                <div class="field-content">
+                    <div class="field-title">@Text.BirthDate</div>
+                    <input type="text" readonly="readonly" data-bind="datepicker: _tempAuthor().BirthDate, css: { error: _tempAuthor().BirthDate.hasError }" />
+                    <span data-bind='visible: _tempAuthor().BirthDate.hasError, text: _tempAuthor().BirthDate.validationMessage'></span>
+                </div>
+                <div class="field-content">
+                    <div class="field-title">@Text.DeathDate</div>
+                    <input type="text" readonly="readonly" data-bind="datepicker: _tempAuthor().DeathDate" />
+                </div>
+                <div class="field-content">
+                    <div class="field-title">@Text.Biography</div>
+                    <textarea data-bind="value: _tempAuthor().Biography"></textarea>
+                </div>
+                <input type="button" value="@Text.Apply" data-bind='click: $root.ApplyAuthor' class="yellow-button" />
+                <input type="button" value="@Text.Cancel" data-bind='click: $root.CancelAuthor' class="grey-button" />
+            </div>
+        </div>
+
+        <div class="section-serie">
+            <div class="field-content series-content tags-list" data-bind="foreach: IncomeSeries">
+                <span class="tag"><span class="serie" data-bind="text: Name"></span><a class="delete" href="javascript:void(0)" data-bind='    click: $root.RemoveSerie'></a></span>
+            </div>
+            <span data-bind='visible: IncomeSeries.hasError, text: IncomeSeries.validationMessage'></span>
+            <div class="field-content">
+                <div class="field-title">@Text.Serie</div>
+                <input id="serieinput" class="hasAutocomplete" type="text" data-bind="autoComplete: IncomeSeries, source: '/api/webapi/SearchSeries/?json=true', type:'serie'" />
+                <a href="javascript:void(0)" data-bind='click: $root.AddSerie' class="white-button">@Text.AddNewSerie</a>
+            </div>
+            @*<div class="field-content">
+                    <a href="javascript:void(0)" data-bind='click: $root.AddSerie' class="white-button">@Text.AddNewSerie</a>
+                </div>*@
+            <div class="field-content bordered" data-bind='visible: _tempSerieVisible'>
+                <div class="field-content">
+                    <div class="field-title">@Text.SeriesName</div>
+                    <input type="text" data-bind="value: _tempSerie().Name, css: { error: _tempSerie().Name.hasError }" />
+                    <span data-bind='visible: _tempSerie().Name.hasError, text: _tempSerie().Name.validationMessage'></span>
+                </div>
+                <div class="field-content">
+                    <div class="field-title">@Text.Description</div>
+                    <textarea data-bind="value: _tempSerie().Description"></textarea>
+                </div>
+                <input type="button" value="@Text.Apply" data-bind='click: $root.ApplySerie' class="yellow-button" />
+                <input type="button" value="@Text.Cancel" data-bind='click: $root.CancelSerie' class="grey-button" />
+            </div>
+        </div>
+        <div class="section-genre">
+            <div class="field-content genres-content tags-list" data-bind="foreach: IncomeGenres">
+                <span class="tag"><span class="serie" data-bind="text: Name"></span><a class="delete" href="javascript:void(0)" data-bind='    click: $root.RemoveGenre'></a></span>
+            </div>
+            <div class="field-content">
+                <a href="javascript:void(0)" data-bind='click: $root.AddGenre' class="white-button">@Text.AddNewGenre</a>
+                <br />
+                <span class="error" data-bind='visible: IncomeGenres.hasError, text: IncomeGenres.validationMessage'></span>
+            </div>
+            <div class="field-content bordered" data-bind='visible: _tempGenreVisible'>
+                <div data-bind="if: _tempGenreVisible">
+                    <select id="rootGenres" data-bind='options:_genres, optionsText: "Name", value: _tempRootGenre'></select>
+                    <select id="childGenres" data-bind='options: _tempRootGenre().Children, optionsText: "Name", value: _selectedGenre'></select>
+                    @*<select data-bind='dropdown: _genres, options:_genres, optionsText: "Name", value: _tempRootGenre'></select>
+                        <select data-bind='dropdown: _tempRootGenre().Children, options: _tempRootGenre().Children, optionsText: "Name", value: _selectedGenre'></select>*@
+
+                    <div style="padding-top:10px;">
+                        <input type="button" value="@Text.Apply" data-bind='click: $root.ApplyGenre' class="yellow-button" />
+                        <input type="button" value="@Text.Cancel" data-bind='click: $root.CancelGenre' class="grey-button" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section-SimilarBook">
+            <div class="field-content series-content tags-list" data-bind="foreach: IncomeSimilarBooks">
+                <span class="tag"><span class="serie" data-bind="text: Name"></span><a class="delete" href="javascript:void(0)" data-bind='    click: $root.RemoveSimilarBook'></a></span>
+            </div>
+            <div class="field-content">
+                <div class="field-title">@Text.SimilarBooks</div>
+                <input id="bookinput" type="text" class="hasAutocomplete" data-bind="autoComplete: IncomeSimilarBooks, source: '/api/webapi/SearchBooks/?json=true', type:'book'" />
+                @*<a href="javascript:void(0)" data-bind='click: $root.AddSerie' class="white-button">@Text.AddNewSerie</a>*@
+            </div>
+        </div>
+
+        <input type="button" data-bind='click: $root.Save' class="yellow-button" value="@Text.Save" />
+    </div>
+</div>
+
+@{
+    Html.RenderPartial("~/Views/Income/IncomeShared.cshtml");
+}

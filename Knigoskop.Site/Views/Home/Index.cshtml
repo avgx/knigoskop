@@ -1,0 +1,94 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = string.Format("{0} | {1}", Text.MainPageTitle, Text.ProjectName);
+    string logoUrl = string.Format("{0}/content/img/logo-social.png?mode=pad&scale=both&maxheight=200&maxwidth=200", UriHelper.RootUrl);
+}
+
+@using Knigoskop.Site.Models
+@using Knigoskop.Site.Models.Shared
+@model MainPageModel
+
+@section FullWidthContent { dummy section to specify that we need page with 100% width }
+
+@section PageHeader
+{
+    <link rel="image_src" href="@logoUrl" />
+    <meta name="Description" content="@Text.ProjectDescription" />
+    <meta name="google-site-verification" content="McGMSKxsOh8yaZ_oriqmGLqcIgM4x41cnzJqXAAuCgM" />
+}
+
+@section FacebookOpenGraph
+{
+    @if (Request.IsFacebookAgent())
+    {
+        <meta property="og:url" content="@UriHelper.RootUrl" />
+        <meta property="og:title" content="@Text.ProjectName" />
+        <meta property="og:image" content="@logoUrl" />
+        <meta property="og:description" content="@Text.ProjectDescription" />
+    }
+}
+
+<div class="splash">
+    <div class="centered">
+        <div class="slogan">@Text.Slogan</div>
+        <div class="accent">
+            @Text.Accent @Model.Totals.BooksCount <a href="@Url.Action("Index", "Catalogue", new { viewType = CatalogueViewTypeEnum.Books.ToString().ToLower(), genreId = string.Empty })"
+                                              class ="menu-item">@StringHelper.Declension(Model.Totals.BooksCount, Text.BookSingular, Text.BookPlural, Text.BookPlural).ToLower()</a> @Text.And @Model.Totals.AuthorsCount <a 
+                                                                                                                                                                                                                 href="@Url.Action("Index", "Catalogue", new { viewType = CatalogueViewTypeEnum.Authors.ToString().ToLower(), genreId = string.Empty })"
+                                                                                                                                                                                                                 class ="menu-item">@StringHelper.Declension(Model.Totals.AuthorsCount, Text.AuthorSingular, Text.AuthorPlural, Text.AuthorPlural).ToLower()</a>
+        </div>
+        <div class="search">
+            <input type="text" id="searchText" class="search-main" placeholder="@Text.MainSearchPlaceHolder" />
+            <div id="floatingCirclesG" style="display: none;">
+                <div class="f_circleG" id="frotateG_01">
+                </div>
+                <div class="f_circleG" id="frotateG_02">
+                </div>
+                <div class="f_circleG" id="frotateG_03">
+                </div>
+                <div class="f_circleG" id="frotateG_04">
+                </div>
+                <div class="f_circleG" id="frotateG_05">
+                </div>
+                <div class="f_circleG" id="frotateG_06">
+                </div>
+                <div class="f_circleG" id="frotateG_07">
+                </div>
+                <div class="f_circleG" id="frotateG_08">
+                </div>
+            </div>
+            <a href="javascript:void(0);" title="@Text.SearchButtonHint" class="start-search" id="searchStart"></a>
+            @{ Html.RenderPartial("/Views/Partial/AutoSuggest.cshtml"); }
+        </div>
+    </div>
+</div>
+<div class="info">
+    <div class="new-stuff">
+        <div class="content">
+            <h2 style="white-space: nowrap"><span>@Text.NewBooks</span></h2>
+            @{ Html.RenderPartial("~/Views/Partial/BookList.cshtml", Model.TopBooks); }
+            <div style="text-align: center;">
+                <a class="more-books" href="@Url.Action("Index", "Catalogue", new { viewType = CatalogueViewTypeEnum.Books.ToString().ToLower(), genreId = string.Empty })">@Text.MoreBooks</a>
+            </div>
+        </div>
+    </div>
+    @if (Model.TopReviews.Any())
+    {
+        <div class="new-stuff">
+            <div class="content">
+                <h2 style="white-space: nowrap"><span>@Text.NewReviews</span></h2>
+                @{ Html.RenderPartial("~/Views/Partial/ReviewList.cshtml", new BookModel {Id = Guid.Empty, Reviews = Model.TopReviews}); }
+            </div>
+        </div>
+    }
+@*    <div class="new-stuff">
+        <div class="content">
+            <h2 style="white-space: nowrap"><span>test test test</span></h2>
+        </div>
+    </div>
+    <div class="new-stuff">
+        <div class="content">
+            <h2 style="white-space: nowrap"><span>test test test zomg zomg</span></h2>
+        </div>
+    </div> *@
+</div>

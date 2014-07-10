@@ -1,0 +1,3191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="what2read.me.v1Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AuthorInBooks">
+          <Key>
+            <PropertyRef Name="AuthorId" />
+            <PropertyRef Name="BookId" />
+          </Key>
+          <Property Name="AuthorId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="BookId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Authors">
+          <Key>
+            <PropertyRef Name="AuthorId" />
+          </Key>
+          <Property Name="AuthorId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Photo" Type="image" />
+          <Property Name="BirthDate" Type="datetime" />
+          <Property Name="DeathDate" Type="datetime" />
+          <Property Name="UserId" Type="uniqueidentifier" />
+          <Property Name="OfficialUrl" Type="nvarchar(max)" />
+          <Property Name="PhotoUpdated" Type="datetime" Nullable="false" />
+          <Property Name="FromWiki" Type="bit" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Biography" Type="nvarchar(max)" />
+          <Property Name="SourceUrl" Type="nvarchar(max)" />
+          <Property Name="NameFromWiki" Type="nvarchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="BookContent">
+          <Key>
+            <PropertyRef Name="BookContentId" />
+          </Key>
+          <Property Name="BookContentId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Content" Type="varbinary(max)" />
+          <Property Name="ContentType" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="IsOwnContent" Type="bit" Nullable="false" />
+          <Property Name="SourceFileName" Type="nvarchar" MaxLength="128" />
+          <Property Name="Size" Type="int" />
+          <Property Name="InternalBookId" Type="nvarchar" MaxLength="128" />
+          <Property Name="BookId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Source" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="BookInGenres">
+          <Key>
+            <PropertyRef Name="BookId" />
+            <PropertyRef Name="GenreId" />
+          </Key>
+          <Property Name="BookId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="GenreId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BookInSeries">
+          <Key>
+            <PropertyRef Name="BookId" />
+            <PropertyRef Name="SerieId" />
+            <PropertyRef Name="Position" />
+          </Key>
+          <Property Name="BookId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="SerieId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Position" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BookMedias">
+          <Key>
+            <PropertyRef Name="BookMediaId" />
+          </Key>
+          <Property Name="BookMediaId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="BookId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="MediaType" Type="smallint" Nullable="false" />
+          <Property Name="Content" Type="varbinary(max)" Nullable="false" />
+          <Property Name="MediaUpdated" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BookRelations">
+          <Key>
+            <PropertyRef Name="BookId" />
+            <PropertyRef Name="RelatedBookId" />
+          </Key>
+          <Property Name="BookId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RelatedBookId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Score" Type="float" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" />
+          <Property Name="IsRelatedByGenre" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Books">
+          <Key>
+            <PropertyRef Name="BookId" />
+          </Key>
+          <Property Name="BookId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="PagesCount" Type="int" />
+          <Property Name="Publisher" Type="nvarchar" MaxLength="512" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Cover" Type="varbinary(max)" />
+          <Property Name="CoverUpdated" Type="datetime" Nullable="false" />
+          <Property Name="ClearName" Type="nvarchar" MaxLength="256" />
+          <Property Name="Written" Type="int" />
+          <Property Name="IntBookId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="Published" Type="datetime" />
+          <Property Name="UserId" Type="uniqueidentifier" />
+          <Property Name="FromGoogleBooks" Type="bit" />
+          <Property Name="ISBN" Type="nvarchar" MaxLength="50" />
+          <Property Name="PublishDate" Type="datetime" />
+          <Property Name="UserDownloadAccess" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Citations">
+          <Key>
+            <PropertyRef Name="CitationId" />
+          </Key>
+          <Property Name="CitationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="BookId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Comments">
+          <Key>
+            <PropertyRef Name="CommentId" />
+          </Key>
+          <Property Name="CommentId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IsPublished" Type="bit" Nullable="false" />
+          <Property Name="Text" Type="nvarchar" MaxLength="512" Nullable="false" />
+          <Property Name="ParentId" Type="uniqueidentifier" />
+          <Property Name="BookId" Type="uniqueidentifier" />
+          <Property Name="AuthorId" Type="uniqueidentifier" />
+          <Property Name="SerieId" Type="uniqueidentifier" />
+          <Property Name="ReviewId" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="Complains">
+          <Key>
+            <PropertyRef Name="ComplainId" />
+          </Key>
+          <Property Name="ComplainId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="Reason" Type="nvarchar" MaxLength="256" />
+          <Property Name="CommentId" Type="uniqueidentifier" />
+          <Property Name="State" Type="smallint" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Devices">
+          <Key>
+            <PropertyRef Name="DeviceId" />
+          </Key>
+          <Property Name="DeviceId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Identifier" Type="nvarchar" MaxLength="64" />
+          <Property Name="Name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="128" />
+          <Property Name="Description" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Downloads">
+          <Key>
+            <PropertyRef Name="DownloadId" />
+          </Key>
+          <Property Name="DownloadId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="BookId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="DownloadType" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ExternalResources">
+          <Key>
+            <PropertyRef Name="ExternalResourceId" />
+          </Key>
+          <Property Name="ExternalResourceId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ResourceIcon" Type="image" />
+          <Property Name="ResourceName" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ExternalUris">
+          <Key>
+            <PropertyRef Name="BookId" />
+            <PropertyRef Name="ExternalResourceId" />
+          </Key>
+          <Property Name="BookId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ExternalResourceId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Uri" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Flags">
+          <Key>
+            <PropertyRef Name="FlagId" />
+          </Key>
+          <Property Name="FlagId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="BookId" Type="uniqueidentifier" />
+          <Property Name="AuthorId" Type="uniqueidentifier" />
+          <Property Name="SerieId" Type="uniqueidentifier" />
+          <Property Name="Name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="State" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Genres">
+          <Key>
+            <PropertyRef Name="GenreId" />
+          </Key>
+          <Property Name="GenreId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ParentId" Type="uniqueidentifier" />
+          <Property Name="Code" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Classifier" Type="nvarchar" MaxLength="128" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Description" Type="ntext" />
+        </EntityType>
+        <EntityType Name="Incomes">
+          <Key>
+            <PropertyRef Name="IncomeId" />
+          </Key>
+          <Property Name="IncomeId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Body" Type="xml" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="BookId" Type="uniqueidentifier" />
+          <Property Name="SerieId" Type="uniqueidentifier" />
+          <Property Name="AuthorId" Type="uniqueidentifier" />
+          <Property Name="IsPublished" Type="bit" Nullable="false" />
+          <Property Name="ItemType" Type="int" Nullable="false" />
+          <Property Name="ProcessedByUserId" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="OpdsLinks">
+          <Key>
+            <PropertyRef Name="OpdsLinkId" />
+          </Key>
+          <Property Name="OpdsLinkId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Uri" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="SearchUri" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="Ratings">
+          <Key>
+            <PropertyRef Name="RatingId" />
+          </Key>
+          <Property Name="RatingId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="BookId" Type="uniqueidentifier" />
+          <Property Name="AuthorId" Type="uniqueidentifier" />
+          <Property Name="SerieId" Type="uniqueidentifier" />
+          <Property Name="ReviewId" Type="uniqueidentifier" />
+          <Property Name="Value" Type="smallint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reviews">
+          <Key>
+            <PropertyRef Name="ReviewId" />
+          </Key>
+          <Property Name="ReviewId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="BookId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="512" Nullable="false" />
+          <Property Name="Text" Type="ntext" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="IsPublished" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Series">
+          <Key>
+            <PropertyRef Name="SerieId" />
+          </Key>
+          <Property Name="SerieId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Description" Type="ntext" />
+        </EntityType>
+        <EntityType Name="Subscriptions">
+          <Key>
+            <PropertyRef Name="SubscriptionId" />
+          </Key>
+          <Property Name="SubscriptionId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="BookId" Type="uniqueidentifier" />
+          <Property Name="AuthorId" Type="uniqueidentifier" />
+          <Property Name="SerieId" Type="uniqueidentifier" />
+          <Property Name="ReviewId" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="TranslatorsInBooks">
+          <Key>
+            <PropertyRef Name="TranslatorId" />
+          </Key>
+          <Property Name="TranslatorId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AuthorId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="BookId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserAuthProfiles">
+          <Key>
+            <PropertyRef Name="UserAuthProfileId" />
+          </Key>
+          <Property Name="UserAuthProfileId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ProviderName" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Id" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar(max)" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="PhotoUrl" Type="nvarchar(max)" />
+          <Property Name="IsAttached" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserInRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RoleId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserRoles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar(max)" />
+          <Property Name="Cellular" Type="nvarchar(max)" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="Avatar" Type="image" />
+          <Property Name="AvatarUpdated" Type="datetime" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="LastAccessed" Type="datetime" Nullable="false" />
+          <Property Name="IsLocked" Type="bit" Nullable="false" />
+          <Property Name="IsSubscriber" Type="bit" Nullable="false" />
+          <Property Name="Comment" Type="ntext" />
+          <Property Name="IntUserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserStats">
+          <Key>
+            <PropertyRef Name="UserStatId" />
+          </Key>
+          <Property Name="UserStatId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="BookId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="State" Type="smallint" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ViewStats">
+          <Key>
+            <PropertyRef Name="ViewStatId" />
+          </Key>
+          <Property Name="ViewStatId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" />
+          <Property Name="Address" Type="nvarchar" MaxLength="32" />
+          <Property Name="UserAgent" Type="nvarchar" MaxLength="256" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="BookId" Type="uniqueidentifier" />
+          <Property Name="SerieId" Type="uniqueidentifier" />
+          <Property Name="ReviewId" Type="uniqueidentifier" />
+          <Property Name="AuthorId" Type="uniqueidentifier" />
+          <Property Name="SessionId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__UsersInRo__RoleI__778AC167">
+          <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserInRoles" Type="Self.UserInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserRoles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="UserInRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AuthorInBooks_Authors">
+          <End Role="Authors" Type="Self.Authors" Multiplicity="1" />
+          <End Role="AuthorInBooks" Type="Self.AuthorInBooks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Authors">
+              <PropertyRef Name="AuthorId" />
+            </Principal>
+            <Dependent Role="AuthorInBooks">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AuthorInBooks_Books">
+          <End Role="Books" Type="Self.Books" Multiplicity="1" />
+          <End Role="AuthorInBooks" Type="Self.AuthorInBooks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="AuthorInBooks">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Authors_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Authors" Type="Self.Authors" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Authors">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookContent_Books">
+          <End Role="Books" Type="Self.Books" Multiplicity="1" />
+          <End Role="BookContent" Type="Self.BookContent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="BookContent">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookInGenres_Books">
+          <End Role="Books" Type="Self.Books" Multiplicity="1" />
+          <End Role="BookInGenres" Type="Self.BookInGenres" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="BookInGenres">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookInGenres_Genres">
+          <End Role="Genres" Type="Self.Genres" Multiplicity="1" />
+          <End Role="BookInGenres" Type="Self.BookInGenres" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genres">
+              <PropertyRef Name="GenreId" />
+            </Principal>
+            <Dependent Role="BookInGenres">
+              <PropertyRef Name="GenreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookInSeries_Books">
+          <End Role="Books" Type="Self.Books" Multiplicity="1" />
+          <End Role="BookInSeries" Type="Self.BookInSeries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="BookInSeries">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookInSeries_Series">
+          <End Role="Series" Type="Self.Series" Multiplicity="1" />
+          <End Role="BookInSeries" Type="Self.BookInSeries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Series">
+              <PropertyRef Name="SerieId" />
+            </Principal>
+            <Dependent Role="BookInSeries">
+              <PropertyRef Name="SerieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookMedia_Books">
+          <End Role="Books" Type="Self.Books" Multiplicity="1" />
+          <End Role="BookMedias" Type="Self.BookMedias" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="BookMedias">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookRelations_Books">
+          <End Role="Books" Type="Self.Books" Multiplicity="1" />
+          <End Role="BookRelations" Type="Self.BookRelations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="BookRelations">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookRelations_BooksRef">
+          <End Role="Books" Type="Self.Books" Multiplicity="1" />
+          <End Role="BookRelations" Type="Self.BookRelations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="BookRelations">
+              <PropertyRef Name="RelatedBookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookRelations_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="BookRelations" Type="Self.BookRelations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="BookRelations">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Books_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Books" Type="Self.Books" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Books">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Citations_Books">
+          <End Role="Books" Type="Self.Books" Multiplicity="1" />
+          <End Role="Citations" Type="Self.Citations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="Citations">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Citations_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Citations" Type="Self.Citations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Citations">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Authors">
+          <End Role="Authors" Type="Self.Authors" Multiplicity="0..1" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Authors">
+              <PropertyRef Name="AuthorId" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Books">
+          <End Role="Books" Type="Self.Books" Multiplicity="0..1" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Comments">
+          <End Role="Comments" Type="Self.Comments" Multiplicity="0..1" />
+          <End Role="Comments1" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comments">
+              <PropertyRef Name="CommentId" />
+            </Principal>
+            <Dependent Role="Comments1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Reviews">
+          <End Role="Reviews" Type="Self.Reviews" Multiplicity="0..1" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reviews">
+              <PropertyRef Name="ReviewId" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="ReviewId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Series">
+          <End Role="Series" Type="Self.Series" Multiplicity="0..1" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Series">
+              <PropertyRef Name="SerieId" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="SerieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Complains_Comments">
+          <End Role="Comments" Type="Self.Comments" Multiplicity="0..1" />
+          <End Role="Complains" Type="Self.Complains" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comments">
+              <PropertyRef Name="CommentId" />
+            </Principal>
+            <Dependent Role="Complains">
+              <PropertyRef Name="CommentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Complains_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Complains" Type="Self.Complains" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Complains">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Devices_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Devices" Type="Self.Devices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Devices">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Downloads_Books">
+          <End Role="Books" Type="Self.Books" Multiplicity="1" />
+          <End Role="Downloads" Type="Self.Downloads" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="Downloads">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Downloads_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Downloads" Type="Self.Downloads" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Downloads">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExternalUris_Books">
+          <End Role="Books" Type="Self.Books" Multiplicity="1" />
+          <End Role="ExternalUris" Type="Self.ExternalUris" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="ExternalUris">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExternalUris_ExternalResources">
+          <End Role="ExternalResources" Type="Self.ExternalResources" Multiplicity="1" />
+          <End Role="ExternalUris" Type="Self.ExternalUris" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExternalResources">
+              <PropertyRef Name="ExternalResourceId" />
+            </Principal>
+            <Dependent Role="ExternalUris">
+              <PropertyRef Name="ExternalResourceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Flags_Authors">
+          <End Role="Authors" Type="Self.Authors" Multiplicity="0..1" />
+          <End Role="Flags" Type="Self.Flags" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Authors">
+              <PropertyRef Name="AuthorId" />
+            </Principal>
+            <Dependent Role="Flags">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Flags_Books">
+          <End Role="Books" Type="Self.Books" Multiplicity="0..1" />
+          <End Role="Flags" Type="Self.Flags" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="Flags">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Flags_Series">
+          <End Role="Series" Type="Self.Series" Multiplicity="0..1" />
+          <End Role="Flags" Type="Self.Flags" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Series">
+              <PropertyRef Name="SerieId" />
+            </Principal>
+            <Dependent Role="Flags">
+              <PropertyRef Name="SerieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Genres_Genres">
+          <End Role="Genres" Type="Self.Genres" Multiplicity="0..1" />
+          <End Role="Genres1" Type="Self.Genres" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genres">
+              <PropertyRef Name="GenreId" />
+            </Principal>
+            <Dependent Role="Genres1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Incomes_Authors">
+          <End Role="Authors" Type="Self.Authors" Multiplicity="0..1" />
+          <End Role="Incomes" Type="Self.Incomes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Authors">
+              <PropertyRef Name="AuthorId" />
+            </Principal>
+            <Dependent Role="Incomes">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Incomes_Books">
+          <End Role="Books" Type="Self.Books" Multiplicity="0..1" />
+          <End Role="Incomes" Type="Self.Incomes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="Incomes">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Incomes_Series">
+          <End Role="Series" Type="Self.Series" Multiplicity="0..1" />
+          <End Role="Incomes" Type="Self.Incomes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Series">
+              <PropertyRef Name="SerieId" />
+            </Principal>
+            <Dependent Role="Incomes">
+              <PropertyRef Name="SerieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Incomes_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Incomes" Type="Self.Incomes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Incomes">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Incomes_Users1">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Incomes" Type="Self.Incomes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Incomes">
+              <PropertyRef Name="ProcessedByUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OpdsLinks_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="OpdsLinks" Type="Self.OpdsLinks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="OpdsLinks">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ratings_Authors">
+          <End Role="Authors" Type="Self.Authors" Multiplicity="0..1" />
+          <End Role="Ratings" Type="Self.Ratings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Authors">
+              <PropertyRef Name="AuthorId" />
+            </Principal>
+            <Dependent Role="Ratings">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ratings_Books">
+          <End Role="Books" Type="Self.Books" Multiplicity="0..1" />
+          <End Role="Ratings" Type="Self.Ratings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="Ratings">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ratings_Reviews">
+          <End Role="Reviews" Type="Self.Reviews" Multiplicity="0..1" />
+          <End Role="Ratings" Type="Self.Ratings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reviews">
+              <PropertyRef Name="ReviewId" />
+            </Principal>
+            <Dependent Role="Ratings">
+              <PropertyRef Name="ReviewId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ratings_Series">
+          <End Role="Series" Type="Self.Series" Multiplicity="0..1" />
+          <End Role="Ratings" Type="Self.Ratings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Series">
+              <PropertyRef Name="SerieId" />
+            </Principal>
+            <Dependent Role="Ratings">
+              <PropertyRef Name="SerieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ratings_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Ratings" Type="Self.Ratings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Ratings">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reviews_Books">
+          <End Role="Books" Type="Self.Books" Multiplicity="1" />
+          <End Role="Reviews" Type="Self.Reviews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="Reviews">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reviews_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Reviews" Type="Self.Reviews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Reviews">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subscriptions_Authors">
+          <End Role="Authors" Type="Self.Authors" Multiplicity="0..1" />
+          <End Role="Subscriptions" Type="Self.Subscriptions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Authors">
+              <PropertyRef Name="AuthorId" />
+            </Principal>
+            <Dependent Role="Subscriptions">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subscriptions_Books">
+          <End Role="Books" Type="Self.Books" Multiplicity="0..1" />
+          <End Role="Subscriptions" Type="Self.Subscriptions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="Subscriptions">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subscriptions_Reviews">
+          <End Role="Reviews" Type="Self.Reviews" Multiplicity="0..1" />
+          <End Role="Subscriptions" Type="Self.Subscriptions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reviews">
+              <PropertyRef Name="ReviewId" />
+            </Principal>
+            <Dependent Role="Subscriptions">
+              <PropertyRef Name="ReviewId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subscriptions_Series">
+          <End Role="Series" Type="Self.Series" Multiplicity="0..1" />
+          <End Role="Subscriptions" Type="Self.Subscriptions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Series">
+              <PropertyRef Name="SerieId" />
+            </Principal>
+            <Dependent Role="Subscriptions">
+              <PropertyRef Name="SerieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subscriptions_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Subscriptions" Type="Self.Subscriptions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Subscriptions">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TranslatorsInBooks_Authors">
+          <End Role="Authors" Type="Self.Authors" Multiplicity="1" />
+          <End Role="TranslatorsInBooks" Type="Self.TranslatorsInBooks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Authors">
+              <PropertyRef Name="AuthorId" />
+            </Principal>
+            <Dependent Role="TranslatorsInBooks">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TranslatorsInBooks_Books">
+          <End Role="Books" Type="Self.Books" Multiplicity="1" />
+          <End Role="TranslatorsInBooks" Type="Self.TranslatorsInBooks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="TranslatorsInBooks">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserAuthProfiles_User">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserAuthProfiles" Type="Self.UserAuthProfiles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserAuthProfiles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersInRoles_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserInRoles" Type="Self.UserInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserInRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserStats_Books">
+          <End Role="Books" Type="Self.Books" Multiplicity="1" />
+          <End Role="UserStats" Type="Self.UserStats" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="UserStats">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserStats_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserStats" Type="Self.UserStats" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserStats">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ViewStats_Authors">
+          <End Role="Authors" Type="Self.Authors" Multiplicity="0..1" />
+          <End Role="ViewStats" Type="Self.ViewStats" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Authors">
+              <PropertyRef Name="AuthorId" />
+            </Principal>
+            <Dependent Role="ViewStats">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ViewStats_Books">
+          <End Role="Books" Type="Self.Books" Multiplicity="0..1" />
+          <End Role="ViewStats" Type="Self.ViewStats" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="ViewStats">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ViewStats_Reviews">
+          <End Role="Reviews" Type="Self.Reviews" Multiplicity="0..1" />
+          <End Role="ViewStats" Type="Self.ViewStats" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reviews">
+              <PropertyRef Name="ReviewId" />
+            </Principal>
+            <Dependent Role="ViewStats">
+              <PropertyRef Name="ReviewId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ViewStats_Series">
+          <End Role="Series" Type="Self.Series" Multiplicity="0..1" />
+          <End Role="ViewStats" Type="Self.ViewStats" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Series">
+              <PropertyRef Name="SerieId" />
+            </Principal>
+            <Dependent Role="ViewStats">
+              <PropertyRef Name="SerieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ViewStats_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="ViewStats" Type="Self.ViewStats" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ViewStats">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="what2readmev1ModelStoreContainer">
+          <EntitySet Name="AuthorInBooks" EntityType="Self.AuthorInBooks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Authors" EntityType="Self.Authors" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BookContent" EntityType="Self.BookContent" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BookInGenres" EntityType="Self.BookInGenres" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BookInSeries" EntityType="Self.BookInSeries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BookMedias" EntityType="Self.BookMedias" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BookRelations" EntityType="Self.BookRelations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Books" EntityType="Self.Books" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Citations" EntityType="Self.Citations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Comments" EntityType="Self.Comments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Complains" EntityType="Self.Complains" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Devices" EntityType="Self.Devices" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Downloads" EntityType="Self.Downloads" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExternalResources" EntityType="Self.ExternalResources" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExternalUris" EntityType="Self.ExternalUris" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Flags" EntityType="Self.Flags" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Genres" EntityType="Self.Genres" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Incomes" EntityType="Self.Incomes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OpdsLinks" EntityType="Self.OpdsLinks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ratings" EntityType="Self.Ratings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reviews" EntityType="Self.Reviews" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Series" EntityType="Self.Series" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Subscriptions" EntityType="Self.Subscriptions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TranslatorsInBooks" EntityType="Self.TranslatorsInBooks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserAuthProfiles" EntityType="Self.UserAuthProfiles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserInRoles" EntityType="Self.UserInRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserStats" EntityType="Self.UserStats" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ViewStats" EntityType="Self.ViewStats" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__UsersInRo__RoleI__778AC167" Association="Self.FK__UsersInRo__RoleI__778AC167">
+            <End Role="UserRoles" EntitySet="UserRoles" />
+            <End Role="UserInRoles" EntitySet="UserInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AuthorInBooks_Authors" Association="Self.FK_AuthorInBooks_Authors">
+            <End Role="Authors" EntitySet="Authors" />
+            <End Role="AuthorInBooks" EntitySet="AuthorInBooks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AuthorInBooks_Books" Association="Self.FK_AuthorInBooks_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="AuthorInBooks" EntitySet="AuthorInBooks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Authors_Users" Association="Self.FK_Authors_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Authors" EntitySet="Authors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookContent_Books" Association="Self.FK_BookContent_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="BookContent" EntitySet="BookContent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookInGenres_Books" Association="Self.FK_BookInGenres_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="BookInGenres" EntitySet="BookInGenres" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookInGenres_Genres" Association="Self.FK_BookInGenres_Genres">
+            <End Role="Genres" EntitySet="Genres" />
+            <End Role="BookInGenres" EntitySet="BookInGenres" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookInSeries_Books" Association="Self.FK_BookInSeries_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="BookInSeries" EntitySet="BookInSeries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookInSeries_Series" Association="Self.FK_BookInSeries_Series">
+            <End Role="Series" EntitySet="Series" />
+            <End Role="BookInSeries" EntitySet="BookInSeries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookMedia_Books" Association="Self.FK_BookMedia_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="BookMedias" EntitySet="BookMedias" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookRelations_Books" Association="Self.FK_BookRelations_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="BookRelations" EntitySet="BookRelations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookRelations_BooksRef" Association="Self.FK_BookRelations_BooksRef">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="BookRelations" EntitySet="BookRelations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookRelations_Users" Association="Self.FK_BookRelations_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="BookRelations" EntitySet="BookRelations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Books_Users" Association="Self.FK_Books_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Books" EntitySet="Books" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Citations_Books" Association="Self.FK_Citations_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="Citations" EntitySet="Citations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Citations_Users" Association="Self.FK_Citations_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Citations" EntitySet="Citations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Authors" Association="Self.FK_Comments_Authors">
+            <End Role="Authors" EntitySet="Authors" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Books" Association="Self.FK_Comments_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Comments" Association="Self.FK_Comments_Comments">
+            <End Role="Comments" EntitySet="Comments" />
+            <End Role="Comments1" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Reviews" Association="Self.FK_Comments_Reviews">
+            <End Role="Reviews" EntitySet="Reviews" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Series" Association="Self.FK_Comments_Series">
+            <End Role="Series" EntitySet="Series" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Users" Association="Self.FK_Comments_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Complains_Comments" Association="Self.FK_Complains_Comments">
+            <End Role="Comments" EntitySet="Comments" />
+            <End Role="Complains" EntitySet="Complains" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Complains_Users" Association="Self.FK_Complains_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Complains" EntitySet="Complains" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Devices_Users" Association="Self.FK_Devices_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Devices" EntitySet="Devices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Downloads_Books" Association="Self.FK_Downloads_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="Downloads" EntitySet="Downloads" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Downloads_Users" Association="Self.FK_Downloads_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Downloads" EntitySet="Downloads" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExternalUris_Books" Association="Self.FK_ExternalUris_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="ExternalUris" EntitySet="ExternalUris" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExternalUris_ExternalResources" Association="Self.FK_ExternalUris_ExternalResources">
+            <End Role="ExternalResources" EntitySet="ExternalResources" />
+            <End Role="ExternalUris" EntitySet="ExternalUris" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Flags_Authors" Association="Self.FK_Flags_Authors">
+            <End Role="Authors" EntitySet="Authors" />
+            <End Role="Flags" EntitySet="Flags" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Flags_Books" Association="Self.FK_Flags_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="Flags" EntitySet="Flags" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Flags_Series" Association="Self.FK_Flags_Series">
+            <End Role="Series" EntitySet="Series" />
+            <End Role="Flags" EntitySet="Flags" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Genres_Genres" Association="Self.FK_Genres_Genres">
+            <End Role="Genres" EntitySet="Genres" />
+            <End Role="Genres1" EntitySet="Genres" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Incomes_Authors" Association="Self.FK_Incomes_Authors">
+            <End Role="Authors" EntitySet="Authors" />
+            <End Role="Incomes" EntitySet="Incomes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Incomes_Books" Association="Self.FK_Incomes_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="Incomes" EntitySet="Incomes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Incomes_Series" Association="Self.FK_Incomes_Series">
+            <End Role="Series" EntitySet="Series" />
+            <End Role="Incomes" EntitySet="Incomes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Incomes_Users" Association="Self.FK_Incomes_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Incomes" EntitySet="Incomes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Incomes_Users1" Association="Self.FK_Incomes_Users1">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Incomes" EntitySet="Incomes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OpdsLinks_Users" Association="Self.FK_OpdsLinks_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="OpdsLinks" EntitySet="OpdsLinks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ratings_Authors" Association="Self.FK_Ratings_Authors">
+            <End Role="Authors" EntitySet="Authors" />
+            <End Role="Ratings" EntitySet="Ratings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ratings_Books" Association="Self.FK_Ratings_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="Ratings" EntitySet="Ratings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ratings_Reviews" Association="Self.FK_Ratings_Reviews">
+            <End Role="Reviews" EntitySet="Reviews" />
+            <End Role="Ratings" EntitySet="Ratings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ratings_Series" Association="Self.FK_Ratings_Series">
+            <End Role="Series" EntitySet="Series" />
+            <End Role="Ratings" EntitySet="Ratings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ratings_Users" Association="Self.FK_Ratings_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Ratings" EntitySet="Ratings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reviews_Books" Association="Self.FK_Reviews_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="Reviews" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reviews_Users" Association="Self.FK_Reviews_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Reviews" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subscriptions_Authors" Association="Self.FK_Subscriptions_Authors">
+            <End Role="Authors" EntitySet="Authors" />
+            <End Role="Subscriptions" EntitySet="Subscriptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subscriptions_Books" Association="Self.FK_Subscriptions_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="Subscriptions" EntitySet="Subscriptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subscriptions_Reviews" Association="Self.FK_Subscriptions_Reviews">
+            <End Role="Reviews" EntitySet="Reviews" />
+            <End Role="Subscriptions" EntitySet="Subscriptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subscriptions_Series" Association="Self.FK_Subscriptions_Series">
+            <End Role="Series" EntitySet="Series" />
+            <End Role="Subscriptions" EntitySet="Subscriptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subscriptions_Users" Association="Self.FK_Subscriptions_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Subscriptions" EntitySet="Subscriptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TranslatorsInBooks_Authors" Association="Self.FK_TranslatorsInBooks_Authors">
+            <End Role="Authors" EntitySet="Authors" />
+            <End Role="TranslatorsInBooks" EntitySet="TranslatorsInBooks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TranslatorsInBooks_Books" Association="Self.FK_TranslatorsInBooks_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="TranslatorsInBooks" EntitySet="TranslatorsInBooks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserAuthProfiles_User" Association="Self.FK_UserAuthProfiles_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserAuthProfiles" EntitySet="UserAuthProfiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersInRoles_Users" Association="Self.FK_UsersInRoles_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserInRoles" EntitySet="UserInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserStats_Books" Association="Self.FK_UserStats_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="UserStats" EntitySet="UserStats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserStats_Users" Association="Self.FK_UserStats_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserStats" EntitySet="UserStats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ViewStats_Authors" Association="Self.FK_ViewStats_Authors">
+            <End Role="Authors" EntitySet="Authors" />
+            <End Role="ViewStats" EntitySet="ViewStats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ViewStats_Books" Association="Self.FK_ViewStats_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="ViewStats" EntitySet="ViewStats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ViewStats_Reviews" Association="Self.FK_ViewStats_Reviews">
+            <End Role="Reviews" EntitySet="Reviews" />
+            <End Role="ViewStats" EntitySet="ViewStats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ViewStats_Series" Association="Self.FK_ViewStats_Series">
+            <End Role="Series" EntitySet="Series" />
+            <End Role="ViewStats" EntitySet="ViewStats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ViewStats_Users" Association="Self.FK_ViewStats_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ViewStats" EntitySet="ViewStats" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Knigoskop.DataModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="Entities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Authors" EntityType="Knigoskop.DataModel.Author" />
+          <EntitySet Name="BookContents" EntityType="Knigoskop.DataModel.BookContent" />
+          <EntitySet Name="BookInSeries" EntityType="Knigoskop.DataModel.BookInSerie" />
+          <EntitySet Name="BookMedias" EntityType="Knigoskop.DataModel.BookMedia" />
+          <EntitySet Name="BookRelations" EntityType="Knigoskop.DataModel.BookRelation" />
+          <EntitySet Name="Books" EntityType="Knigoskop.DataModel.Book" />
+          <EntitySet Name="Comments" EntityType="Knigoskop.DataModel.Comment" />
+          <EntitySet Name="ExternalResources" EntityType="Knigoskop.DataModel.ExternalResource" />
+          <EntitySet Name="ExternalUris" EntityType="Knigoskop.DataModel.ExternalUri" />
+          <EntitySet Name="Genres" EntityType="Knigoskop.DataModel.Genre" />
+          <EntitySet Name="Ratings" EntityType="Knigoskop.DataModel.Rating" />
+          <EntitySet Name="Reviews" EntityType="Knigoskop.DataModel.Review" />
+          <EntitySet Name="Series" EntityType="Knigoskop.DataModel.Serie" />
+          <EntitySet Name="TranslatorsInBooks" EntityType="Knigoskop.DataModel.TranslatorsInBook" />
+          <EntitySet Name="UserAuthProfiles" EntityType="Knigoskop.DataModel.UserAuthProfile" />
+          <EntitySet Name="UserRoles" EntityType="Knigoskop.DataModel.UserRole" />
+          <EntitySet Name="Users" EntityType="Knigoskop.DataModel.User" />
+          <EntitySet Name="UserStats" EntityType="Knigoskop.DataModel.UserStat" />
+          <AssociationSet Name="FK_Authors_Users" Association="Knigoskop.DataModel.FK_Authors_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Author" EntitySet="Authors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Authors" Association="Knigoskop.DataModel.FK_Comments_Authors">
+            <End Role="Author" EntitySet="Authors" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ratings_Authors" Association="Knigoskop.DataModel.FK_Ratings_Authors">
+            <End Role="Author" EntitySet="Authors" />
+            <End Role="Rating" EntitySet="Ratings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TranslatorsInBooks_Authors" Association="Knigoskop.DataModel.FK_TranslatorsInBooks_Authors">
+            <End Role="Author" EntitySet="Authors" />
+            <End Role="TranslatorsInBook" EntitySet="TranslatorsInBooks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookContent_Books" Association="Knigoskop.DataModel.FK_BookContent_Books">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="BookContent" EntitySet="BookContents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookInSeries_Books" Association="Knigoskop.DataModel.FK_BookInSeries_Books">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="BookInSery" EntitySet="BookInSeries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookInSeries_Series" Association="Knigoskop.DataModel.FK_BookInSeries_Series">
+            <End Role="Series" EntitySet="Series" />
+            <End Role="BookInSery" EntitySet="BookInSeries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookMedia_Books" Association="Knigoskop.DataModel.FK_BookMedia_Books">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="BookMedia" EntitySet="BookMedias" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookRelations_Books" Association="Knigoskop.DataModel.FK_BookRelations_Books">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="BookRelation" EntitySet="BookRelations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookRelations_BooksRef" Association="Knigoskop.DataModel.FK_BookRelations_BooksRef">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="BookRelation" EntitySet="BookRelations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookRelations_Users" Association="Knigoskop.DataModel.FK_BookRelations_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="BookRelation" EntitySet="BookRelations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Books" Association="Knigoskop.DataModel.FK_Comments_Books">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExternalUris_Books" Association="Knigoskop.DataModel.FK_ExternalUris_Books">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="ExternalUri" EntitySet="ExternalUris" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ratings_Books" Association="Knigoskop.DataModel.FK_Ratings_Books">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="Rating" EntitySet="Ratings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reviews_Books" Association="Knigoskop.DataModel.FK_Reviews_Books">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="Review" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TranslatorsInBooks_Books" Association="Knigoskop.DataModel.FK_TranslatorsInBooks_Books">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="TranslatorsInBook" EntitySet="TranslatorsInBooks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserStats_Books" Association="Knigoskop.DataModel.FK_UserStats_Books">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="UserStat" EntitySet="UserStats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Reviews" Association="Knigoskop.DataModel.FK_Comments_Reviews">
+            <End Role="Review" EntitySet="Reviews" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Series" Association="Knigoskop.DataModel.FK_Comments_Series">
+            <End Role="Series" EntitySet="Series" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Users" Association="Knigoskop.DataModel.FK_Comments_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExternalUris_ExternalResources" Association="Knigoskop.DataModel.FK_ExternalUris_ExternalResources">
+            <End Role="ExternalResource" EntitySet="ExternalResources" />
+            <End Role="ExternalUri" EntitySet="ExternalUris" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Genres_Genres" Association="Knigoskop.DataModel.FK_Genres_Genres">
+            <End Role="Genre" EntitySet="Genres" />
+            <End Role="Genre1" EntitySet="Genres" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ratings_Reviews" Association="Knigoskop.DataModel.FK_Ratings_Reviews">
+            <End Role="Review" EntitySet="Reviews" />
+            <End Role="Rating" EntitySet="Ratings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ratings_Series" Association="Knigoskop.DataModel.FK_Ratings_Series">
+            <End Role="Series" EntitySet="Series" />
+            <End Role="Rating" EntitySet="Ratings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ratings_Users" Association="Knigoskop.DataModel.FK_Ratings_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Rating" EntitySet="Ratings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reviews_Users" Association="Knigoskop.DataModel.FK_Reviews_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Review" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserAuthProfiles_User" Association="Knigoskop.DataModel.FK_UserAuthProfiles_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserAuthProfile" EntitySet="UserAuthProfiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserStats_Users" Association="Knigoskop.DataModel.FK_UserStats_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserStat" EntitySet="UserStats" />
+          </AssociationSet>
+          <AssociationSet Name="AuthorInBooks" Association="Knigoskop.DataModel.AuthorInBooks">
+            <End Role="Author" EntitySet="Authors" />
+            <End Role="Book" EntitySet="Books" />
+          </AssociationSet>
+          <AssociationSet Name="BookInGenres" Association="Knigoskop.DataModel.BookInGenres">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="Genre" EntitySet="Genres" />
+          </AssociationSet>
+          <AssociationSet Name="UserInRoles" Association="Knigoskop.DataModel.UserInRoles">
+            <End Role="UserRole" EntitySet="UserRoles" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Comments" Association="Knigoskop.DataModel.FK_Comments_Comments">
+            <End Role="Comment" EntitySet="Comments" />
+            <End Role="Comment1" EntitySet="Comments" />
+          </AssociationSet>
+          <EntitySet Name="ViewStats" EntityType="Knigoskop.DataModel.ViewStat" />
+          <AssociationSet Name="FK_ViewStats_Authors" Association="Knigoskop.DataModel.FK_ViewStats_Authors">
+            <End Role="Author" EntitySet="Authors" />
+            <End Role="ViewStat" EntitySet="ViewStats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ViewStats_Books" Association="Knigoskop.DataModel.FK_ViewStats_Books">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="ViewStat" EntitySet="ViewStats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ViewStats_Reviews" Association="Knigoskop.DataModel.FK_ViewStats_Reviews">
+            <End Role="Review" EntitySet="Reviews" />
+            <End Role="ViewStat" EntitySet="ViewStats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ViewStats_Series" Association="Knigoskop.DataModel.FK_ViewStats_Series">
+            <End Role="Series" EntitySet="Series" />
+            <End Role="ViewStat" EntitySet="ViewStats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ViewStats_Users" Association="Knigoskop.DataModel.FK_ViewStats_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ViewStat" EntitySet="ViewStats" />
+          </AssociationSet>
+          <EntitySet Name="Subscriptions" EntityType="Knigoskop.DataModel.Subscription" />
+          <AssociationSet Name="FK_Subscriptions_Authors" Association="Knigoskop.DataModel.FK_Subscriptions_Authors">
+            <End Role="Author" EntitySet="Authors" />
+            <End Role="Subscription" EntitySet="Subscriptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subscriptions_Books" Association="Knigoskop.DataModel.FK_Subscriptions_Books">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="Subscription" EntitySet="Subscriptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subscriptions_Reviews" Association="Knigoskop.DataModel.FK_Subscriptions_Reviews">
+            <End Role="Review" EntitySet="Reviews" />
+            <End Role="Subscription" EntitySet="Subscriptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subscriptions_Series" Association="Knigoskop.DataModel.FK_Subscriptions_Series">
+            <End Role="Series" EntitySet="Series" />
+            <End Role="Subscription" EntitySet="Subscriptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subscriptions_Users" Association="Knigoskop.DataModel.FK_Subscriptions_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Subscription" EntitySet="Subscriptions" />
+          </AssociationSet>
+          <EntitySet Name="Incomes" EntityType="Knigoskop.DataModel.Income" />
+          <AssociationSet Name="FK_Incomes_Authors" Association="Knigoskop.DataModel.FK_Incomes_Authors">
+            <End Role="Author" EntitySet="Authors" />
+            <End Role="Income" EntitySet="Incomes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Incomes_Books" Association="Knigoskop.DataModel.FK_Incomes_Books">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="Income" EntitySet="Incomes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Incomes_Series" Association="Knigoskop.DataModel.FK_Incomes_Series">
+            <End Role="Serie" EntitySet="Series" />
+            <End Role="Income" EntitySet="Incomes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Incomes_Users" Association="Knigoskop.DataModel.FK_Incomes_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Income" EntitySet="Incomes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Books_Users" Association="Knigoskop.DataModel.FK_Books_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Book" EntitySet="Books" />
+          </AssociationSet>
+          <EntitySet Name="Complains" EntityType="Knigoskop.DataModel.Complain" />
+          <AssociationSet Name="FK_Complains_Comments" Association="Knigoskop.DataModel.FK_Complains_Comments">
+            <End Role="Comment" EntitySet="Comments" />
+            <End Role="Complain" EntitySet="Complains" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Complains_Users" Association="Knigoskop.DataModel.FK_Complains_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Complain" EntitySet="Complains" />
+          </AssociationSet>
+          <EntitySet Name="OpdsLinks" EntityType="Knigoskop.DataModel.OpdsLink" />
+          <AssociationSet Name="FK_OpdsLinks_Users" Association="Knigoskop.DataModel.FK_OpdsLinks_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="OpdsLink" EntitySet="OpdsLinks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Incomes_Users1" Association="Knigoskop.DataModel.FK_Incomes_Users1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Income" EntitySet="Incomes" />
+          </AssociationSet>
+          <EntitySet Name="Devices" EntityType="Knigoskop.DataModel.Device" />
+          <EntitySet Name="Flags" EntityType="Knigoskop.DataModel.Flag" />
+          <AssociationSet Name="FK_Flags_Authors" Association="Knigoskop.DataModel.FK_Flags_Authors">
+            <End Role="Author" EntitySet="Authors" />
+            <End Role="Flag" EntitySet="Flags" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Flags_Books" Association="Knigoskop.DataModel.FK_Flags_Books">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="Flag" EntitySet="Flags" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Devices_Users" Association="Knigoskop.DataModel.FK_Devices_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Device" EntitySet="Devices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Flags_Series" Association="Knigoskop.DataModel.FK_Flags_Series">
+            <End Role="Serie" EntitySet="Series" />
+            <End Role="Flag" EntitySet="Flags" />
+          </AssociationSet>
+          <EntitySet Name="Citations" EntityType="Knigoskop.DataModel.Citation" />
+          <AssociationSet Name="FK_Citations_Books" Association="Knigoskop.DataModel.FK_Citations_Books">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="Citation" EntitySet="Citations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Citations_Users" Association="Knigoskop.DataModel.FK_Citations_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Citation" EntitySet="Citations" />
+          </AssociationSet>
+          <EntitySet Name="Downloads" EntityType="Knigoskop.DataModel.Download" />
+          <AssociationSet Name="FK_Downloads_Books" Association="Knigoskop.DataModel.FK_Downloads_Books">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="Download" EntitySet="Downloads" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Downloads_Users" Association="Knigoskop.DataModel.FK_Downloads_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Download" EntitySet="Downloads" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="Author">
+          <Key>
+            <PropertyRef Name="AuthorId" />
+          </Key>
+          <Property Type="Guid" Name="AuthorId" Nullable="false" />
+          <Property Type="Binary" Name="Photo" MaxLength="Max" FixedLength="false" />
+          <Property Type="DateTime" Name="DeathDate" Precision="3" />
+          <Property Type="Guid" Name="UserId" />
+          <Property Type="String" Name="OfficialUrl" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="PhotoUpdated" Nullable="false" Precision="3" />
+          <Property Type="Boolean" Name="FromWiki" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Biography" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="SourceUrl" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="NameFromWiki" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="Knigoskop.DataModel.FK_Authors_Users" FromRole="Author" ToRole="User" />
+          <NavigationProperty Name="Comments" Relationship="Knigoskop.DataModel.FK_Comments_Authors" FromRole="Author" ToRole="Comment" />
+          <NavigationProperty Name="Ratings" Relationship="Knigoskop.DataModel.FK_Ratings_Authors" FromRole="Author" ToRole="Rating" />
+          <NavigationProperty Name="TranslatorsInBooks" Relationship="Knigoskop.DataModel.FK_TranslatorsInBooks_Authors" FromRole="Author" ToRole="TranslatorsInBook" />
+          <NavigationProperty Name="Books" Relationship="Knigoskop.DataModel.AuthorInBooks" FromRole="Author" ToRole="Book" />
+          <Property Type="DateTime" Name="BirthDate" Precision="3" />
+          <NavigationProperty Name="ViewStats" Relationship="Knigoskop.DataModel.FK_ViewStats_Authors" FromRole="Author" ToRole="ViewStat" />
+          <NavigationProperty Name="Subscriptions" Relationship="Knigoskop.DataModel.FK_Subscriptions_Authors" FromRole="Author" ToRole="Subscription" />
+          <NavigationProperty Name="Incomes" Relationship="Knigoskop.DataModel.FK_Incomes_Authors" FromRole="Author" ToRole="Income" />
+          <NavigationProperty Name="Flags" Relationship="Knigoskop.DataModel.FK_Flags_Authors" FromRole="Author" ToRole="Flag" />
+        </EntityType>
+        <EntityType Name="BookContent">
+          <Key>
+            <PropertyRef Name="BookContentId" />
+          </Key>
+          <Property Type="Guid" Name="BookContentId" Nullable="false" />
+          <Property Type="Binary" Name="Content" MaxLength="Max" FixedLength="false" />
+          <Property Type="String" Name="ContentType" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsOwnContent" Nullable="false" />
+          <Property Type="String" Name="SourceFileName" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="Size" />
+          <Property Type="String" Name="InternalBookId" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Type="Guid" Name="BookId" Nullable="false" />
+          <NavigationProperty Name="Book" Relationship="Knigoskop.DataModel.FK_BookContent_Books" FromRole="BookContent" ToRole="Book" />
+          <Property Name="Source" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="BookInSerie">
+          <Key>
+            <PropertyRef Name="BookId" />
+            <PropertyRef Name="SerieId" />
+            <PropertyRef Name="Position" />
+          </Key>
+          <Property Type="Guid" Name="BookId" Nullable="false" />
+          <Property Type="Guid" Name="SerieId" Nullable="false" />
+          <Property Type="Int32" Name="Position" Nullable="false" />
+          <NavigationProperty Name="Book" Relationship="Knigoskop.DataModel.FK_BookInSeries_Books" FromRole="BookInSery" ToRole="Book" />
+          <NavigationProperty Name="Series" Relationship="Knigoskop.DataModel.FK_BookInSeries_Series" FromRole="BookInSery" ToRole="Series" />
+        </EntityType>
+        <EntityType Name="BookMedia">
+          <Key>
+            <PropertyRef Name="BookMediaId" />
+          </Key>
+          <Property Type="Guid" Name="BookMediaId" Nullable="false" />
+          <Property Type="Guid" Name="BookId" Nullable="false" />
+          <Property Type="Int16" Name="MediaType" Nullable="false" />
+          <Property Type="Binary" Name="Content" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Type="DateTime" Name="MediaUpdated" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Book" Relationship="Knigoskop.DataModel.FK_BookMedia_Books" FromRole="BookMedia" ToRole="Book" />
+        </EntityType>
+        <EntityType Name="BookRelation">
+          <Key>
+            <PropertyRef Name="BookId" />
+            <PropertyRef Name="RelatedBookId" />
+          </Key>
+          <Property Type="Guid" Name="BookId" Nullable="false" />
+          <Property Type="Guid" Name="RelatedBookId" Nullable="false" />
+          <Property Type="Double" Name="Score" Nullable="false" />
+          <Property Type="Guid" Name="UserId" />
+          <NavigationProperty Name="Book" Relationship="Knigoskop.DataModel.FK_BookRelations_Books" FromRole="BookRelation" ToRole="Book" />
+          <NavigationProperty Name="BookRef" Relationship="Knigoskop.DataModel.FK_BookRelations_BooksRef" FromRole="BookRelation" ToRole="Book" />
+          <NavigationProperty Name="User" Relationship="Knigoskop.DataModel.FK_BookRelations_Users" FromRole="BookRelation" ToRole="User" />
+          <Property Type="Boolean" Name="IsRelatedByGenre" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="BookId" />
+          </Key>
+          <Property Type="Guid" Name="BookId" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="PagesCount" />
+          <Property Type="String" Name="Publisher" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Type="Binary" Name="Cover" MaxLength="Max" FixedLength="false" />
+          <Property Type="DateTime" Name="CoverUpdated" Nullable="false" Precision="3" />
+          <Property Type="String" Name="ClearName" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="Written" />
+          <NavigationProperty Name="BookContents" Relationship="Knigoskop.DataModel.FK_BookContent_Books" FromRole="Book" ToRole="BookContent" />
+          <NavigationProperty Name="BookInSeries" Relationship="Knigoskop.DataModel.FK_BookInSeries_Books" FromRole="Book" ToRole="BookInSery" />
+          <NavigationProperty Name="BookMedias" Relationship="Knigoskop.DataModel.FK_BookMedia_Books" FromRole="Book" ToRole="BookMedia" />
+          <NavigationProperty Name="BookRelations" Relationship="Knigoskop.DataModel.FK_BookRelations_Books" FromRole="Book" ToRole="BookRelation" />
+          <NavigationProperty Name="BookRelationsRef" Relationship="Knigoskop.DataModel.FK_BookRelations_BooksRef" FromRole="Book" ToRole="BookRelation" />
+          <NavigationProperty Name="Comments" Relationship="Knigoskop.DataModel.FK_Comments_Books" FromRole="Book" ToRole="Comment" />
+          <NavigationProperty Name="ExternalUris" Relationship="Knigoskop.DataModel.FK_ExternalUris_Books" FromRole="Book" ToRole="ExternalUri" />
+          <NavigationProperty Name="Ratings" Relationship="Knigoskop.DataModel.FK_Ratings_Books" FromRole="Book" ToRole="Rating" />
+          <NavigationProperty Name="Reviews" Relationship="Knigoskop.DataModel.FK_Reviews_Books" FromRole="Book" ToRole="Review" />
+          <NavigationProperty Name="TranslatorsInBooks" Relationship="Knigoskop.DataModel.FK_TranslatorsInBooks_Books" FromRole="Book" ToRole="TranslatorsInBook" />
+          <NavigationProperty Name="UserStats" Relationship="Knigoskop.DataModel.FK_UserStats_Books" FromRole="Book" ToRole="UserStat" />
+          <NavigationProperty Name="Authors" Relationship="Knigoskop.DataModel.AuthorInBooks" FromRole="Book" ToRole="Author" />
+          <NavigationProperty Name="Genres" Relationship="Knigoskop.DataModel.BookInGenres" FromRole="Book" ToRole="Genre" />
+          <NavigationProperty Name="ViewStats" Relationship="Knigoskop.DataModel.FK_ViewStats_Books" FromRole="Book" ToRole="ViewStat" />
+          <NavigationProperty Name="Subscriptions" Relationship="Knigoskop.DataModel.FK_Subscriptions_Books" FromRole="Book" ToRole="Subscription" />
+          <Property Type="Int32" Name="IntBookId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="Created" Nullable="false" Precision="3" />
+          <Property Type="DateTime" Name="Published" Precision="3" />
+          <NavigationProperty Name="Incomes" Relationship="Knigoskop.DataModel.FK_Incomes_Books" FromRole="Book" ToRole="Income" />
+          <Property Type="Guid" Name="UserId" />
+          <NavigationProperty Name="User" Relationship="Knigoskop.DataModel.FK_Books_Users" FromRole="Book" ToRole="User" />
+          <Property Type="String" Name="Description" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FromGoogleBooks" Type="Boolean" />
+          <Property Name="ISBN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PublishDate" Type="DateTime" Precision="3" />
+          <Property Name="UserDownloadAccess" Type="Knigoskop.DataModel.UserDownloadAccessEnum" Nullable="false" />
+          <NavigationProperty Name="Flags" Relationship="Knigoskop.DataModel.FK_Flags_Books" FromRole="Book" ToRole="Flag" />
+          <NavigationProperty Name="Citations" Relationship="Knigoskop.DataModel.FK_Citations_Books" FromRole="Book" ToRole="Citation" />
+          <NavigationProperty Name="Downloads" Relationship="Knigoskop.DataModel.FK_Downloads_Books" FromRole="Book" ToRole="Download" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="CommentId" />
+          </Key>
+          <Property Type="Guid" Name="CommentId" Nullable="false" />
+          <Property Type="DateTime" Name="Created" Nullable="false" Precision="3" />
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="Boolean" Name="IsPublished" Nullable="false" />
+          <Property Type="String" Name="Text" Nullable="false" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Type="Guid" Name="ParentId" />
+          <Property Type="Guid" Name="BookId" />
+          <Property Type="Guid" Name="AuthorId" />
+          <Property Type="Guid" Name="SerieId" />
+          <Property Type="Guid" Name="ReviewId" />
+          <NavigationProperty Name="Author" Relationship="Knigoskop.DataModel.FK_Comments_Authors" FromRole="Comment" ToRole="Author" />
+          <NavigationProperty Name="Book" Relationship="Knigoskop.DataModel.FK_Comments_Books" FromRole="Comment" ToRole="Book" />
+          <NavigationProperty Name="Review" Relationship="Knigoskop.DataModel.FK_Comments_Reviews" FromRole="Comment" ToRole="Review" />
+          <NavigationProperty Name="Series" Relationship="Knigoskop.DataModel.FK_Comments_Series" FromRole="Comment" ToRole="Series" />
+          <NavigationProperty Name="User" Relationship="Knigoskop.DataModel.FK_Comments_Users" FromRole="Comment" ToRole="User" />
+          <NavigationProperty Name="Children" Relationship="Knigoskop.DataModel.FK_Comments_Comments" FromRole="Comment" ToRole="Comment1" />
+          <NavigationProperty Name="Parent" Relationship="Knigoskop.DataModel.FK_Comments_Comments" FromRole="Comment1" ToRole="Comment" />
+          <NavigationProperty Name="Complains" Relationship="Knigoskop.DataModel.FK_Complains_Comments" FromRole="Comment" ToRole="Complain" />
+        </EntityType>
+        <EntityType Name="ExternalResource">
+          <Key>
+            <PropertyRef Name="ExternalResourceId" />
+          </Key>
+          <Property Type="Guid" Name="ExternalResourceId" Nullable="false" />
+          <Property Type="Binary" Name="ResourceIcon" MaxLength="Max" FixedLength="false" />
+          <Property Type="String" Name="ResourceName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ExternalUris" Relationship="Knigoskop.DataModel.FK_ExternalUris_ExternalResources" FromRole="ExternalResource" ToRole="ExternalUri" />
+        </EntityType>
+        <EntityType Name="ExternalUri">
+          <Key>
+            <PropertyRef Name="BookId" />
+            <PropertyRef Name="ExternalResourceId" />
+          </Key>
+          <Property Type="Guid" Name="BookId" Nullable="false" />
+          <Property Type="Guid" Name="ExternalResourceId" Nullable="false" />
+          <Property Type="String" Name="Uri" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Book" Relationship="Knigoskop.DataModel.FK_ExternalUris_Books" FromRole="ExternalUri" ToRole="Book" />
+          <NavigationProperty Name="ExternalResource" Relationship="Knigoskop.DataModel.FK_ExternalUris_ExternalResources" FromRole="ExternalUri" ToRole="ExternalResource" />
+        </EntityType>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="GenreId" />
+          </Key>
+          <Property Type="Guid" Name="GenreId" Nullable="false" />
+          <Property Type="Guid" Name="ParentId" />
+          <Property Type="String" Name="Code" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Classifier" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Child" Relationship="Knigoskop.DataModel.FK_Genres_Genres" FromRole="Genre" ToRole="Genre1" />
+          <NavigationProperty Name="Parent" Relationship="Knigoskop.DataModel.FK_Genres_Genres" FromRole="Genre1" ToRole="Genre" />
+          <NavigationProperty Name="Books" Relationship="Knigoskop.DataModel.BookInGenres" FromRole="Genre" ToRole="Book" />
+        </EntityType>
+        <EntityType Name="Rating">
+          <Key>
+            <PropertyRef Name="RatingId" />
+          </Key>
+          <Property Type="Guid" Name="RatingId" Nullable="false" />
+          <Property Type="DateTime" Name="Created" Nullable="false" Precision="3" />
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="Guid" Name="BookId" />
+          <Property Type="Guid" Name="AuthorId" />
+          <Property Type="Guid" Name="SerieId" />
+          <Property Type="Guid" Name="ReviewId" />
+          <NavigationProperty Name="Author" Relationship="Knigoskop.DataModel.FK_Ratings_Authors" FromRole="Rating" ToRole="Author" />
+          <NavigationProperty Name="Book" Relationship="Knigoskop.DataModel.FK_Ratings_Books" FromRole="Rating" ToRole="Book" />
+          <NavigationProperty Name="Review" Relationship="Knigoskop.DataModel.FK_Ratings_Reviews" FromRole="Rating" ToRole="Review" />
+          <NavigationProperty Name="Series" Relationship="Knigoskop.DataModel.FK_Ratings_Series" FromRole="Rating" ToRole="Series" />
+          <NavigationProperty Name="User" Relationship="Knigoskop.DataModel.FK_Ratings_Users" FromRole="Rating" ToRole="User" />
+          <Property Type="Int16" Name="Value" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Review">
+          <Key>
+            <PropertyRef Name="ReviewId" />
+          </Key>
+          <Property Type="Guid" Name="ReviewId" Nullable="false" />
+          <Property Type="Guid" Name="BookId" Nullable="false" />
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="Title" Nullable="false" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Text" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="Created" Nullable="false" Precision="3" />
+          <Property Type="Boolean" Name="IsPublished" Nullable="false" />
+          <NavigationProperty Name="Book" Relationship="Knigoskop.DataModel.FK_Reviews_Books" FromRole="Review" ToRole="Book" />
+          <NavigationProperty Name="Comments" Relationship="Knigoskop.DataModel.FK_Comments_Reviews" FromRole="Review" ToRole="Comment" />
+          <NavigationProperty Name="Ratings" Relationship="Knigoskop.DataModel.FK_Ratings_Reviews" FromRole="Review" ToRole="Rating" />
+          <NavigationProperty Name="User" Relationship="Knigoskop.DataModel.FK_Reviews_Users" FromRole="Review" ToRole="User" />
+          <NavigationProperty Name="ViewStats" Relationship="Knigoskop.DataModel.FK_ViewStats_Reviews" FromRole="Review" ToRole="ViewStat" />
+          <NavigationProperty Name="Subscriptions" Relationship="Knigoskop.DataModel.FK_Subscriptions_Reviews" FromRole="Review" ToRole="Subscription" />
+        </EntityType>
+        <EntityType Name="Serie">
+          <Key>
+            <PropertyRef Name="SerieId" />
+          </Key>
+          <Property Type="Guid" Name="SerieId" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="BookInSeries" Relationship="Knigoskop.DataModel.FK_BookInSeries_Series" FromRole="Series" ToRole="BookInSery" />
+          <NavigationProperty Name="Comments" Relationship="Knigoskop.DataModel.FK_Comments_Series" FromRole="Series" ToRole="Comment" />
+          <NavigationProperty Name="Ratings" Relationship="Knigoskop.DataModel.FK_Ratings_Series" FromRole="Series" ToRole="Rating" />
+          <NavigationProperty Name="ViewStats" Relationship="Knigoskop.DataModel.FK_ViewStats_Series" FromRole="Series" ToRole="ViewStat" />
+          <NavigationProperty Name="Subscriptions" Relationship="Knigoskop.DataModel.FK_Subscriptions_Series" FromRole="Series" ToRole="Subscription" />
+          <NavigationProperty Name="Incomes" Relationship="Knigoskop.DataModel.FK_Incomes_Series" FromRole="Serie" ToRole="Income" />
+          <NavigationProperty Name="Flags" Relationship="Knigoskop.DataModel.FK_Flags_Series" FromRole="Serie" ToRole="Flag" />
+        </EntityType>
+        <EntityType Name="TranslatorsInBook">
+          <Key>
+            <PropertyRef Name="TranslatorId" />
+          </Key>
+          <Property Type="Guid" Name="TranslatorId" Nullable="false" />
+          <Property Type="Guid" Name="AuthorId" Nullable="false" />
+          <Property Type="Guid" Name="BookId" Nullable="false" />
+          <NavigationProperty Name="Author" Relationship="Knigoskop.DataModel.FK_TranslatorsInBooks_Authors" FromRole="TranslatorsInBook" ToRole="Author" />
+          <NavigationProperty Name="Book" Relationship="Knigoskop.DataModel.FK_TranslatorsInBooks_Books" FromRole="TranslatorsInBook" ToRole="Book" />
+        </EntityType>
+        <EntityType Name="UserAuthProfile">
+          <Key>
+            <PropertyRef Name="UserAuthProfileId" />
+          </Key>
+          <Property Type="Guid" Name="UserAuthProfileId" Nullable="false" />
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="ProviderName" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Id" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LastName" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Email" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PhotoUrl" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="IsAttached" Nullable="false" Precision="3" />
+          <NavigationProperty Name="User" Relationship="Knigoskop.DataModel.FK_UserAuthProfiles_User" FromRole="UserAuthProfile" ToRole="User" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Type="Guid" Name="RoleId" Nullable="false" />
+          <Property Type="String" Name="RoleName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="Knigoskop.DataModel.UserInRoles" FromRole="UserRole" ToRole="User" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LastName" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Cellular" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Email" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="Binary" Name="Avatar" MaxLength="Max" FixedLength="false" />
+          <Property Type="DateTime" Name="AvatarUpdated" Nullable="false" Precision="3" />
+          <Property Type="DateTime" Name="Created" Nullable="false" Precision="3" />
+          <Property Type="DateTime" Name="LastAccessed" Nullable="false" Precision="3" />
+          <Property Type="Boolean" Name="IsLocked" Nullable="false" />
+          <Property Type="Boolean" Name="IsSubscriber" Nullable="false" />
+          <Property Type="String" Name="Comment" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Authors" Relationship="Knigoskop.DataModel.FK_Authors_Users" FromRole="User" ToRole="Author" />
+          <NavigationProperty Name="BookRelations" Relationship="Knigoskop.DataModel.FK_BookRelations_Users" FromRole="User" ToRole="BookRelation" />
+          <NavigationProperty Name="Comments" Relationship="Knigoskop.DataModel.FK_Comments_Users" FromRole="User" ToRole="Comment" />
+          <NavigationProperty Name="Ratings" Relationship="Knigoskop.DataModel.FK_Ratings_Users" FromRole="User" ToRole="Rating" />
+          <NavigationProperty Name="Reviews" Relationship="Knigoskop.DataModel.FK_Reviews_Users" FromRole="User" ToRole="Review" />
+          <NavigationProperty Name="UserAuthProfiles" Relationship="Knigoskop.DataModel.FK_UserAuthProfiles_User" FromRole="User" ToRole="UserAuthProfile" />
+          <NavigationProperty Name="UserStats" Relationship="Knigoskop.DataModel.FK_UserStats_Users" FromRole="User" ToRole="UserStat" />
+          <NavigationProperty Name="UserRoles" Relationship="Knigoskop.DataModel.UserInRoles" FromRole="User" ToRole="UserRole" />
+          <NavigationProperty Name="ViewStats" Relationship="Knigoskop.DataModel.FK_ViewStats_Users" FromRole="User" ToRole="ViewStat" />
+          <NavigationProperty Name="Subscriptions" Relationship="Knigoskop.DataModel.FK_Subscriptions_Users" FromRole="User" ToRole="Subscription" />
+          <Property Type="Int32" Name="IntUserId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Incomes" Relationship="Knigoskop.DataModel.FK_Incomes_Users" FromRole="User" ToRole="Income" />
+          <NavigationProperty Name="Books" Relationship="Knigoskop.DataModel.FK_Books_Users" FromRole="User" ToRole="Book" />
+          <NavigationProperty Name="Complains" Relationship="Knigoskop.DataModel.FK_Complains_Users" FromRole="User" ToRole="Complain" />
+          <NavigationProperty Name="OpdsLinks" Relationship="Knigoskop.DataModel.FK_OpdsLinks_Users" FromRole="User" ToRole="OpdsLink" />
+          <NavigationProperty Name="Incomes1" Relationship="Knigoskop.DataModel.FK_Incomes_Users1" FromRole="User" ToRole="Income" />
+          <NavigationProperty Name="Devices" Relationship="Knigoskop.DataModel.FK_Devices_Users" FromRole="User" ToRole="Device" />
+          <NavigationProperty Name="Citations" Relationship="Knigoskop.DataModel.FK_Citations_Users" FromRole="User" ToRole="Citation" />
+          <NavigationProperty Name="Downloads" Relationship="Knigoskop.DataModel.FK_Downloads_Users" FromRole="User" ToRole="Download" />
+        </EntityType>
+        <EntityType Name="UserStat">
+          <Key>
+            <PropertyRef Name="UserStatId" />
+          </Key>
+          <Property Type="Guid" Name="UserStatId" Nullable="false" />
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="Guid" Name="BookId" Nullable="false" />
+          <Property Type="Knigoskop.DataModel.UserStatStateEnum" Name="State" Nullable="false" />
+          <NavigationProperty Name="Book" Relationship="Knigoskop.DataModel.FK_UserStats_Books" FromRole="UserStat" ToRole="Book" />
+          <NavigationProperty Name="User" Relationship="Knigoskop.DataModel.FK_UserStats_Users" FromRole="UserStat" ToRole="User" />
+          <Property Type="DateTime" Name="Created" Nullable="false" Precision="3" />
+        </EntityType>
+        <Association Name="FK_Authors_Users">
+          <End Type="Knigoskop.DataModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.Author" Role="Author" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Author">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Authors">
+          <End Type="Knigoskop.DataModel.Author" Role="Author" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Author">
+              <PropertyRef Name="AuthorId" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ratings_Authors">
+          <End Type="Knigoskop.DataModel.Author" Role="Author" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.Rating" Role="Rating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Author">
+              <PropertyRef Name="AuthorId" />
+            </Principal>
+            <Dependent Role="Rating">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TranslatorsInBooks_Authors">
+          <End Type="Knigoskop.DataModel.Author" Role="Author" Multiplicity="1" />
+          <End Type="Knigoskop.DataModel.TranslatorsInBook" Role="TranslatorsInBook" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Author">
+              <PropertyRef Name="AuthorId" />
+            </Principal>
+            <Dependent Role="TranslatorsInBook">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookContent_Books">
+          <End Type="Knigoskop.DataModel.Book" Role="Book" Multiplicity="1" />
+          <End Type="Knigoskop.DataModel.BookContent" Role="BookContent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="BookContent">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookInSeries_Books">
+          <End Type="Knigoskop.DataModel.Book" Role="Book" Multiplicity="1" />
+          <End Type="Knigoskop.DataModel.BookInSerie" Role="BookInSery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="BookInSery">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookInSeries_Series">
+          <End Type="Knigoskop.DataModel.Serie" Role="Series" Multiplicity="1" />
+          <End Type="Knigoskop.DataModel.BookInSerie" Role="BookInSery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Series">
+              <PropertyRef Name="SerieId" />
+            </Principal>
+            <Dependent Role="BookInSery">
+              <PropertyRef Name="SerieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookMedia_Books">
+          <End Type="Knigoskop.DataModel.Book" Role="Book" Multiplicity="1" />
+          <End Type="Knigoskop.DataModel.BookMedia" Role="BookMedia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="BookMedia">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookRelations_Books">
+          <End Type="Knigoskop.DataModel.Book" Role="Book" Multiplicity="1" />
+          <End Type="Knigoskop.DataModel.BookRelation" Role="BookRelation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="BookRelation">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookRelations_BooksRef">
+          <End Type="Knigoskop.DataModel.Book" Role="Book" Multiplicity="1" />
+          <End Type="Knigoskop.DataModel.BookRelation" Role="BookRelation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="BookRelation">
+              <PropertyRef Name="RelatedBookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookRelations_Users">
+          <End Type="Knigoskop.DataModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.BookRelation" Role="BookRelation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="BookRelation">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Books">
+          <End Type="Knigoskop.DataModel.Book" Role="Book" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExternalUris_Books">
+          <End Type="Knigoskop.DataModel.Book" Role="Book" Multiplicity="1" />
+          <End Type="Knigoskop.DataModel.ExternalUri" Role="ExternalUri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="ExternalUri">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ratings_Books">
+          <End Type="Knigoskop.DataModel.Book" Role="Book" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.Rating" Role="Rating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="Rating">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reviews_Books">
+          <End Type="Knigoskop.DataModel.Book" Role="Book" Multiplicity="1" />
+          <End Type="Knigoskop.DataModel.Review" Role="Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TranslatorsInBooks_Books">
+          <End Type="Knigoskop.DataModel.Book" Role="Book" Multiplicity="1" />
+          <End Type="Knigoskop.DataModel.TranslatorsInBook" Role="TranslatorsInBook" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="TranslatorsInBook">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserStats_Books">
+          <End Type="Knigoskop.DataModel.Book" Role="Book" Multiplicity="1" />
+          <End Type="Knigoskop.DataModel.UserStat" Role="UserStat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="UserStat">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Reviews">
+          <End Type="Knigoskop.DataModel.Review" Role="Review" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Review">
+              <PropertyRef Name="ReviewId" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="ReviewId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Series">
+          <End Type="Knigoskop.DataModel.Serie" Role="Series" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Series">
+              <PropertyRef Name="SerieId" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="SerieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Users">
+          <End Type="Knigoskop.DataModel.User" Role="User" Multiplicity="1" />
+          <End Type="Knigoskop.DataModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExternalUris_ExternalResources">
+          <End Type="Knigoskop.DataModel.ExternalResource" Role="ExternalResource" Multiplicity="1" />
+          <End Type="Knigoskop.DataModel.ExternalUri" Role="ExternalUri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExternalResource">
+              <PropertyRef Name="ExternalResourceId" />
+            </Principal>
+            <Dependent Role="ExternalUri">
+              <PropertyRef Name="ExternalResourceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Genres_Genres">
+          <End Type="Knigoskop.DataModel.Genre" Role="Genre" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.Genre" Role="Genre1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genre">
+              <PropertyRef Name="GenreId" />
+            </Principal>
+            <Dependent Role="Genre1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ratings_Reviews">
+          <End Type="Knigoskop.DataModel.Review" Role="Review" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.Rating" Role="Rating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Review">
+              <PropertyRef Name="ReviewId" />
+            </Principal>
+            <Dependent Role="Rating">
+              <PropertyRef Name="ReviewId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ratings_Series">
+          <End Type="Knigoskop.DataModel.Serie" Role="Series" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.Rating" Role="Rating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Series">
+              <PropertyRef Name="SerieId" />
+            </Principal>
+            <Dependent Role="Rating">
+              <PropertyRef Name="SerieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ratings_Users">
+          <End Type="Knigoskop.DataModel.User" Role="User" Multiplicity="1" />
+          <End Type="Knigoskop.DataModel.Rating" Role="Rating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Rating">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reviews_Users">
+          <End Type="Knigoskop.DataModel.User" Role="User" Multiplicity="1" />
+          <End Type="Knigoskop.DataModel.Review" Role="Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserAuthProfiles_User">
+          <End Type="Knigoskop.DataModel.User" Role="User" Multiplicity="1" />
+          <End Type="Knigoskop.DataModel.UserAuthProfile" Role="UserAuthProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserAuthProfile">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserStats_Users">
+          <End Type="Knigoskop.DataModel.User" Role="User" Multiplicity="1" />
+          <End Type="Knigoskop.DataModel.UserStat" Role="UserStat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserStat">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AuthorInBooks">
+          <End Type="Knigoskop.DataModel.Author" Role="Author" Multiplicity="*" />
+          <End Type="Knigoskop.DataModel.Book" Role="Book" Multiplicity="*" />
+        </Association>
+        <Association Name="BookInGenres">
+          <End Type="Knigoskop.DataModel.Book" Role="Book" Multiplicity="*" />
+          <End Type="Knigoskop.DataModel.Genre" Role="Genre" Multiplicity="*" />
+        </Association>
+        <Association Name="UserInRoles">
+          <End Type="Knigoskop.DataModel.UserRole" Role="UserRole" Multiplicity="*" />
+          <End Type="Knigoskop.DataModel.User" Role="User" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Comments_Comments">
+          <End Type="Knigoskop.DataModel.Comment" Role="Comment" Multiplicity="0..1" >
+          </End>
+          <End Type="Knigoskop.DataModel.Comment" Role="Comment1" Multiplicity="*" >
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="Comment">
+              <PropertyRef Name="CommentId" />
+            </Principal>
+            <Dependent Role="Comment1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ViewStat">
+          <Key>
+            <PropertyRef Name="ViewStatId" />
+          </Key>
+          <Property Type="Guid" Name="ViewStatId" Nullable="false" />
+          <Property Type="Guid" Name="UserId" />
+          <Property Type="String" Name="Address" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="UserAgent" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="Created" Nullable="false" Precision="3" />
+          <Property Type="Guid" Name="BookId" />
+          <Property Type="Guid" Name="SerieId" />
+          <Property Type="Guid" Name="ReviewId" />
+          <Property Type="Guid" Name="AuthorId" />
+          <NavigationProperty Name="Author" Relationship="Knigoskop.DataModel.FK_ViewStats_Authors" FromRole="ViewStat" ToRole="Author" />
+          <NavigationProperty Name="Book" Relationship="Knigoskop.DataModel.FK_ViewStats_Books" FromRole="ViewStat" ToRole="Book" />
+          <NavigationProperty Name="Review" Relationship="Knigoskop.DataModel.FK_ViewStats_Reviews" FromRole="ViewStat" ToRole="Review" />
+          <NavigationProperty Name="Series" Relationship="Knigoskop.DataModel.FK_ViewStats_Series" FromRole="ViewStat" ToRole="Series" />
+          <NavigationProperty Name="User" Relationship="Knigoskop.DataModel.FK_ViewStats_Users" FromRole="ViewStat" ToRole="User" />
+          <Property Type="Guid" Name="SessionId" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ViewStats_Authors">
+          <End Type="Knigoskop.DataModel.Author" Role="Author" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.ViewStat" Role="ViewStat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Author">
+              <PropertyRef Name="AuthorId" />
+            </Principal>
+            <Dependent Role="ViewStat">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ViewStats_Books">
+          <End Type="Knigoskop.DataModel.Book" Role="Book" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.ViewStat" Role="ViewStat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="ViewStat">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ViewStats_Reviews">
+          <End Type="Knigoskop.DataModel.Review" Role="Review" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.ViewStat" Role="ViewStat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Review">
+              <PropertyRef Name="ReviewId" />
+            </Principal>
+            <Dependent Role="ViewStat">
+              <PropertyRef Name="ReviewId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ViewStats_Series">
+          <End Type="Knigoskop.DataModel.Serie" Role="Series" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.ViewStat" Role="ViewStat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Series">
+              <PropertyRef Name="SerieId" />
+            </Principal>
+            <Dependent Role="ViewStat">
+              <PropertyRef Name="SerieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ViewStats_Users">
+          <End Type="Knigoskop.DataModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.ViewStat" Role="ViewStat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ViewStat">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EnumType Name="UserStatStateEnum" UnderlyingType="Int16">
+          <Member Name="None" Value="0" />
+          <Member Name="WantsToRead" Value="1" />
+          <Member Name="Read" Value="2" />
+          <Member Name="IsReading" Value="3" />
+        </EnumType>
+        <EntityType Name="Subscription">
+          <Key>
+            <PropertyRef Name="SubscriptionId" />
+          </Key>
+          <Property Type="Guid" Name="SubscriptionId" Nullable="false" />
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="Guid" Name="BookId" />
+          <Property Type="Guid" Name="AuthorId" />
+          <Property Type="Guid" Name="SerieId" />
+          <Property Type="Guid" Name="ReviewId" />
+          <NavigationProperty Name="Author" Relationship="Knigoskop.DataModel.FK_Subscriptions_Authors" FromRole="Subscription" ToRole="Author" />
+          <NavigationProperty Name="Book" Relationship="Knigoskop.DataModel.FK_Subscriptions_Books" FromRole="Subscription" ToRole="Book" />
+          <NavigationProperty Name="Review" Relationship="Knigoskop.DataModel.FK_Subscriptions_Reviews" FromRole="Subscription" ToRole="Review" />
+          <NavigationProperty Name="Series" Relationship="Knigoskop.DataModel.FK_Subscriptions_Series" FromRole="Subscription" ToRole="Series" />
+          <NavigationProperty Name="User" Relationship="Knigoskop.DataModel.FK_Subscriptions_Users" FromRole="Subscription" ToRole="User" />
+          <Property Type="DateTime" Name="Created" Nullable="false" Precision="3" />
+        </EntityType>
+        <Association Name="FK_Subscriptions_Authors">
+          <End Type="Knigoskop.DataModel.Author" Role="Author" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.Subscription" Role="Subscription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Author">
+              <PropertyRef Name="AuthorId" />
+            </Principal>
+            <Dependent Role="Subscription">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subscriptions_Books">
+          <End Type="Knigoskop.DataModel.Book" Role="Book" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.Subscription" Role="Subscription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="Subscription">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subscriptions_Reviews">
+          <End Type="Knigoskop.DataModel.Review" Role="Review" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.Subscription" Role="Subscription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Review">
+              <PropertyRef Name="ReviewId" />
+            </Principal>
+            <Dependent Role="Subscription">
+              <PropertyRef Name="ReviewId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subscriptions_Series">
+          <End Type="Knigoskop.DataModel.Serie" Role="Series" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.Subscription" Role="Subscription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Series">
+              <PropertyRef Name="SerieId" />
+            </Principal>
+            <Dependent Role="Subscription">
+              <PropertyRef Name="SerieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subscriptions_Users">
+          <End Type="Knigoskop.DataModel.User" Role="User" Multiplicity="1" />
+          <End Type="Knigoskop.DataModel.Subscription" Role="Subscription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Subscription">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Income">
+          <Key>
+            <PropertyRef Name="IncomeId" />
+          </Key>
+          <Property Type="Guid" Name="IncomeId" Nullable="false" />
+          <Property Type="String" Name="Body" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="Created" Nullable="false" Precision="3" />
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="Guid" Name="BookId" />
+          <Property Type="Guid" Name="SerieId" />
+          <Property Type="Guid" Name="AuthorId" />
+          <Property Type="Boolean" Name="IsPublished" Nullable="false" />
+          <Property Type="Int32" Name="ItemType" Nullable="false" />
+          <NavigationProperty Name="Author" Relationship="Knigoskop.DataModel.FK_Incomes_Authors" FromRole="Income" ToRole="Author" />
+          <NavigationProperty Name="Book" Relationship="Knigoskop.DataModel.FK_Incomes_Books" FromRole="Income" ToRole="Book" />
+          <NavigationProperty Name="Series" Relationship="Knigoskop.DataModel.FK_Incomes_Series" FromRole="Income" ToRole="Serie" />
+          <NavigationProperty Name="User" Relationship="Knigoskop.DataModel.FK_Incomes_Users" FromRole="Income" ToRole="User" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessedByUserId" Type="Guid" />
+          <NavigationProperty Name="ProcessedBy" Relationship="Knigoskop.DataModel.FK_Incomes_Users1" FromRole="Income" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Incomes_Authors">
+          <End Type="Knigoskop.DataModel.Author" Role="Author" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.Income" Role="Income" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Author">
+              <PropertyRef Name="AuthorId" />
+            </Principal>
+            <Dependent Role="Income">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Incomes_Books">
+          <End Type="Knigoskop.DataModel.Book" Role="Book" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.Income" Role="Income" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="Income">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Incomes_Series">
+          <End Type="Knigoskop.DataModel.Serie" Role="Serie" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.Income" Role="Income" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Serie">
+              <PropertyRef Name="SerieId" />
+            </Principal>
+            <Dependent Role="Income">
+              <PropertyRef Name="SerieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Incomes_Users">
+          <End Type="Knigoskop.DataModel.User" Role="User" Multiplicity="1" />
+          <End Type="Knigoskop.DataModel.Income" Role="Income" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Income">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Books_Users">
+          <End Type="Knigoskop.DataModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.Book" Role="Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Book">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Complain">
+          <Key>
+            <PropertyRef Name="ComplainId" />
+          </Key>
+          <Property Type="Guid" Name="ComplainId" Nullable="false" />
+          <Property Type="DateTime" Name="Created" Nullable="false" Precision="3" />
+          <Property Type="String" Name="Reason" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="Guid" Name="CommentId" />
+          <Property Type="Int16" Name="State" Nullable="false" />
+          <NavigationProperty Name="Comment" Relationship="Knigoskop.DataModel.FK_Complains_Comments" FromRole="Complain" ToRole="Comment" />
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Knigoskop.DataModel.FK_Complains_Users" FromRole="Complain" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Complains_Comments">
+          <End Type="Knigoskop.DataModel.Comment" Role="Comment" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.Complain" Role="Complain" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comment">
+              <PropertyRef Name="CommentId" />
+            </Principal>
+            <Dependent Role="Complain">
+              <PropertyRef Name="CommentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Complains_Users">
+          <End Type="Knigoskop.DataModel.User" Role="User" Multiplicity="1" />
+          <End Type="Knigoskop.DataModel.Complain" Role="Complain" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Complain">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="OpdsLink">
+          <Key>
+            <PropertyRef Name="OpdsLinkId" />
+          </Key>
+          <Property Type="Guid" Name="OpdsLinkId" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Uri" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="SearchUri" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="Guid" Name="UserId" />
+          <NavigationProperty Name="User" Relationship="Knigoskop.DataModel.FK_OpdsLinks_Users" FromRole="OpdsLink" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_OpdsLinks_Users">
+          <End Type="Knigoskop.DataModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.OpdsLink" Role="OpdsLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="OpdsLink">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Incomes_Users1">
+          <End Type="Knigoskop.DataModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.Income" Role="Income" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Income">
+              <PropertyRef Name="ProcessedByUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EnumType Name="UserDownloadAccessEnum">
+          <Member Name="Forbidden" Value="0" />
+          <Member Name="Free" Value="1" />
+        </EnumType>
+        <EntityType Name="Device">
+          <Key>
+            <PropertyRef Name="DeviceId" />
+          </Key>
+          <Property Name="DeviceId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="Identifier" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="Knigoskop.DataModel.FK_Devices_Users" FromRole="Device" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Flag">
+          <Key>
+            <PropertyRef Name="FlagId" />
+          </Key>
+          <Property Name="FlagId" Type="Guid" Nullable="false" />
+          <Property Name="BookId" Type="Guid" />
+          <Property Name="AuthorId" Type="Guid" />
+          <Property Name="SerieId" Type="Guid" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Author" Relationship="Knigoskop.DataModel.FK_Flags_Authors" FromRole="Flag" ToRole="Author" />
+          <NavigationProperty Name="Book" Relationship="Knigoskop.DataModel.FK_Flags_Books" FromRole="Flag" ToRole="Book" />
+          <NavigationProperty Name="Series" Relationship="Knigoskop.DataModel.FK_Flags_Series" FromRole="Flag" ToRole="Serie" />
+        </EntityType>
+        <Association Name="FK_Flags_Authors">
+          <End Type="Knigoskop.DataModel.Author" Role="Author" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.Flag" Role="Flag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Author">
+              <PropertyRef Name="AuthorId" />
+            </Principal>
+            <Dependent Role="Flag">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Flags_Books">
+          <End Type="Knigoskop.DataModel.Book" Role="Book" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.Flag" Role="Flag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="Flag">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Devices_Users">
+          <End Type="Knigoskop.DataModel.User" Role="User" Multiplicity="1" />
+          <End Type="Knigoskop.DataModel.Device" Role="Device" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Device">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Flags_Series">
+          <End Type="Knigoskop.DataModel.Serie" Role="Serie" Multiplicity="0..1" />
+          <End Type="Knigoskop.DataModel.Flag" Role="Flag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Serie">
+              <PropertyRef Name="SerieId" />
+            </Principal>
+            <Dependent Role="Flag">
+              <PropertyRef Name="SerieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Citation">
+          <Key>
+            <PropertyRef Name="CitationId" />
+          </Key>
+          <Property Name="CitationId" Type="Guid" Nullable="false" />
+          <Property Name="BookId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="Text" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Book" Relationship="Knigoskop.DataModel.FK_Citations_Books" FromRole="Citation" ToRole="Book" />
+          <NavigationProperty Name="User" Relationship="Knigoskop.DataModel.FK_Citations_Users" FromRole="Citation" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Citations_Books">
+          <End Type="Knigoskop.DataModel.Book" Role="Book" Multiplicity="1" />
+          <End Type="Knigoskop.DataModel.Citation" Role="Citation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="Citation">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Citations_Users">
+          <End Type="Knigoskop.DataModel.User" Role="User" Multiplicity="1" />
+          <End Type="Knigoskop.DataModel.Citation" Role="Citation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Citation">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Download">
+          <Key>
+            <PropertyRef Name="DownloadId" />
+          </Key>
+          <Property Name="DownloadId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="BookId" Type="Guid" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DownloadType" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Book" Relationship="Knigoskop.DataModel.FK_Downloads_Books" FromRole="Download" ToRole="Book" />
+          <NavigationProperty Name="User" Relationship="Knigoskop.DataModel.FK_Downloads_Users" FromRole="Download" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Downloads_Books">
+          <End Type="Knigoskop.DataModel.Book" Role="Book" Multiplicity="1" />
+          <End Type="Knigoskop.DataModel.Download" Role="Download" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="Download">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Downloads_Users">
+          <End Type="Knigoskop.DataModel.User" Role="User" Multiplicity="1" />
+          <End Type="Knigoskop.DataModel.Download" Role="Download" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Download">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="what2readmev1ModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Authors">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.Author">
+              <MappingFragment StoreEntitySet="Authors">
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="NameFromWiki" ColumnName="NameFromWiki" />
+                <ScalarProperty Name="SourceUrl" ColumnName="SourceUrl" />
+                <ScalarProperty Name="Biography" ColumnName="Biography" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="FromWiki" ColumnName="FromWiki" />
+                <ScalarProperty Name="PhotoUpdated" ColumnName="PhotoUpdated" />
+                <ScalarProperty Name="OfficialUrl" ColumnName="OfficialUrl" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="DeathDate" ColumnName="DeathDate" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BookContents">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.BookContent">
+              <MappingFragment StoreEntitySet="BookContent">
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="InternalBookId" ColumnName="InternalBookId" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="SourceFileName" ColumnName="SourceFileName" />
+                <ScalarProperty Name="IsOwnContent" ColumnName="IsOwnContent" />
+                <ScalarProperty Name="ContentType" ColumnName="ContentType" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="BookContentId" ColumnName="BookContentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BookInSeries">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.BookInSerie">
+              <MappingFragment StoreEntitySet="BookInSeries">
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="SerieId" ColumnName="SerieId" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BookMedias">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.BookMedia">
+              <MappingFragment StoreEntitySet="BookMedias">
+                <ScalarProperty Name="MediaUpdated" ColumnName="MediaUpdated" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="MediaType" ColumnName="MediaType" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="BookMediaId" ColumnName="BookMediaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BookRelations">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.BookRelation">
+              <MappingFragment StoreEntitySet="BookRelations">
+                <ScalarProperty Name="IsRelatedByGenre" ColumnName="IsRelatedByGenre" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="RelatedBookId" ColumnName="RelatedBookId" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Books">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.Book">
+              <MappingFragment StoreEntitySet="Books">
+                <ScalarProperty Name="UserDownloadAccess" ColumnName="UserDownloadAccess" />
+                <ScalarProperty Name="PublishDate" ColumnName="PublishDate" />
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+                <ScalarProperty Name="FromGoogleBooks" ColumnName="FromGoogleBooks" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Published" ColumnName="Published" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="IntBookId" ColumnName="IntBookId" />
+                <ScalarProperty Name="Written" ColumnName="Written" />
+                <ScalarProperty Name="ClearName" ColumnName="ClearName" />
+                <ScalarProperty Name="CoverUpdated" ColumnName="CoverUpdated" />
+                <ScalarProperty Name="Cover" ColumnName="Cover" />
+                <ScalarProperty Name="Publisher" ColumnName="Publisher" />
+                <ScalarProperty Name="PagesCount" ColumnName="PagesCount" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.Comment">
+              <MappingFragment StoreEntitySet="Comments">
+                <ScalarProperty Name="ReviewId" ColumnName="ReviewId" />
+                <ScalarProperty Name="SerieId" ColumnName="SerieId" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="IsPublished" ColumnName="IsPublished" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="CommentId" ColumnName="CommentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExternalResources">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.ExternalResource">
+              <MappingFragment StoreEntitySet="ExternalResources">
+                <ScalarProperty Name="ResourceName" ColumnName="ResourceName" />
+                <ScalarProperty Name="ResourceIcon" ColumnName="ResourceIcon" />
+                <ScalarProperty Name="ExternalResourceId" ColumnName="ExternalResourceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExternalUris">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.ExternalUri">
+              <MappingFragment StoreEntitySet="ExternalUris">
+                <ScalarProperty Name="Uri" ColumnName="Uri" />
+                <ScalarProperty Name="ExternalResourceId" ColumnName="ExternalResourceId" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Genres">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.Genre">
+              <MappingFragment StoreEntitySet="Genres">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Classifier" ColumnName="Classifier" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="GenreId" ColumnName="GenreId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ratings">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.Rating">
+              <MappingFragment StoreEntitySet="Ratings">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="ReviewId" ColumnName="ReviewId" />
+                <ScalarProperty Name="SerieId" ColumnName="SerieId" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="RatingId" ColumnName="RatingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reviews">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.Review">
+              <MappingFragment StoreEntitySet="Reviews">
+                <ScalarProperty Name="IsPublished" ColumnName="IsPublished" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="ReviewId" ColumnName="ReviewId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Series">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.Serie">
+              <MappingFragment StoreEntitySet="Series">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="SerieId" ColumnName="SerieId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TranslatorsInBooks">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.TranslatorsInBook">
+              <MappingFragment StoreEntitySet="TranslatorsInBooks">
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="TranslatorId" ColumnName="TranslatorId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserAuthProfiles">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.UserAuthProfile">
+              <MappingFragment StoreEntitySet="UserAuthProfiles">
+                <ScalarProperty Name="IsAttached" ColumnName="IsAttached" />
+                <ScalarProperty Name="PhotoUrl" ColumnName="PhotoUrl" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ProviderName" ColumnName="ProviderName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserAuthProfileId" ColumnName="UserAuthProfileId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRoles">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.UserRole">
+              <MappingFragment StoreEntitySet="UserRoles">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="IntUserId" ColumnName="IntUserId" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="IsSubscriber" ColumnName="IsSubscriber" />
+                <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
+                <ScalarProperty Name="LastAccessed" ColumnName="LastAccessed" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="AvatarUpdated" ColumnName="AvatarUpdated" />
+                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Cellular" ColumnName="Cellular" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserStats">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.UserStat">
+              <MappingFragment StoreEntitySet="UserStats">
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserStatId" ColumnName="UserStatId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AuthorInBooks" TypeName="Knigoskop.DataModel.AuthorInBooks" StoreEntitySet="AuthorInBooks">
+            <EndProperty Name="Book">
+              <ScalarProperty Name="BookId" ColumnName="BookId" />
+            </EndProperty>
+            <EndProperty Name="Author">
+              <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="BookInGenres" TypeName="Knigoskop.DataModel.BookInGenres" StoreEntitySet="BookInGenres">
+            <EndProperty Name="Genre">
+              <ScalarProperty Name="GenreId" ColumnName="GenreId" />
+            </EndProperty>
+            <EndProperty Name="Book">
+              <ScalarProperty Name="BookId" ColumnName="BookId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="UserInRoles" TypeName="Knigoskop.DataModel.UserInRoles" StoreEntitySet="UserInRoles">
+            <EndProperty Name="User">
+              <ScalarProperty Name="UserId" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="UserRole">
+              <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="ViewStats">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.ViewStat">
+              <MappingFragment StoreEntitySet="ViewStats">
+                <ScalarProperty Name="SessionId" ColumnName="SessionId" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="ReviewId" ColumnName="ReviewId" />
+                <ScalarProperty Name="SerieId" ColumnName="SerieId" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="UserAgent" ColumnName="UserAgent" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ViewStatId" ColumnName="ViewStatId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subscriptions">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.Subscription">
+              <MappingFragment StoreEntitySet="Subscriptions">
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="ReviewId" ColumnName="ReviewId" />
+                <ScalarProperty Name="SerieId" ColumnName="SerieId" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="SubscriptionId" ColumnName="SubscriptionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Incomes">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.Income">
+              <MappingFragment StoreEntitySet="Incomes">
+                <ScalarProperty Name="ProcessedByUserId" ColumnName="ProcessedByUserId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ItemType" ColumnName="ItemType" />
+                <ScalarProperty Name="IsPublished" ColumnName="IsPublished" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="SerieId" ColumnName="SerieId" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="IncomeId" ColumnName="IncomeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Complains">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.Complain">
+              <MappingFragment StoreEntitySet="Complains">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="CommentId" ColumnName="CommentId" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="ComplainId" ColumnName="ComplainId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OpdsLinks">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.OpdsLink">
+              <MappingFragment StoreEntitySet="OpdsLinks">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="SearchUri" ColumnName="SearchUri" />
+                <ScalarProperty Name="Uri" ColumnName="Uri" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="OpdsLinkId" ColumnName="OpdsLinkId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Devices">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.Device">
+              <MappingFragment StoreEntitySet="Devices">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Identifier" ColumnName="Identifier" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Flags">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.Flag">
+              <MappingFragment StoreEntitySet="Flags">
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="SerieId" ColumnName="SerieId" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="FlagId" ColumnName="FlagId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Citations">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.Citation">
+              <MappingFragment StoreEntitySet="Citations">
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="CitationId" ColumnName="CitationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Downloads">
+            <EntityTypeMapping TypeName="Knigoskop.DataModel.Download">
+              <MappingFragment StoreEntitySet="Downloads">
+                <ScalarProperty Name="DownloadType" ColumnName="DownloadType" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="DownloadId" ColumnName="DownloadId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

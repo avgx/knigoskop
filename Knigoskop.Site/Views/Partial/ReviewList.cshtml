@@ -1,0 +1,118 @@
+﻿@using System.Globalization
+@using Knigoskop.Site.Models
+@model BookModel
+@{
+    var isShort = Model.Id == Guid.Empty;
+}
+
+<div id="reviews" class="reviews">
+    @foreach (ReviewItemModel review in Model.Reviews)
+    {
+        <div class="comment review @(isShort ? "short" : string.Empty)">
+            <div>
+                <span style="display: none">@review.Created.ToString("s", DateTimeFormatInfo.InvariantInfo)</span>
+                <img class="photo" alt="authorName" src="/images/avatar/@(review.CreatedBy.Id).jpg?width=30">
+                @{var score = "positive";
+                if (review.ReviewRating < 3)
+                {
+                    score = "negative";
+                }
+                else if (review.ReviewRating < 5)
+                {
+                    score = "neutral";
+                }
+                }
+                <div class="review-rating @score">@review.ReviewRating</div>
+                <div class="comment_box">
+                    <div class="top">
+                        <a itemprop="creator" class="name" href="@Url.Action("UserProfile", "Account", new { id = review.CreatedBy.Id })">@review.CreatedBy.Name</a>
+                        @*<span class="name"></span>*@ <span class="date">@review.Created.ToString("F")</span>
+                        @* real rating here *@
+                        <span id="rating_id">
+                            <span class="rating" style="padding-right: 10px;">
+                                @for (int i = 5; i >= 1; i--)
+                                {
+                                    if (i <= review.Rating.Value)
+                                    {
+                                        <span class="star filled" title="@i"></span>
+                                    }
+                                    else
+                                    {
+                                        <span class="star empty" title="@i"></span>
+                                    }
+                                }
+                            </span>
+                        </span>
+                    </div>
+                    @if (isShort)
+                    {
+                        <div>
+                            <a href="@Url.Action("Book", "Catalogue", new { id = review.Book.Id })" class="book-title">@review.Book.Name</a>
+                            <br />
+                            <a href="@Url.Action("Author", "Catalogue", new { id = review.Book.Authors.First().Id })" class="author-name">@review.Book.Authors.First().Name</a>
+                        </div>
+                    }
+                    @{score = "positive";
+                    if (review.ReviewRating < 3)
+                    {
+                        score = "negative";
+                    }
+                    else if (review.ReviewRating < 5)
+                    {
+                        score = "neutral";
+                    }
+                    }
+                    <a href="@Url.Action("Review", "Catalogue", new { id = review.Id })" class="rating-summary @score">@review.Name</a>
+                    <div class="reviewShort">
+                        @review.Description
+                    </div>
+                    @if (!isShort && User.Identity.IsAuthenticated && review.CreatedBy.Id == User.UserId)
+                    {
+                        <meta id="reviewUnCutRating" content="@review.ReviewRating" />
+                        <meta id="reviewUnCutTitle" content="@review.Name" />
+                        <meta id="reviewUnCutText" content="@review.Description" />
+                    }
+                    <a href="@Url.Action("Review", "Catalogue", new { id = review.Id })" class="read">@Text.ReadMore</a>
+                    @*                    @if (User.Identity.IsAuthenticated)
+                        {
+                            <a class="comment-report" data-review-id="@review.Id" title="@Text.Complain" href="javascript:void(0);">@Text.Complain</a>
+                        }*@
+                </div>
+            </div>
+        </div>
+    }
+    <script>
+        $(function () {
+            $('.reviewShort').dotdotdot({ wrap: 'word', height: 70, remove: [' ', ',', ';', '.', '!', '?', '—'], });
+        });
+    </script>
+
+    @if (!isShort)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            if (Model.Reviews.Any(r => r.CreatedBy.Id == User.UserId))
+            {
+                <div class="center">
+                    <br />
+                    <div class="notification">@Text.ReviewAlreadyExists</div>
+                </div>
+            }
+            else
+            {
+                <h4><span>@Text.CreateReview</span></h4>
+                <div class="center">
+                    <input id="btnSendReview" class="yellow-button" type="button" value="@Text.NewReview" onclick="javascript:{ window.location='@Url.Action("AddReview", "Income", new {bookId = @Model.Id})'; }" />
+                </div>
+            }
+        }
+        else
+        {
+            <h4><span>@Text.CreateReview</span></h4>
+            <div class="center">
+                <div class="notification">@Text.UnauthorizedReviews</div>
+                <input id="btnUnauthorizedComments" type="button" class="yellow-button unauth" value="@Text.SocialAuth" />
+            </div>
+        }
+    }
+</div>
